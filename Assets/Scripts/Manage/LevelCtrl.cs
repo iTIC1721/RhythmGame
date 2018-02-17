@@ -360,27 +360,45 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						break;
 					// 아래쪽
 					case 1:
+						// 플레이어와의 상대적 위치에서 소환될 경우
 						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
 
+						// 스폰 위치가 올바르지 않을 때
 						if (spawnPos > LevelData.Instance.levelHeight || spawnPos < -LevelData.Instance.levelHeight) {
 							Debug.LogWarning("Invalid Position");
 						}
+						// 스폰 위치가 올바른 값일 때
 						else {
+							// 장애물인 경우
 							if (!isHeart) {
+								// 장애물을 지정된 위치에 스폰
 								GameObject enemy = Instantiate(enemyPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0), Quaternion.identity);
+								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
+								// 방향 설정
 								enemyCtrl.dir = 1;
+								// 스폰 위치 설정
 								enemyCtrl.spawnPos = spawnPos;
+								// 속도 설정
 								enemyCtrl.speed = speed;
+								// 가속도 설정
 								enemyCtrl.velo = velo;
 							}
+							// 하트인 경우
 							else {
+								// 하트를 지정된 위치에 스폰
 								GameObject heart = Instantiate(heartPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0), Quaternion.identity);
+								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 								heartCtrl = heart.GetComponent<HeartCtrl>();
+								// 방향 설정
 								heartCtrl.dir = 1;
+								// 스폰 위치 설정
 								heartCtrl.spawnPos = spawnPos;
+								// 속도 설정
 								heartCtrl.speed = speed;
+								// 가속도 설정
 								heartCtrl.velo = velo;
 							}
 
@@ -389,27 +407,45 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						break;
 					// 왼쪽
 					case 2:
+						// 플레이어와의 상대적 위치에서 소환될 경우
 						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
 
+						// 스폰 위치가 올바르지 않을 때
 						if (spawnPos > LevelData.Instance.levelWidth || spawnPos < -LevelData.Instance.levelWidth) {
 							Debug.LogWarning("Invalid Position");
 						}
+						// 스폰 위치가 올바른 값일 때
 						else {
+							// 장애물인 경우
 							if (!isHeart) {
+								// 장애물을 지정된 위치에 스폰
 								GameObject enemy = Instantiate(enemyPrefab, new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
+								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
+								// 방향 설정
 								enemyCtrl.dir = 2;
+								// 스폰 위치 설정
 								enemyCtrl.spawnPos = spawnPos;
+								// 속도 설정
 								enemyCtrl.speed = speed;
+								// 가속도 설정
 								enemyCtrl.velo = velo;
 							}
+							// 하트인 경우
 							else {
+								// 하트를 지정된 위치에 스폰
 								GameObject heart = Instantiate(heartPrefab, new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
+								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 								heartCtrl = heart.GetComponent<HeartCtrl>();
+								// 방향 설정
 								heartCtrl.dir = 2;
+								// 스폰 위치 설정
 								heartCtrl.spawnPos = spawnPos;
+								// 속도 설정
 								heartCtrl.speed = speed;
+								// 가속도 설정
 								heartCtrl.velo = velo;
 							}
 
@@ -418,27 +454,45 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						break;
 					// 위쪽
 					case 3:
+						// 플레이어와의 상대적 위치에서 소환될 경우
 						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
 
+						// 스폰 위치가 올바르지 않을 때
 						if (spawnPos > LevelData.Instance.levelHeight || spawnPos < -LevelData.Instance.levelHeight) {
 							Debug.LogWarning("Invalid Position");
 						}
+						// 스폰 위치가 올바른 값일 때
 						else {
+							// 장애물인 경우
 							if (!isHeart) {
+								// 장애물을 지정된 위치에 스폰
 								GameObject enemy = Instantiate(enemyPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0), Quaternion.identity);
+								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
+								// 방향 설정
 								enemyCtrl.dir = 3;
+								// 스폰 위치 설정
 								enemyCtrl.spawnPos = spawnPos;
+								// 속도 설정
 								enemyCtrl.speed = speed;
+								// 가속도 설정
 								enemyCtrl.velo = velo;
 							}
+							// 하트인 경우
 							else {
+								// 하트를 지정된 위치에 스폰
 								GameObject heart = Instantiate(heartPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0), Quaternion.identity);
+								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 								heartCtrl = heart.GetComponent<HeartCtrl>();
+								// 방향 설정
 								heartCtrl.dir = 3;
+								// 스폰 위치 설정
 								heartCtrl.spawnPos = spawnPos;
+								// 속도 설정
 								heartCtrl.speed = speed;
+								// 가속도 설정
 								heartCtrl.velo = velo;
 							}
 
@@ -458,75 +512,118 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="spawnPos">생성될 위치</param>
 	/// <param name="time">유지 시간</param>
 	public void SpawnLaser(int spawnDir, int spawnPos, float time) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 방향이 바른 값이 아닌 경우
 			if (spawnDir > 3 || spawnDir < 0) {
 				Debug.LogWarning("Invalid Direction");
 			}
+			// 올바른 방향인 경우
 			else {
 				switch (spawnDir) {
+					// 오른쪽
 					case 0:
+						// 플레이어와의 상대적 위치에서 소환될 경우
 						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
 
+						// 스폰 위치가 올바르지 않을 때
 						if (spawnPos > LevelData.Instance.levelWidth || spawnPos < -LevelData.Instance.levelWidth) {
 							Debug.LogWarning("Invalid Position");
 						}
+						// 스폰 위치가 올바른 값일 때
 						else {
+							// 장애물을 지정된 위치에 스폰
 							GameObject enemy = Instantiate(laserPrefab, new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
+							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
+							// 방향 설정
 							laserCtrl.dir = 0;
+							// 스폰 위치 설정
 							laserCtrl.spawnPos = spawnPos;
+							// 유지 시간 설정
 							laserCtrl.time = time;
 
 							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
+					// 아래쪽
 					case 1:
+						// 플레이어와의 상대적 위치에서 소환될 경우
 						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
 
+						// 스폰 위치가 올바르지 않을 때
 						if (spawnPos > LevelData.Instance.levelHeight || spawnPos < -LevelData.Instance.levelHeight) {
 							Debug.LogWarning("Invalid Position");
 						}
+						// 스폰 위치가 올바른 값일 때
 						else {
+							// 장애물을 지정된 위치에 스폰
 							GameObject enemy = Instantiate(laserPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), Quaternion.identity);
+							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
+							// 방향 설정
 							laserCtrl.dir = 1;
+							// 스폰 위치 설정
 							laserCtrl.spawnPos = spawnPos;
+							// 유지 시간 설정
 							laserCtrl.time = time;
 
 							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
+					// 왼쪽
 					case 2:
+						// 플레이어와의 상대적 위치에서 소환될 경우
 						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
 
+						// 스폰 위치가 올바르지 않을 때
 						if (spawnPos > LevelData.Instance.levelWidth || spawnPos < -LevelData.Instance.levelWidth) {
 							Debug.LogWarning("Invalid Position");
 						}
+						// 스폰 위치가 올바른 값일 때
 						else {
+							// 장애물을 지정된 위치에 스폰
 							GameObject enemy = Instantiate(laserPrefab, new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
+							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
+							// 방향 설정
 							laserCtrl.dir = 2;
+							// 스폰 위치 설정
 							laserCtrl.spawnPos = spawnPos;
+							// 유지 시간 설정
 							laserCtrl.time = time;
 
 							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
+					// 위쪽
 					case 3:
+						// 플레이어와의 상대적 위치에서 소환될 경우
 						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
 
+						// 스폰 위치가 올바르지 않을 때
 						if (spawnPos > LevelData.Instance.levelHeight || spawnPos < -LevelData.Instance.levelHeight) {
 							Debug.LogWarning("Invalid Position");
 						}
+						// 스폰 위치가 올바른 값일 때
 						else {
+							// 장애물을 지정된 위치에 스폰
 							GameObject enemy = Instantiate(laserPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), Quaternion.identity);
+							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
+							// 방향 설정
 							laserCtrl.dir = 3;
+							// 스폰 위치 설정
 							laserCtrl.spawnPos = spawnPos;
+							// 유지 시간 설정
 							laserCtrl.time = time;
 
 							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
@@ -543,24 +640,33 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="width">중심으로부터의 가로 칸 수</param>
 	/// <param name="height">중심으로부터의 세로 칸 수</param>
 	public void ResizeLevel(int width, int height) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 게임판의 너비를 지정된 값으로 바꾼다.
 			LevelData.Instance.levelWidth = width;
+			// 게임판의 높이를 지정된 값으로 바꾼다.
 			LevelData.Instance.levelHeight = height;
 
+			// Enemy 태그를 가진 모든 오브젝트를 배열로 저장한다.
 			GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 			foreach (GameObject enemyObj in enemies) {
+				// 모든 장애물의 위치를 게임판 크기에 맞게 수정한다.
 				EnemyCtrl enemyCtrl = enemyObj.GetComponent<EnemyCtrl>();
 				// TODO: 좌표 줄이기 수정
 				switch (enemyCtrl.dir) {
+					// 오른쪽
 					case 0:
 						enemyObj.transform.position = new Vector3(enemyObj.transform.position.x, enemyCtrl.spawnPos * (levelSize / ((height * 2) + 1)), 0);
 						break;
+					// 아래쪽
 					case 1:
 						enemyObj.transform.position = new Vector3(enemyCtrl.spawnPos * (levelSize / ((width * 2) + 1)), enemyObj.transform.position.y, 0);
 						break;
+					// 왼쪽
 					case 2:
 						enemyObj.transform.position = new Vector3(enemyObj.transform.position.x, enemyCtrl.spawnPos * (levelSize / ((height * 2) + 1)), 0);
 						break;
+					// 위쪽
 					case 3:
 						enemyObj.transform.position = new Vector3(enemyCtrl.spawnPos * (levelSize / ((width * 2) + 1)), enemyObj.transform.position.y, 0);
 						break;
@@ -575,11 +681,17 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="color">바꿀 색상</param>
 	/// <param name="time">바꿀 시간</param>
 	public void ChangeBackColor(Color color, float time) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 변화 활성화
 			bChangeEnable = true;
+			// 색 저장
 			bChangeColor = color;
+			// 현재 색 저장
 			bOriginalColor = LevelData.Instance.backColor;
+			// 시간 저장
 			bChangeTime = time;
+			// 임시 변수 초기화
 			bTempTime = 0;
 		}
 	}
@@ -590,11 +702,17 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="color">바꿀 색상</param>
 	/// <param name="time">바꿀 시간</param>
 	public void ChangeLevelColor(Color color, float time) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 변화 활성화
 			lChangeEnable = true;
+			// 색 저장
 			lChangeColor = color;
+			// 현재 색 저장
 			lOriginalColor = LevelData.Instance.levelColor;
+			// 시간 저장
 			lChangeTime = time;
+			// 임시 변수 초기화
 			lTempTime = 0;
 		}
 	}
@@ -605,11 +723,17 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="color">바꿀 색상</param>
 	/// <param name="time">바꿀 시간</param>
 	public void ChangeEnemyColor(Color color, float time) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 변화 활성화
 			eChangeEnable = true;
+			// 색 저장
 			eChangeColor = color;
+			// 현재 색 저장
 			eOriginalColor = LevelData.Instance.enemyColor;
+			// 시간 저장
 			eChangeTime = time;
+			// 임시 변수 초기화
 			eTempTime = 0;
 		}
 	}
@@ -620,11 +744,17 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="angle">회전시킬 각도</param>
 	/// <param name="time">회전시킬 시간</param>
 	public void RotateLevel(float angle, float time) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 변화 활성화
 			rotateEnable = true;
+			// 각도 저장
 			rotateAngle = angle;
+			// 현재 각도 저장
 			rotateOriginalAngle = mainCamera.transform.rotation.z;
+			// 시간 저장
 			rotateTime = time;
+			// 임시 변수 초기화
 			tempRotTime = 0;
 		}
 	}
@@ -636,11 +766,17 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="rate">확대시킬 비율</param>
 	/// <param name="time">확대시킬 시간</param>
 	public void EnlargeLevel(float rate, float time) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 변화 활성화
 			enlargeEnable = true;
+			// 비율 저장
 			enlargeRate = rate;
+			// 현재 크기 저장
 			enlargeOriginalSize = cameraComp.orthographicSize;
+			// 시간 저장
 			enlargeTime = time;
+			// 임시 변수 초기화
 			tempEnlTime = 0;
 		}
 	}
@@ -652,11 +788,17 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="y">이동시킬 y좌표</param>
 	/// <param name="time">이동시킬 시간</param>
 	public void MoveLevel(float x, float y, float time) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 변화 활성화
 			moveEnable = true;
+			// 위치 저장
 			moveVector = new Vector3(-x, -y, -10);
+			// 현재 위치 저장
 			originalVector = mainCamera.transform.position;
+			// 시간 저장
 			moveTime = time;
+			// 임시 변수 초기화
 			tempMoveTime = 0;
 		}
 	}
@@ -665,7 +807,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// 플레이어를 투명화시킨다.
 	/// </summary>
 	public void PlayerVisible(bool visible) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 플레이어의 투명 여부를 설정한다.
 			playerSprRen.enabled = visible;
 		}
 	}
@@ -675,7 +819,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="pos">이동시킬 위치</param>
 	public void ReplacePlayer(Vector2 pos) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 플레이어의 위치를 지정된 좌표로 설정한다.
 			playerCtrl.playerPos = pos;
 		}
 	}
@@ -685,7 +831,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="pos">이동시킬 위치</param>
 	public void ReplacePlayer(int x, int y) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 플레이어의 위치를 지정된 좌표로 설정한다.
 			playerCtrl.playerPos = new Vector2(x, y);
 		}
 	}
@@ -694,7 +842,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// 현재 존재하는 모든 엔티티를 제거한다.
 	/// </summary>
 	public void KillAll() {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 모든 장애물을 제거한다.
 			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) {
 				Destroy(enemy);
 			}
@@ -712,7 +862,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="tag">제거할 엔티티 태그</param>
 	public void KillEntity(string tag) {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 특정 태그를 가진 장애물을 제거한다.
 			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag(tag)) {
 				Destroy(enemy);
 			}
@@ -723,23 +875,35 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// 플레이어의 하트가 전부 소진되었을 때 발동시킨다.
 	/// </summary>
 	public void GameOver() {
+		// 생존 중일때만 작동한다.
 		if (playing) {
+			// 배경음악을 멈춘다.
 			audioSource.Stop();
+			// 생존 여부를 거짓으로 설정한다.
 			playing = false;
+			// 모든 장애물을 제거한다.
 			KillAll();
+			// 게임 오버 여부를 참으로 설정한다.
 			LevelData.Instance.gameOver = true;
+			// 모든 색을 검은색으로 설정한다.
 			LevelData.Instance.backColor = Color.black;
 			LevelData.Instance.levelColor = Color.black;
 			LevelData.Instance.enemyColor = Color.black;
 			LevelData.Instance.heartColor = Color.black;
+			// 게임 오버 코루틴을 실행한다.
 			StartCoroutine(GameOverCoroutine());
 		}
 	}
 
+	/// <summary>
+	/// 게임 오버되었을 때 실행되는 코루틴이다.
+	/// </summary>
+	/// <returns></returns>
 	private IEnumerator GameOverCoroutine() {
+		// 3초를 기다린다.
 		yield return new WaitForSeconds(3f);
 
-		// 게임 초기화
+		// 게임을 초기화한 뒤 레벨 선택창으로 돌아간다.
 		LevelData.Instance.gameOver = false;
 		LevelData.Instance.backColor = Color.black;
 		LevelData.Instance.levelColor = Color.white;
