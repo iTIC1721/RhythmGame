@@ -4,17 +4,27 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class LevelCtrl : Singleton<LevelCtrl> {
-	
-	// 블럭 장애물 프리팹
+
+	// 장애물 프리팹
+	#region Prefabs
 	public GameObject enemyPrefab;
-	// 레이저 장애물 프리팹
 	public GameObject laserPrefab;
-	// 하트 프리팹
 	public GameObject heartPrefab;
-	// 메인 카메라 오브젝트
+	#endregion
+
+	// 오브젝트
+	#region Objects
+	// 메인 카메라
 	public GameObject mainCamera;
-	// 플레이어 오브젝트
+	// 플레이어
 	public GameObject player;
+	#endregion
+
+	// 오브젝트 풀
+	#region Object Pools
+	public GameObject objectPool;
+	public GameObject spawnPool;
+	#endregion
 
 	// 플레이어 생존 여부 확인용 변수
 	[NonSerialized]
