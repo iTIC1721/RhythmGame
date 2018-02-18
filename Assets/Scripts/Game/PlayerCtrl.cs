@@ -108,7 +108,8 @@ public class PlayerCtrl : MonoBehaviour {
 			isTransparent = false;
 		}
 
-		// I 키를 누르면 무적 모드로 변환 - 삭제 예정
+		// I 키를 누르면 무적 모드로 변환
+		// TODO: 삭제 예정
 		if (Input.GetKeyDown(KeyCode.I)) {
 			if (!LevelData.Instance.invincibleMode)
 				LevelData.Instance.invincibleMode = true;

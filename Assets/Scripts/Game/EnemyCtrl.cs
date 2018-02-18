@@ -25,6 +25,8 @@ public class EnemyCtrl : MonoBehaviour {
 	private void Awake() {
 		// 스프라이트 렌더러를 가져옴
 		sprRen = gameObject.GetComponent<SpriteRenderer>();
+		// 색 초기화
+		sprRen.color = LevelData.Instance.enemyColor;
 	}
 
 	// 매 프레임마다 실행
@@ -45,7 +47,7 @@ public class EnemyCtrl : MonoBehaviour {
 	// 충돌이 발생했을 때
 	private void OnTriggerEnter2D(Collider2D collision) {
 		// 충돌한 대상이 무적이 아닌 플레이어일 때
-		if (collision.tag == "Player" && !LevelData.Instance.isInvincible && !LevelData.Instance.invincibleMode) {
+		if (collision.CompareTag("Player") && !LevelData.Instance.isInvincible && !LevelData.Instance.invincibleMode) {
 			// 플레이어의 생명을 1 감소시킴
 			LevelData.Instance.playerHeart -= 1;
 			// 무적 상태로 전환
@@ -87,7 +89,8 @@ public class EnemyCtrl : MonoBehaviour {
 
 	// 색 변화 - 매 프레임마다 실행
 	private void ColorUpdate() {
-		sprRen.color = LevelData.Instance.enemyColor;
+		if (LevelCtrl.Instance.eChangeEnable)
+			sprRen.color = LevelData.Instance.enemyColor;
 	}
 
 	/*

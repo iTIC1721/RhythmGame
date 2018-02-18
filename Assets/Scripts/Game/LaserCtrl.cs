@@ -17,6 +17,8 @@ public class LaserCtrl : MonoBehaviour {
 	// 투명도
 	private float alpha = 1f;
 
+	private Color enemyColor;
+
 	// 오브젝트의 스프라이트 렌더러
 	private SpriteRenderer sprRen;
 
@@ -24,6 +26,8 @@ public class LaserCtrl : MonoBehaviour {
 	private void Awake() {
 		// 스프라이트 렌더러를 가져옴
 		sprRen = gameObject.GetComponent<SpriteRenderer>();
+		// 색 초기화
+		enemyColor = LevelData.Instance.enemyColor;
 	}
 
 	// 매 프레임마다 실행
@@ -43,7 +47,7 @@ public class LaserCtrl : MonoBehaviour {
 	// 충돌이 발생했을 때
 	private void OnTriggerEnter2D(Collider2D collision) {
 		// 충돌한 대상이 무적이 아닌 플레이어일 때
-		if (collision.tag == "Player" && !LevelData.Instance.isInvincible && !LevelData.Instance.invincibleMode) {
+		if (collision.CompareTag("Player") && !LevelData.Instance.isInvincible && !LevelData.Instance.invincibleMode) {
 			// 플레이어의 생명을 1 감소시킴
 			LevelData.Instance.playerHeart -= 1;
 			// 무적 상태로 전환
@@ -81,7 +85,9 @@ public class LaserCtrl : MonoBehaviour {
 	// 색 / 투명도 변화 - 매 프레임마다 실행
 	private void ColorUpdate() {
 		// 색 변화
-		Color enemyColor = LevelData.Instance.enemyColor;
+		if (LevelCtrl.Instance.eChangeEnable)
+			enemyColor = LevelData.Instance.enemyColor;
+
 		sprRen.color = new Color(enemyColor.r, enemyColor.g, enemyColor.b, alpha);
 
 		// 투명도 변화

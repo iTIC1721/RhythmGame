@@ -45,7 +45,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	private Camera cameraComp;
 
 	// 배경 색 변화 여부
-	private bool bChangeEnable = false;
+	[NonSerialized]
+	public bool bChangeEnable = false;
 	// 변화 전 배경색
 	private Color bOriginalColor = Color.black;
 	// 변화 후 배경색
@@ -56,7 +57,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	private float bTempTime = 0f;
 
 	// 게임판 색 변화 여부
-	private bool lChangeEnable = false;
+	[NonSerialized]
+	public bool lChangeEnable = false;
 	// 변화 전 게임판 색
 	private Color lOriginalColor = Color.black;
 	// 변화 후 게임판 색
@@ -67,7 +69,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	private float lTempTime = 0f;
 
 	// 장애물 색 변화 여부
-	private bool eChangeEnable = false;
+	[NonSerialized]
+	public bool eChangeEnable = false;
 	// 변화 전 장애물 색
 	private Color eOriginalColor = Color.black;
 	// 변화 후 장애물 색
@@ -317,13 +320,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 			EnemyCtrl enemyCtrl;
 			// 하트의 HeartCtrl 스크립트를 받아오기 위해 사용되는 변수
 			HeartCtrl heartCtrl;
-
-			// 방향이 바른 값이 아닌 경우
-			if (spawnDir > 3 || spawnDir < 0) {
-				Debug.LogWarning("Invalid Direction");
-			}
+			
 			// 올바른 방향일 경우
-			else {
+			if (spawnDir <= 3 && spawnDir >= 0) {
 				switch (spawnDir) {
 					// 오른쪽
 					case 0:
@@ -332,12 +331,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
 
-						// 스폰 위치가 올바르지 않을 때
-						if (spawnPos > LevelData.Instance.levelWidth || spawnPos < -LevelData.Instance.levelWidth) {
-							Debug.LogWarning("Invalid Position");
-						}
 						// 스폰 위치가 올바른 값일 때
-						else {
+						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물인 경우
 							if (!isHeart) {
 								// 장애물을 지정된 위치에 스폰
@@ -392,13 +387,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
 							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
-
-						// 스폰 위치가 올바르지 않을 때
-						if (spawnPos > LevelData.Instance.levelHeight || spawnPos < -LevelData.Instance.levelHeight) {
-							Debug.LogWarning("Invalid Position");
-						}
+						
 						// 스폰 위치가 올바른 값일 때
-						else {
+						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물인 경우
 							if (!isHeart) {
 								// 장애물을 지정된 위치에 스폰
@@ -453,13 +444,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
 							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
-
-						// 스폰 위치가 올바르지 않을 때
-						if (spawnPos > LevelData.Instance.levelWidth || spawnPos < -LevelData.Instance.levelWidth) {
-							Debug.LogWarning("Invalid Position");
-						}
+						
 						// 스폰 위치가 올바른 값일 때
-						else {
+						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물인 경우
 							if (!isHeart) {
 								// 장애물을 지정된 위치에 스폰
@@ -514,13 +501,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
 							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
-
-						// 스폰 위치가 올바르지 않을 때
-						if (spawnPos > LevelData.Instance.levelHeight || spawnPos < -LevelData.Instance.levelHeight) {
-							Debug.LogWarning("Invalid Position");
-						}
+						
 						// 스폰 위치가 올바른 값일 때
-						else {
+						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물인 경우
 							if (!isHeart) {
 								// 장애물을 지정된 위치에 스폰
@@ -584,12 +567,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	public void SpawnLaser(int spawnDir, int spawnPos, float time) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
-			// 방향이 바른 값이 아닌 경우
-			if (spawnDir > 3 || spawnDir < 0) {
-				Debug.LogWarning("Invalid Direction");
-			}
 			// 올바른 방향인 경우
-			else {
+			if (spawnDir <= 3 && spawnDir >= 0) {
 				switch (spawnDir) {
 					// 오른쪽
 					case 0:
@@ -597,13 +576,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
 							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
-
-						// 스폰 위치가 올바르지 않을 때
-						if (spawnPos > LevelData.Instance.levelWidth || spawnPos < -LevelData.Instance.levelWidth) {
-							Debug.LogWarning("Invalid Position");
-						}
+						
 						// 스폰 위치가 올바른 값일 때
-						else {
+						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물을 지정된 위치에 스폰
 							GameObject enemy = Instantiate(laserPrefab, new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
 							/*
@@ -631,13 +606,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
 							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
-
-						// 스폰 위치가 올바르지 않을 때
-						if (spawnPos > LevelData.Instance.levelHeight || spawnPos < -LevelData.Instance.levelHeight) {
-							Debug.LogWarning("Invalid Position");
-						}
+						
 						// 스폰 위치가 올바른 값일 때
-						else {
+						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물을 지정된 위치에 스폰
 							GameObject enemy = Instantiate(laserPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), Quaternion.identity);
 							/*
@@ -665,13 +636,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
 							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
-
-						// 스폰 위치가 올바르지 않을 때
-						if (spawnPos > LevelData.Instance.levelWidth || spawnPos < -LevelData.Instance.levelWidth) {
-							Debug.LogWarning("Invalid Position");
-						}
+						
 						// 스폰 위치가 올바른 값일 때
-						else {
+						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물을 지정된 위치에 스폰
 							GameObject enemy = Instantiate(laserPrefab, new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
 							/*
@@ -699,13 +666,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
 							// 플레이어의 위치에 맞춰 스폰 위치 설정
 							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
-
-						// 스폰 위치가 올바르지 않을 때
-						if (spawnPos > LevelData.Instance.levelHeight || spawnPos < -LevelData.Instance.levelHeight) {
-							Debug.LogWarning("Invalid Position");
-						}
+						
 						// 스폰 위치가 올바른 값일 때
-						else {
+						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물을 지정된 위치에 스폰
 							GameObject enemy = Instantiate(laserPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), Quaternion.identity);
 							/*
@@ -747,7 +710,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 
 			// Enemy 태그를 가진 모든 오브젝트를 배열로 저장한다.
 			GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-			foreach (GameObject enemyObj in enemies) {
+			for (int i = 0; i < enemies.Length; i++) {
+				GameObject enemyObj = enemies[i];
 				// 모든 장애물의 위치를 게임판 크기에 맞게 수정한다.
 				EnemyCtrl enemyCtrl = enemyObj.GetComponent<EnemyCtrl>();
 				// TODO: 좌표 줄이기 수정

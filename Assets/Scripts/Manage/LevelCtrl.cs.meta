@@ -1,10 +1,18 @@
 fileFormatVersion: 2
 guid: 8829252df25b6d2438941507087b60f5
-timeCreated: 1518248161
+timeCreated: 1518956291
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - enemyPrefab: {fileID: 1027547420944990, guid: 941a430de4d1c404b90c7f83eee989f4,
+      type: 2}
+  - laserPrefab: {fileID: 1381943757696640, guid: dd2f34529dac7d14cbdc13ab25988f07,
+      type: 2}
+  - heartPrefab: {fileID: 1647325736689864, guid: f69c6ab33238bb748875bcf8b39edead,
+      type: 2}
+  - mainCamera: {instanceID: 0}
+  - player: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

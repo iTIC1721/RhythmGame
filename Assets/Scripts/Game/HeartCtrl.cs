@@ -23,6 +23,8 @@ public class HeartCtrl : MonoBehaviour {
 		heartTransform = gameObject.GetComponentInChildren<Transform>();
 		// TODO: 하트 스프라이트 만들기 및 프리팹에 추가
 		heartSprRen = gameObject.GetComponentInChildren<SpriteRenderer>();
+		// 색 초기화
+		sprRen.color = LevelData.Instance.enemyColor;
 	}
 
 	private void Update() {
@@ -38,7 +40,7 @@ public class HeartCtrl : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision) {
-		if (collision.tag == "Player") {
+		if (collision.CompareTag("Player")) {
 			if (LevelData.Instance.playerHeart < LevelData.Instance.playerHeartMax) {
 				LevelData.Instance.playerHeart += 1;
 			}
@@ -67,7 +69,8 @@ public class HeartCtrl : MonoBehaviour {
 	}
 
 	private void ColorUpdate() {
-		sprRen.color = LevelData.Instance.enemyColor;
+		if (LevelCtrl.Instance.eChangeEnable)
+			sprRen.color = LevelData.Instance.enemyColor;
 		heartSprRen.color = LevelData.Instance.heartColor;
 	}
 }
