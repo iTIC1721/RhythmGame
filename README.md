@@ -1,7 +1,7 @@
 # RhythmGame
 
 ## 소개
-본 게임은 [Soundodger+](soundodger.com/), [Orbit or Beat](http://www.zuzunza.com/myflash/game_detail.html?game_id=562091) 등 여러 게임들에서 영향을 받아 제작되고 있는 리듬 탄막 게임입니다. 흘러나오는 배경음악에 맞추어 작은 빨간색 사각형을 조종해 사방에서 나오는 장애물을 피하는 것이 게임의 주 내용이며, 현재는 기본적인 기능과 레이아웃 정도만 구현되어 있는 상태입니다.
+본 게임은 [Soundodger+](http://store.steampowered.com/app/247140/Soundodger/), [Orbit or Beat](http://www.zuzunza.com/myflash/game_detail.html?game_id=562091) 등 여러 게임들에서 영향을 받아 제작되고 있는 리듬 탄막 게임입니다. 흘러나오는 배경음악에 맞추어 작은 빨간색 사각형을 조종해 사방에서 나오는 장애물을 피하는 것이 게임의 주 내용이며, 현재는 기본적인 기능과 레이아웃 정도만 구현되어 있는 상태입니다.
 
 [![Image](http://img.youtube.com/vi/mapm9Q-u6v0/0.jpg)](https://www.youtube.com/watch?v=mapm9Q-u6v0)
 
