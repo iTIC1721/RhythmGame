@@ -932,34 +932,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!1 &1347323183
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1347323184}
-  m_Layer: 0
-  m_Name: ObjPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1347323184
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1347323183}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1363442916
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,7 +1240,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1515276232}
   - component: {fileID: 1515276233}
-  - component: {fileID: 1515276235}
   - component: {fileID: 1515276234}
   m_Layer: 0
   m_Name: Manager
@@ -1309,8 +1280,6 @@ MonoBehaviour:
     type: 2}
   mainCamera: {fileID: 782397771}
   player: {fileID: 1406002376}
-  objectPool: {fileID: 1347323183}
-  spawnPool: {fileID: 2112268547}
 --- !u!82 &1515276234
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1391,23 +1360,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &1515276235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1515276231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27b59cb3baa17354ab86441b640caf1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1027547420944990, guid: 941a430de4d1c404b90c7f83eee989f4,
-    type: 2}
-  laserPrefab: {fileID: 1381943757696640, guid: dd2f34529dac7d14cbdc13ab25988f07,
-    type: 2}
-  heartPrefab: {fileID: 1647325736689864, guid: f69c6ab33238bb748875bcf8b39edead,
-    type: 2}
 --- !u!1 &1635082879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1764,31 +1716,3 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!1 &2112268547
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2112268548}
-  m_Layer: 0
-  m_Name: SpawnedObjs
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2112268548
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2112268547}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -615,18 +615,12 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 								*/
 							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
-							if (enemy != null) {
-								Debug.Log(enemy);
-								// 방향 설정
-								laserCtrl.dir = 0;
-								// 스폰 위치 설정
-								laserCtrl.spawnPos = spawnPos;
-								// 유지 시간 설정
-								laserCtrl.time = time;
-							}
-							else {
-								Debug.Log("aaa");
-							}
+							// 방향 설정
+							laserCtrl.dir = 0;
+							// 스폰 위치 설정
+							laserCtrl.spawnPos = spawnPos;
+							// 유지 시간 설정
+							laserCtrl.time = time;
 
 							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
