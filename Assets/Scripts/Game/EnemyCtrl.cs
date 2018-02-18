@@ -16,6 +16,8 @@ public class EnemyCtrl : MonoBehaviour {
 	// 가속도
 	public float velo = 0f;
 
+	private float time = 0;
+
 	// 오브젝트의 스프라이트 렌더러
 	private SpriteRenderer sprRen;
 
@@ -27,13 +29,17 @@ public class EnemyCtrl : MonoBehaviour {
 
 	// 매 프레임마다 실행
 	private void Update() {
-		ReplaceEnemy();
-		ColorUpdate();
+		if (gameObject.activeSelf) {
+			ReplaceEnemy();
+			ColorUpdate();
+			//TimeUpdate();
+		}
 	}
 
 	// 게임 화면을 벗어났을 때
 	private void OnBecameInvisible() {
 		Destroy(gameObject);
+		//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
 	}
 
 	// 충돌이 발생했을 때
@@ -51,6 +57,8 @@ public class EnemyCtrl : MonoBehaviour {
 			}
 			// 해당 오브젝트 파괴
 			Destroy(gameObject);
+			//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
+			//time = 0;
 		}
 	}
 
@@ -81,4 +89,15 @@ public class EnemyCtrl : MonoBehaviour {
 	private void ColorUpdate() {
 		sprRen.color = LevelData.Instance.enemyColor;
 	}
+
+	/*
+	private void TimeUpdate() {
+		time += Time.deltaTime;
+
+		if (time > 20f) {
+			ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
+			time = 0;
+		}
+	}
+	*/
 }

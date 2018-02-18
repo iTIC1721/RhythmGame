@@ -954,7 +954,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1347323183}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 332.38605, y: 245.50287, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1268,6 +1268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1515276232}
   - component: {fileID: 1515276233}
+  - component: {fileID: 1515276235}
   - component: {fileID: 1515276234}
   m_Layer: 0
   m_Name: Manager
@@ -1390,6 +1391,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &1515276235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1515276231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b59cb3baa17354ab86441b640caf1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 1027547420944990, guid: 941a430de4d1c404b90c7f83eee989f4,
+    type: 2}
+  laserPrefab: {fileID: 1381943757696640, guid: dd2f34529dac7d14cbdc13ab25988f07,
+    type: 2}
+  heartPrefab: {fileID: 1647325736689864, guid: f69c6ab33238bb748875bcf8b39edead,
+    type: 2}
 --- !u!1 &1635082879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1768,7 +1786,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2112268547}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 332.38605, y: 245.50287, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

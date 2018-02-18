@@ -26,12 +26,15 @@ public class HeartCtrl : MonoBehaviour {
 	}
 
 	private void Update() {
-		ReplaceEnemy();
-		ColorUpdate();
+		if (gameObject.activeSelf) {
+			ReplaceEnemy();
+			ColorUpdate();
+		}
 	}
 
 	private void OnBecameInvisible() {
 		Destroy(gameObject);
+		//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision) {
@@ -40,6 +43,7 @@ public class HeartCtrl : MonoBehaviour {
 				LevelData.Instance.playerHeart += 1;
 			}
 			Destroy(gameObject);
+			//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
 		}
 	}
 
