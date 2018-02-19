@@ -39,7 +39,6 @@ public class LaserCtrl : MonoBehaviour {
 	// 게임 화면을 벗어났을 때
 	private void OnBecameInvisible() {
 		Destroy(gameObject);
-		//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
 	}
 
 	// 충돌이 발생했을 때
@@ -58,8 +57,6 @@ public class LaserCtrl : MonoBehaviour {
 			}
 			// 해당 오브젝트 파괴
 			Destroy(gameObject);
-			//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
-			//alpha = 1f;
 		}
 	}
 
@@ -96,8 +93,6 @@ public class LaserCtrl : MonoBehaviour {
 		else {
 			alpha = 0;
 			Destroy(gameObject);
-			//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
-			//alpha = 1f;
 		}
 	}
 }

@@ -20,14 +20,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	public GameObject player;
 	#endregion
 
-	// 오브젝트 풀
-	/*
-	#region Object Pools
-	public GameObject objectPool;
-	public GameObject spawnPool;
-	#endregion
-	*/
-
 	// 플레이어 생존 여부 확인용 변수
 	[NonSerialized]
 	public bool playing = true;
@@ -119,8 +111,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="width">초기 게임판 너비</param>
 	/// <param name="height">초기 게임판 높이</param>
 	public void StartGame(string levelName, string levelDesigner, int width, int height) {
-		// 오브젝트 풀을 초기화한다.
-		//ObjectPool.Instance.InitializePool(50, objectPool.transform);
 		// 게임 이름을 지정된 값으로 설정한다.
 		LevelData.Instance.levelName = levelName;
 		// 게임 디자이너를 지정된 값으로 설정한다.
@@ -166,14 +156,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 장애물인 경우
 							if (!isHeart) {
 								// 장애물을 지정된 위치에 스폰
-								GameObject enemy = Instantiate(enemyPrefab, new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
-								/*
-								GameObject enemy = ObjectPool.Instance.PopFromPool(
-									ObjectPool.EnemyType.Enemy, 
+								GameObject enemy = Instantiate(
+									enemyPrefab, 
 									new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-									objectPool.transform,
-									spawnPool.transform);
-									*/
+									Quaternion.identity);
 								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
 								// 방향 설정
@@ -188,14 +174,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 하트인 경우
 							else {
 								// 하트를 지정된 위치에 스폰
-								GameObject heart = Instantiate(heartPrefab, new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
-								/*
-								GameObject heart = ObjectPool.Instance.PopFromPool(
-									ObjectPool.EnemyType.Heart, 
+								GameObject heart = Instantiate(
+									heartPrefab, 
 									new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-									objectPool.transform,
-									spawnPool.transform);
-									*/
+									Quaternion.identity);
 								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 								heartCtrl = heart.GetComponent<HeartCtrl>();
 								// 방향 설정
@@ -207,8 +189,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 								// 가속도 설정
 								heartCtrl.velo = velo;
 							}
-
-							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
 					// 아래쪽
@@ -223,14 +203,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 장애물인 경우
 							if (!isHeart) {
 								// 장애물을 지정된 위치에 스폰
-								GameObject enemy = Instantiate(enemyPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0), Quaternion.identity);
-								/*
-								GameObject enemy = ObjectPool.Instance.PopFromPool(
-									ObjectPool.EnemyType.Enemy, 
+								GameObject enemy = Instantiate(
+									enemyPrefab, 
 									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0), 
-									objectPool.transform,
-									spawnPool.transform);
-									*/
+									Quaternion.identity);
 								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
 								// 방향 설정
@@ -245,14 +221,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 하트인 경우
 							else {
 								// 하트를 지정된 위치에 스폰
-								GameObject heart = Instantiate(heartPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0), Quaternion.identity);
-								/*
-								GameObject heart = ObjectPool.Instance.PopFromPool(
-									ObjectPool.EnemyType.Heart, 
+								GameObject heart = Instantiate(
+									heartPrefab, 
 									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0), 
-									objectPool.transform,
-									spawnPool.transform);
-									*/
+									Quaternion.identity);
 								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 								heartCtrl = heart.GetComponent<HeartCtrl>();
 								// 방향 설정
@@ -264,8 +236,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 								// 가속도 설정
 								heartCtrl.velo = velo;
 							}
-
-							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
 					// 왼쪽
@@ -280,14 +250,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 장애물인 경우
 							if (!isHeart) {
 								// 장애물을 지정된 위치에 스폰
-								GameObject enemy = Instantiate(enemyPrefab, new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
-								/*
-								GameObject enemy = ObjectPool.Instance.PopFromPool(
-									ObjectPool.EnemyType.Enemy, 
+								GameObject enemy = Instantiate(
+									enemyPrefab, 
 									new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-									objectPool.transform,
-									spawnPool.transform);
-									*/
+									Quaternion.identity);
 								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
 								// 방향 설정
@@ -302,14 +268,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 하트인 경우
 							else {
 								// 하트를 지정된 위치에 스폰
-								GameObject heart = Instantiate(heartPrefab, new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
-								/*
-								GameObject heart = ObjectPool.Instance.PopFromPool(
-									ObjectPool.EnemyType.Heart, 
+								GameObject heart = Instantiate(
+									heartPrefab, 
 									new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-									objectPool.transform,
-									spawnPool.transform);
-									*/
+									Quaternion.identity);
 								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 								heartCtrl = heart.GetComponent<HeartCtrl>();
 								// 방향 설정
@@ -321,8 +283,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 								// 가속도 설정
 								heartCtrl.velo = velo;
 							}
-
-							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
 					// 위쪽
@@ -337,14 +297,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 장애물인 경우
 							if (!isHeart) {
 								// 장애물을 지정된 위치에 스폰
-								GameObject enemy = Instantiate(enemyPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0), Quaternion.identity);
-								/*
-								GameObject enemy = ObjectPool.Instance.PopFromPool(
-									ObjectPool.EnemyType.Enemy, 
+								GameObject enemy = Instantiate(
+									enemyPrefab, 
 									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0), 
-									objectPool.transform,
-									spawnPool.transform);
-									*/
+									Quaternion.identity);
 								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
 								// 방향 설정
@@ -359,14 +315,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 하트인 경우
 							else {
 								// 하트를 지정된 위치에 스폰
-								GameObject heart = Instantiate(heartPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0), Quaternion.identity);
-								/*
-								GameObject heart = ObjectPool.Instance.PopFromPool(
-									ObjectPool.EnemyType.Heart, 
+								GameObject heart = Instantiate(
+									heartPrefab, 
 									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0), 
-									objectPool.transform,
-									spawnPool.transform);
-									*/
+									Quaternion.identity);
 								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 								heartCtrl = heart.GetComponent<HeartCtrl>();
 								// 방향 설정
@@ -378,8 +330,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 								// 가속도 설정
 								heartCtrl.velo = velo;
 							}
-
-							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
 				}
@@ -410,14 +360,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						// 스폰 위치가 올바른 값일 때
 						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물을 지정된 위치에 스폰
-							GameObject enemy = Instantiate(laserPrefab, new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
-							/*
-							GameObject enemy = ObjectPool.Instance.PopFromPool(
-								ObjectPool.EnemyType.Laser,
+							GameObject enemy = Instantiate(
+								laserPrefab, 
 								new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-								objectPool.transform,
-								spawnPool.transform);
-								*/
+								Quaternion.identity);
 							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
 							// 방향 설정
@@ -426,8 +372,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							laserCtrl.spawnPos = spawnPos;
 							// 유지 시간 설정
 							laserCtrl.time = time;
-
-							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
 					// 아래쪽
@@ -440,14 +384,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						// 스폰 위치가 올바른 값일 때
 						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물을 지정된 위치에 스폰
-							GameObject enemy = Instantiate(laserPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), Quaternion.identity);
-							/*
-							GameObject enemy = ObjectPool.Instance.PopFromPool(
-								ObjectPool.EnemyType.Laser,
-								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0),
-								objectPool.transform,
-								spawnPool.transform);
-								*/
+							GameObject enemy = Instantiate(
+								laserPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), 
+								Quaternion.identity);
 							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
 							// 방향 설정
@@ -456,8 +395,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							laserCtrl.spawnPos = spawnPos;
 							// 유지 시간 설정
 							laserCtrl.time = time;
-
-							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
 					// 왼쪽
@@ -470,14 +407,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						// 스폰 위치가 올바른 값일 때
 						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물을 지정된 위치에 스폰
-							GameObject enemy = Instantiate(laserPrefab, new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), Quaternion.identity);
-							/*
-							GameObject enemy = ObjectPool.Instance.PopFromPool(
-								ObjectPool.EnemyType.Laser,
-								new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
-								objectPool.transform,
-								spawnPool.transform);
-								*/
+							GameObject enemy = Instantiate(
+								laserPrefab, 
+								new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
+								Quaternion.identity);
 							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
 							// 방향 설정
@@ -486,8 +419,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							laserCtrl.spawnPos = spawnPos;
 							// 유지 시간 설정
 							laserCtrl.time = time;
-
-							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
 					// 위쪽
@@ -500,14 +431,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						// 스폰 위치가 올바른 값일 때
 						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
 							// 장애물을 지정된 위치에 스폰
-							GameObject enemy = Instantiate(laserPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), Quaternion.identity);
-							/*
-							GameObject enemy = ObjectPool.Instance.PopFromPool(
-								ObjectPool.EnemyType.Laser,
-								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0),
-								objectPool.transform,
-								spawnPool.transform);
-								*/
+							GameObject enemy = Instantiate(
+								laserPrefab, 
+								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), 
+								Quaternion.identity);
 							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
 							// 방향 설정
@@ -516,8 +443,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							laserCtrl.spawnPos = spawnPos;
 							// 유지 시간 설정
 							laserCtrl.time = time;
-
-							//Debug.Log(spawnDir.ToString() + " " + spawnPos.ToString() + " " + speed.ToString() + " " + velo.ToString() + " complete");
 						}
 						break;
 				}
@@ -960,17 +885,17 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 모든 장애물을 제거한다.
-			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) {
-				Destroy(enemy);
-				//ObjectPool.Instance.PushToPool(enemy, objectPool.transform);
+			GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
+			for (int i = 0; i < enemyObjects.Length; i++) {
+				Destroy(enemyObjects[i]);
 			}
-			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Laser")) {
-				Destroy(enemy);
-				//ObjectPool.Instance.PushToPool(enemy, objectPool.transform);
+			GameObject[] laserObjects = GameObject.FindGameObjectsWithTag("Laser");
+			for (int i = 0; i < laserObjects.Length; i++) {
+				Destroy(laserObjects[i]);
 			}
-			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Heart")) {
-				Destroy(enemy);
-				//ObjectPool.Instance.PushToPool(enemy, objectPool.transform);
+			GameObject[] heartObjects = GameObject.FindGameObjectsWithTag("Heart");
+			for (int i = 0; i < heartObjects.Length; i++) {
+				Destroy(heartObjects[i]);
 			}
 		}
 	}
@@ -983,9 +908,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 특정 태그를 가진 장애물을 제거한다.
-			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag(tag)) {
-				Destroy(enemy);
-				//ObjectPool.Instance.PushToPool(enemy, objectPool.transform);
+			GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
+			for (int i = 0; i < objects.Length; i++) {
+				Destroy(objects[i]);
 			}
 		}
 	}

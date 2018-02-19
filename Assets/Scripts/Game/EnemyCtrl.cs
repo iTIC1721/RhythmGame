@@ -33,13 +33,11 @@ public class EnemyCtrl : MonoBehaviour {
 	private void Update() {
 		ReplaceEnemy();
 		ColorUpdate();
-		//TimeUpdate();
 	}
 
 	// 게임 화면을 벗어났을 때
 	private void OnBecameInvisible() {
 		Destroy(gameObject);
-		//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
 	}
 
 	// 충돌이 발생했을 때
@@ -58,8 +56,6 @@ public class EnemyCtrl : MonoBehaviour {
 			}
 			// 해당 오브젝트 파괴
 			Destroy(gameObject);
-			//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
-			//time = 0;
 		}
 	}
 
@@ -91,15 +87,4 @@ public class EnemyCtrl : MonoBehaviour {
 		if (LevelCtrl.Instance.eChangeEnable)
 			sprRen.color = LevelData.Instance.enemyColor;
 	}
-
-	/*
-	private void TimeUpdate() {
-		time += Time.deltaTime;
-
-		if (time > 20f) {
-			ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
-			time = 0;
-		}
-	}
-	*/
 }

@@ -34,7 +34,6 @@ public class HeartCtrl : MonoBehaviour {
 
 	private void OnBecameInvisible() {
 		Destroy(gameObject);
-		//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision) {
@@ -44,7 +43,6 @@ public class HeartCtrl : MonoBehaviour {
 				HeartText.Instance.TextUpdate();
 			}
 			Destroy(gameObject);
-			//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);
 		}
 	}
 
