@@ -28,10 +28,8 @@ public class HeartCtrl : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (gameObject.activeSelf) {
-			ReplaceEnemy();
-			ColorUpdate();
-		}
+		ReplaceEnemy();
+		ColorUpdate();
 	}
 
 	private void OnBecameInvisible() {
@@ -43,6 +41,7 @@ public class HeartCtrl : MonoBehaviour {
 		if (collision.CompareTag("Player")) {
 			if (LevelData.Instance.playerHeart < LevelData.Instance.playerHeartMax) {
 				LevelData.Instance.playerHeart += 1;
+				HeartText.Instance.TextUpdate();
 			}
 			Destroy(gameObject);
 			//ObjectPool.Instance.PushToPool(gameObject, LevelCtrl.Instance.objectPool.transform);

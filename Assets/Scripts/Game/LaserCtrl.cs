@@ -32,10 +32,8 @@ public class LaserCtrl : MonoBehaviour {
 
 	// 매 프레임마다 실행
 	private void Update() {
-		if (gameObject.activeSelf) {
-			ReplaceLaser();
-			ColorUpdate();
-		}
+		ReplaceLaser();
+		ColorUpdate();
 	}
 
 	// 게임 화면을 벗어났을 때
@@ -50,6 +48,7 @@ public class LaserCtrl : MonoBehaviour {
 		if (collision.CompareTag("Player") && !LevelData.Instance.isInvincible && !LevelData.Instance.invincibleMode) {
 			// 플레이어의 생명을 1 감소시킴
 			LevelData.Instance.playerHeart -= 1;
+			HeartText.Instance.TextUpdate();
 			// 무적 상태로 전환
 			LevelData.Instance.isInvincible = true;
 			// 생명이 없으면

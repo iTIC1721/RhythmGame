@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
-public class HeartText : MonoBehaviour {
+public class HeartText : Singleton<HeartText> {
 
 	// 텍스트 컴포넌트
 	Text textComp;
@@ -12,8 +11,7 @@ public class HeartText : MonoBehaviour {
 		textComp = gameObject.GetComponent<Text>();
 	}
 
-	// 매 프레임마다 실행
-	private void Update () {
+	public void TextUpdate() {
 		// 남은 생명 개수를 표기
 		textComp.text = "Heart Left : " + LevelData.Instance.playerHeart;
 	}

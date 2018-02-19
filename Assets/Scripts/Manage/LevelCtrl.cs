@@ -111,240 +111,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		audioSource = GameObject.Find("Manager").GetComponent<AudioSource>();
 	}
 
-	// 배경색 변화 코루틴
-	private IEnumerator BackChangeCoroutine(Color changeColor, float time) {
-		bChangeEnable = true;
-		Color originalColor = LevelData.Instance.backColor;
-		float tempTime = 0;
-
-		while (true) {
-			if (playing) {
-				// 변화 시간이 다 지나지 않았을 경우
-				if (tempTime < time) {
-					// 배경색을 본래 색에서 바꿀 색으로 지정된 시간동안 변화시킴
-					LevelData.Instance.backColor = Color.Lerp(
-						originalColor,
-						changeColor,
-						tempTime / time);
-					// 시간 카운트
-					tempTime += Time.deltaTime;
-				}
-				// 변화 시간이 다 지났을 경우
-				else {
-					// 배경색을 지정된 색으로 변경
-					LevelData.Instance.backColor = changeColor;
-					// 변화 활성화를 해제
-					bChangeEnable = false;
-					// 코루틴 중지
-					StopCoroutine(bChangeCoroutine);
-				}
-			}
-			else {
-				// 변화 활성화를 해제
-				bChangeEnable = false;
-				// 코루틴 중지
-				StopCoroutine(bChangeCoroutine);
-			}
-			yield return null;
-		}
-	}
-
-	// 외벽 색 변화 코루틴
-	private IEnumerator LevelChangeCoroutine(Color changeColor, float time) {
-		lChangeEnable = true;
-		Color originalColor = LevelData.Instance.levelColor;
-		float tempTime = 0;
-
-		while (true) {
-			if (playing) {
-				// 변화 시간이 다 지나지 않았을 경우
-				if (tempTime < time) {
-					// 배경색을 본래 색에서 바꿀 색으로 지정된 시간동안 변화시킴
-					LevelData.Instance.levelColor = Color.Lerp(
-						originalColor,
-						changeColor,
-						tempTime / time);
-					// 시간 카운트
-					tempTime += Time.deltaTime;
-				}
-				// 변화 시간이 다 지났을 경우
-				else {
-					// 배경색을 지정된 색으로 변경
-					LevelData.Instance.levelColor = changeColor;
-					// 변화 활성화를 해제
-					lChangeEnable = false;
-					// 코루틴 중지
-					StopCoroutine(lChangeCoroutine);
-				}
-			}
-			else {
-				// 변화 활성화를 해제
-				lChangeEnable = false;
-				// 코루틴 중지
-				StopCoroutine(lChangeCoroutine);
-			}
-			yield return null;
-		}
-	}
-
-	// 장애물 색 변화 코루틴
-	private IEnumerator EnemyChangeCoroutine(Color changeColor, float time) {
-		eChangeEnable = true;
-		Color originalColor = LevelData.Instance.enemyColor;
-		float tempTime = 0;
-
-		while (true) {
-			if (playing) {
-				// 변화 시간이 다 지나지 않았을 경우
-				if (tempTime < time) {
-					// 배경색을 본래 색에서 바꿀 색으로 지정된 시간동안 변화시킴
-					LevelData.Instance.enemyColor = Color.Lerp(
-						originalColor,
-						changeColor,
-						tempTime / time);
-					// 시간 카운트
-					tempTime += Time.deltaTime;
-				}
-				// 변화 시간이 다 지났을 경우
-				else {
-					// 배경색을 지정된 색으로 변경
-					LevelData.Instance.enemyColor = changeColor;
-					// 변화 활성화를 해제
-					eChangeEnable = false;
-					// 코루틴 중지
-					StopCoroutine(eChangeCoroutine);
-				}
-			}
-			else {
-				// 변화 활성화를 해제
-				eChangeEnable = false;
-				// 코루틴 중지
-				StopCoroutine(eChangeCoroutine);
-			}
-			yield return null;
-		}
-	}
-
-	// 카메라 회전 코루틴
-	private IEnumerator RotateCoroutine(float rotateAngle, float time) {
-		rotateEnable = true;
-		float originalAngle = mainCamera.transform.localRotation.z;
-		float tempTime = 0;
-
-		while (true) {
-			if (playing) {
-				// 변화 시간이 다 지나지 않았을 경우
-				if (tempTime < time) {
-					// 카메라의 각도를 본래 각도에서 바꿀 각도로 지정된 시간동안 변화시킴
-					mainCamera.transform.localRotation = Quaternion.Lerp(
-						new Quaternion(mainCamera.transform.localRotation.x, mainCamera.transform.localRotation.y, originalAngle, mainCamera.transform.localRotation.w),
-						new Quaternion(mainCamera.transform.localRotation.x, mainCamera.transform.localRotation.y, rotateAngle, mainCamera.transform.localRotation.w),
-						tempTime / time);
-					// 시간 카운트
-					tempTime += Time.deltaTime;
-				}
-				// 변화 시간이 다 지났을 경우
-				else {
-					// 카메라 각도를 지정된 각도로 변경
-					mainCamera.transform.localRotation = new Quaternion(
-						mainCamera.transform.localRotation.x, 
-						mainCamera.transform.localRotation.y, 
-						rotateAngle, 
-						mainCamera.transform.localRotation.w);
-					// 변화 활성화를 해제
-					rotateEnable = false;
-					// 코루틴 중지
-					StopCoroutine(rotateCoroutine);
-				}
-			}
-			else {
-				// 변화 활성화를 해제
-				rotateEnable = false;
-				// 코루틴 중지
-				StopCoroutine(rotateCoroutine);
-			}
-			yield return null;
-		}
-	}
-
-	// 확대 코루틴
-	private IEnumerator EnlargeCoroutine(float enlargeRate, float time) {
-		enlargeEnable = true;
-		float originalSize = cameraComp.orthographicSize;
-		float tempTime = 0;
-
-		while (true) {
-			if (playing) {
-				// 변화 시간이 다 지나지 않았을 경우
-				if (tempTime < time) {
-					// 카메라의 시야 크기를 본래 크기에서 바꿀 크기로 지정된 사간동안 변화시킴
-					cameraComp.orthographicSize = Mathf.Lerp(
-						originalSize,
-						enlargeRate * cameraSize,
-						tempTime / time);
-					// 시간 카운트
-					tempTime += Time.deltaTime;
-				}
-				// 변화 시간이 다 지났을 경우
-				else {
-					// 카메라 시야 크기를 지정된 크기로 변경
-					cameraComp.orthographicSize = enlargeRate * cameraSize;
-					// 변화 활성화를 해제
-					enlargeEnable = false;
-					// 코루틴 중지
-					StopCoroutine(enlargeCoroutine);
-				}
-			}
-			else {
-				// 변화 활성화를 해제
-				enlargeEnable = false;
-				// 코루틴 중지
-				StopCoroutine(enlargeCoroutine);
-			}
-			yield return null;
-		}
-	}
-
-	// 이동 코루틴
-	private IEnumerator MoveCoroutine(float x, float y, float time) {
-		moveEnable = true;
-		Vector3 originalVector = mainCamera.transform.position;
-		float tempTime = 0;
-
-		Vector3 moveVector = new Vector3(-x, -y, -10);
-
-		while (true) {
-			if (playing) {
-				// 변화 시간이 다 지나지 않았을 경우
-				if (tempTime < time) {
-					// 카메라의 위치를 본래 위치에서 바꿀 위치로 지정된 사간동안 변화시킴
-					mainCamera.transform.position = Vector3.Lerp(
-						originalVector,
-						moveVector,
-						tempTime / time);
-					// 시간 카운트
-					tempTime += Time.deltaTime;
-				}
-				// 변화 시간이 다 지났을 경우
-				else {
-					// 카메라 위치를 지정된 위치로 변경
-					mainCamera.transform.position = moveVector;
-					// 변화 활성화를 해제
-					moveEnable = false;
-					// 코루틴 중지
-					StopCoroutine(moveCoroutine);
-				}
-			}
-			else {
-				// 변화 활성화를 해제
-				moveEnable = false;
-				// 코루틴 중지
-				StopCoroutine(moveCoroutine);
-			}
-			yield return null;
-		}
-	}
-
 	/// <summary>
 	/// 게임을 시작한다.
 	/// </summary>
@@ -820,6 +586,44 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		}
 	}
 
+	// 배경색 변화 코루틴
+	private IEnumerator BackChangeCoroutine(Color changeColor, float time) {
+		bChangeEnable = true;
+		Color originalColor = LevelData.Instance.backColor;
+		float tempTime = 0;
+
+		while (true) {
+			if (playing) {
+				// 변화 시간이 다 지나지 않았을 경우
+				if (tempTime < time) {
+					// 배경색을 본래 색에서 바꿀 색으로 지정된 시간동안 변화시킴
+					LevelData.Instance.backColor = Color.Lerp(
+						originalColor,
+						changeColor,
+						tempTime / time);
+					// 시간 카운트
+					tempTime += Time.deltaTime;
+				}
+				// 변화 시간이 다 지났을 경우
+				else {
+					// 배경색을 지정된 색으로 변경
+					LevelData.Instance.backColor = changeColor;
+					// 변화 활성화를 해제
+					bChangeEnable = false;
+					// 코루틴 중지
+					StopCoroutine(bChangeCoroutine);
+				}
+			}
+			else {
+				// 변화 활성화를 해제
+				bChangeEnable = false;
+				// 코루틴 중지
+				StopCoroutine(bChangeCoroutine);
+			}
+			yield return null;
+		}
+	}
+
 	/// <summary>
 	/// 벽의 색을 지정된 시간동안 서서히 바꾼다.
 	/// </summary>
@@ -836,6 +640,44 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 			}
 			lChangeCoroutine = LevelChangeCoroutine(color, time);
 			StartCoroutine(lChangeCoroutine);
+		}
+	}
+
+	// 외벽 색 변화 코루틴
+	private IEnumerator LevelChangeCoroutine(Color changeColor, float time) {
+		lChangeEnable = true;
+		Color originalColor = LevelData.Instance.levelColor;
+		float tempTime = 0;
+
+		while (true) {
+			if (playing) {
+				// 변화 시간이 다 지나지 않았을 경우
+				if (tempTime < time) {
+					// 배경색을 본래 색에서 바꿀 색으로 지정된 시간동안 변화시킴
+					LevelData.Instance.levelColor = Color.Lerp(
+						originalColor,
+						changeColor,
+						tempTime / time);
+					// 시간 카운트
+					tempTime += Time.deltaTime;
+				}
+				// 변화 시간이 다 지났을 경우
+				else {
+					// 배경색을 지정된 색으로 변경
+					LevelData.Instance.levelColor = changeColor;
+					// 변화 활성화를 해제
+					lChangeEnable = false;
+					// 코루틴 중지
+					StopCoroutine(lChangeCoroutine);
+				}
+			}
+			else {
+				// 변화 활성화를 해제
+				lChangeEnable = false;
+				// 코루틴 중지
+				StopCoroutine(lChangeCoroutine);
+			}
+			yield return null;
 		}
 	}
 
@@ -858,6 +700,44 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		}
 	}
 
+	// 장애물 색 변화 코루틴
+	private IEnumerator EnemyChangeCoroutine(Color changeColor, float time) {
+		eChangeEnable = true;
+		Color originalColor = LevelData.Instance.enemyColor;
+		float tempTime = 0;
+
+		while (true) {
+			if (playing) {
+				// 변화 시간이 다 지나지 않았을 경우
+				if (tempTime < time) {
+					// 배경색을 본래 색에서 바꿀 색으로 지정된 시간동안 변화시킴
+					LevelData.Instance.enemyColor = Color.Lerp(
+						originalColor,
+						changeColor,
+						tempTime / time);
+					// 시간 카운트
+					tempTime += Time.deltaTime;
+				}
+				// 변화 시간이 다 지났을 경우
+				else {
+					// 배경색을 지정된 색으로 변경
+					LevelData.Instance.enemyColor = changeColor;
+					// 변화 활성화를 해제
+					eChangeEnable = false;
+					// 코루틴 중지
+					StopCoroutine(eChangeCoroutine);
+				}
+			}
+			else {
+				// 변화 활성화를 해제
+				eChangeEnable = false;
+				// 코루틴 중지
+				StopCoroutine(eChangeCoroutine);
+			}
+			yield return null;
+		}
+	}
+
 	/// <summary>
 	/// 게임 플레이 화면을 일정 각도 회전시킨다.
 	/// </summary>
@@ -874,6 +754,48 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 			}
 			rotateCoroutine = RotateCoroutine(angle, time);
 			StartCoroutine(rotateCoroutine);
+		}
+	}
+
+	// 카메라 회전 코루틴
+	private IEnumerator RotateCoroutine(float rotateAngle, float time) {
+		rotateEnable = true;
+		float originalAngle = mainCamera.transform.localRotation.z;
+		float tempTime = 0;
+
+		while (true) {
+			if (playing) {
+				// 변화 시간이 다 지나지 않았을 경우
+				if (tempTime < time) {
+					// 카메라의 각도를 본래 각도에서 바꿀 각도로 지정된 시간동안 변화시킴
+					mainCamera.transform.localRotation = Quaternion.Lerp(
+						new Quaternion(mainCamera.transform.localRotation.x, mainCamera.transform.localRotation.y, originalAngle, mainCamera.transform.localRotation.w),
+						new Quaternion(mainCamera.transform.localRotation.x, mainCamera.transform.localRotation.y, rotateAngle, mainCamera.transform.localRotation.w),
+						tempTime / time);
+					// 시간 카운트
+					tempTime += Time.deltaTime;
+				}
+				// 변화 시간이 다 지났을 경우
+				else {
+					// 카메라 각도를 지정된 각도로 변경
+					mainCamera.transform.localRotation = new Quaternion(
+						mainCamera.transform.localRotation.x,
+						mainCamera.transform.localRotation.y,
+						rotateAngle,
+						mainCamera.transform.localRotation.w);
+					// 변화 활성화를 해제
+					rotateEnable = false;
+					// 코루틴 중지
+					StopCoroutine(rotateCoroutine);
+				}
+			}
+			else {
+				// 변화 활성화를 해제
+				rotateEnable = false;
+				// 코루틴 중지
+				StopCoroutine(rotateCoroutine);
+			}
+			yield return null;
 		}
 	}
 
@@ -897,6 +819,44 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		}
 	}
 
+	// 확대 코루틴
+	private IEnumerator EnlargeCoroutine(float enlargeRate, float time) {
+		enlargeEnable = true;
+		float originalSize = cameraComp.orthographicSize;
+		float tempTime = 0;
+
+		while (true) {
+			if (playing) {
+				// 변화 시간이 다 지나지 않았을 경우
+				if (tempTime < time) {
+					// 카메라의 시야 크기를 본래 크기에서 바꿀 크기로 지정된 사간동안 변화시킴
+					cameraComp.orthographicSize = Mathf.Lerp(
+						originalSize,
+						enlargeRate * cameraSize,
+						tempTime / time);
+					// 시간 카운트
+					tempTime += Time.deltaTime;
+				}
+				// 변화 시간이 다 지났을 경우
+				else {
+					// 카메라 시야 크기를 지정된 크기로 변경
+					cameraComp.orthographicSize = enlargeRate * cameraSize;
+					// 변화 활성화를 해제
+					enlargeEnable = false;
+					// 코루틴 중지
+					StopCoroutine(enlargeCoroutine);
+				}
+			}
+			else {
+				// 변화 활성화를 해제
+				enlargeEnable = false;
+				// 코루틴 중지
+				StopCoroutine(enlargeCoroutine);
+			}
+			yield return null;
+		}
+	}
+
 	/// <summary>
 	/// 게임 플레이 화면을 이동시킨다.
 	/// </summary>
@@ -914,6 +874,46 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 			}
 			moveCoroutine = MoveCoroutine(x, y, time);
 			StartCoroutine(moveCoroutine);
+		}
+	}
+
+	// 이동 코루틴
+	private IEnumerator MoveCoroutine(float x, float y, float time) {
+		moveEnable = true;
+		Vector3 originalVector = mainCamera.transform.position;
+		float tempTime = 0;
+
+		Vector3 moveVector = new Vector3(-x, -y, -10);
+
+		while (true) {
+			if (playing) {
+				// 변화 시간이 다 지나지 않았을 경우
+				if (tempTime < time) {
+					// 카메라의 위치를 본래 위치에서 바꿀 위치로 지정된 사간동안 변화시킴
+					mainCamera.transform.position = Vector3.Lerp(
+						originalVector,
+						moveVector,
+						tempTime / time);
+					// 시간 카운트
+					tempTime += Time.deltaTime;
+				}
+				// 변화 시간이 다 지났을 경우
+				else {
+					// 카메라 위치를 지정된 위치로 변경
+					mainCamera.transform.position = moveVector;
+					// 변화 활성화를 해제
+					moveEnable = false;
+					// 코루틴 중지
+					StopCoroutine(moveCoroutine);
+				}
+			}
+			else {
+				// 변화 활성화를 해제
+				moveEnable = false;
+				// 코루틴 중지
+				StopCoroutine(moveCoroutine);
+			}
+			yield return null;
 		}
 	}
 
@@ -1019,8 +1019,18 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <returns></returns>
 	private IEnumerator GameOverCoroutine() {
-		// 3초를 기다린다.
-		yield return new WaitForSeconds(3f);
+		// 색을 변경하고 3초를 기다린다.
+		bChangeEnable = true;
+		lChangeEnable = true;
+		eChangeEnable = true;
+
+		yield return new WaitForSeconds(0.01f);
+
+		bChangeEnable = false;
+		lChangeEnable = false;
+		eChangeEnable = false;
+
+		yield return new WaitForSeconds(2.99f);
 
 		// 게임을 초기화한 뒤 레벨 선택창으로 돌아간다.
 		LevelData.Instance.gameOver = false;
