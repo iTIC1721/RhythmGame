@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class HeartCtrl : MonoBehaviour {
 
@@ -27,6 +28,7 @@ public class HeartCtrl : MonoBehaviour {
 		sprRen.color = LevelData.Instance.enemyColor;
 	}
 
+	// 매 프레임마다 실행
 	private void Update() {
 		ReplaceEnemy();
 		ColorUpdate();

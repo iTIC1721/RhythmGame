@@ -3,274 +3,274 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 
+#region Data Classes
+/// <summary>
+/// 일반적인 블럭 장애물의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class EnemyData {
+	public float activeTime;
+
+	public int spawnDir;
+	public int spawnPos;
+	public float speed;
+	public float velo;
+	public bool isHeart;
+
+	public void Active() {
+		LevelCtrl.Instance.SpawnEnemy(spawnDir, spawnPos, speed, velo, isHeart);
+	}
+
+	public EnemyData(float activeTime, int spawnDir, int spawnPos, float speed, float velo, bool isHeart) {
+		this.activeTime = activeTime;
+		this.spawnDir = spawnDir;
+		this.spawnPos = spawnPos;
+		this.speed = speed;
+		this.velo = velo;
+		this.isHeart = isHeart;
+	}
+}
+
+/// <summary>
+/// 레이저 장애물의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class LaserData {
+	public float activeTime;
+
+	public int spawnDir;
+	public int spawnPos;
+	public float time;
+
+	public void Active() {
+		LevelCtrl.Instance.SpawnLaser(spawnDir, spawnPos, time);
+	}
+
+	public LaserData(float activeTime, int spawnDir, int spawnPos, float time) {
+		this.activeTime = activeTime;
+		this.spawnDir = spawnDir;
+		this.spawnPos = spawnPos;
+		this.time = time;
+	}
+}
+
+/// <summary>
+/// 레벨 크기를 조정하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class ResizeLevelData {
+	public float activeTime;
+
+	public int width;
+	public int height;
+
+	public void Active() {
+		LevelCtrl.Instance.ResizeLevel(width, height);
+	}
+
+	public ResizeLevelData(float activeTime, int width, int height) {
+		this.activeTime = activeTime;
+		this.width = width;
+		this.height = height;
+	}
+}
+
+/// <summary>
+/// 배경색을 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class BackColorData {
+	public float activeTime;
+
+	public float r;
+	public float g;
+	public float b;
+	public float a;
+	public float time;
+
+	public void Active() {
+		LevelCtrl.Instance.ChangeBackColor(new Color(r, g, b, a), time);
+	}
+
+	public BackColorData(float activetime, float r, float g, float b, float a, float time) {
+		this.activeTime = activetime;
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
+		this.time = time;
+	}
+}
+
+/// <summary>
+/// 외벽 색을 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class LevelColorData {
+	public float activeTime;
+
+	public float r;
+	public float g;
+	public float b;
+	public float a;
+	public float time;
+
+	public void Active() {
+		LevelCtrl.Instance.ChangeLevelColor(new Color(r, g, b, a), time);
+	}
+
+	public LevelColorData(float activetime, float r, float g, float b, float a, float time) {
+		this.activeTime = activetime;
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
+		this.time = time;
+	}
+}
+
+/// <summary>
+/// 장애물의 색을 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class EnemyColorData {
+	public float activeTime;
+
+	public float r;
+	public float g;
+	public float b;
+	public float a;
+	public float time;
+
+	public void Active() {
+		LevelCtrl.Instance.ChangeEnemyColor(new Color(r, g, b, a), time);
+	}
+
+	public EnemyColorData(float activetime, float r, float g, float b, float a, float time) {
+		this.activeTime = activetime;
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
+		this.time = time;
+	}
+}
+
+/// <summary>
+/// 카메라를 회전하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class RotateLevelData {
+	public float activeTime;
+
+	public float angle;
+	public float time;
+
+	public void Active() {
+		LevelCtrl.Instance.RotateLevel(angle, time);
+	}
+
+	public RotateLevelData(float activeTime, float angle, float time) {
+		this.activeTime = activeTime;
+		this.angle = angle;
+		this.time = time;
+	}
+}
+
+/// <summary>
+/// 레벨을 확대하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class EnlargeLevelData {
+	public float activeTime;
+
+	public float rate;
+	public float time;
+
+	public void Active() {
+		LevelCtrl.Instance.EnlargeLevel(rate, time);
+	}
+
+	public EnlargeLevelData(float activeTime, float rate, float time) {
+		this.activeTime = activeTime;
+		this.rate = rate;
+		this.time = time;
+	}
+}
+
+/// <summary>
+/// 카메라를 이동하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class MoveLevelData {
+	public float activeTime;
+
+	public float x;
+	public float y;
+	public float time;
+
+	public void Active() {
+		LevelCtrl.Instance.MoveLevel(x, y, time);
+	}
+
+	public MoveLevelData(float activeTime, float x, float y, float time) {
+		this.activeTime = activeTime;
+		this.x = x;
+		this.y = y;
+		this.time = time;
+	}
+}
+
+/// <summary>
+/// 플레이어의 투명 여부를 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class PlayerVisibleData {
+	public float activeTime;
+
+	public bool visible;
+
+	public void Active() {
+		LevelCtrl.Instance.PlayerVisible(visible);
+	}
+
+	public PlayerVisibleData(float activeTime, bool visible) {
+		this.activeTime = activeTime;
+		this.visible = visible;
+	}
+}
+
+/// <summary>
+/// 플레이어 위치를 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class ReplacePlayerData {
+	public float activeTime;
+
+	public int x;
+	public int y;
+
+	public void Active() {
+		LevelCtrl.Instance.ReplacePlayer(x, y);
+	}
+
+	public ReplacePlayerData(float activeTime, int x, int y) {
+		this.activeTime = activeTime;
+		this.x = x;
+		this.y = y;
+	}
+}
+
+/// <summary>
+/// 특정 태그를 가진 엔티티를 제거하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// </summary>
+public class KillEntityData {
+	public float activeTime;
+
+	public string tag;
+
+	public void Active() {
+		LevelCtrl.Instance.KillEntity(tag);
+	}
+
+	public KillEntityData(float activeTime, string tag) {
+		this.activeTime = activeTime;
+		this.tag = tag;
+	}
+}
+#endregion
+
 // UNDONE: 테스트 필요
 public class ReadLevel : MonoBehaviour {
-
-	#region Structs
-	/// <summary>
-	/// 일반적인 블럭 장애물의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct EnemyData {
-		public float activeTime;
-
-		public int spawnDir;
-		public int spawnPos;
-		public float speed;
-		public float velo;
-		public bool isHeart;
-
-		public void Active() {
-			LevelCtrl.Instance.SpawnEnemy(spawnDir, spawnPos, speed, velo, isHeart);
-		}
-		
-		public EnemyData(float activeTime, int spawnDir, int spawnPos, float speed, float velo, bool isHeart) {
-			this.activeTime = activeTime;
-			this.spawnDir = spawnDir;
-			this.spawnPos = spawnPos;
-			this.speed = speed;
-			this.velo = velo;
-			this.isHeart = isHeart;
-		}
-	}
-
-	/// <summary>
-	/// 레이저 장애물의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct LaserData {
-		public float activeTime;
-
-		public int spawnDir;
-		public int spawnPos;
-		public float time;
-
-		public void Active() {
-			LevelCtrl.Instance.SpawnLaser(spawnDir, spawnPos, time);
-		}
-
-		public LaserData(float activeTime, int spawnDir, int spawnPos, float time) {
-			this.activeTime = activeTime;
-			this.spawnDir = spawnDir;
-			this.spawnPos = spawnPos;
-			this.time = time;
-		}
-	}
-
-	/// <summary>
-	/// 레벨 크기를 조정하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct ResizeLevelData {
-		public float activeTime;
-
-		public int width;
-		public int height;
-
-		public void Active() {
-			LevelCtrl.Instance.ResizeLevel(width, height);
-		}
-
-		public ResizeLevelData(float activeTime, int width, int height) {
-			this.activeTime = activeTime;
-			this.width = width;
-			this.height = height;
-		}
-	}
-
-	/// <summary>
-	/// 배경색을 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct BackColorData {
-		public float activeTime;
-
-		public float r;
-		public float g;
-		public float b;
-		public float a;
-		public float time;
-
-		public void Active() {
-			LevelCtrl.Instance.ChangeBackColor(new Color(r, g, b, a), time);
-		}
-
-		public BackColorData(float activetime, float r, float g, float b, float a, float time) {
-			this.activeTime = activetime;
-			this.r = r;
-			this.g = g;
-			this.b = b;
-			this.a = a;
-			this.time = time;
-		}
-	}
-
-	/// <summary>
-	/// 외벽 색을 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct LevelColorData {
-		public float activeTime;
-
-		public float r;
-		public float g;
-		public float b;
-		public float a;
-		public float time;
-
-		public void Active() {
-			LevelCtrl.Instance.ChangeLevelColor(new Color(r, g, b, a), time);
-		}
-
-		public LevelColorData(float activetime, float r, float g, float b, float a, float time) {
-			this.activeTime = activetime;
-			this.r = r;
-			this.g = g;
-			this.b = b;
-			this.a = a;
-			this.time = time;
-		}
-	}
-
-	/// <summary>
-	/// 장애물의 색을 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct EnemyColorData {
-		public float activeTime;
-
-		public float r;
-		public float g;
-		public float b;
-		public float a;
-		public float time;
-
-		public void Active() {
-			LevelCtrl.Instance.ChangeEnemyColor(new Color(r, g, b, a), time);
-		}
-
-		public EnemyColorData(float activetime, float r, float g, float b, float a, float time) {
-			this.activeTime = activetime;
-			this.r = r;
-			this.g = g;
-			this.b = b;
-			this.a = a;
-			this.time = time;
-		}
-	}
-
-	/// <summary>
-	/// 카메라를 회전하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct RotateLevelData {
-		public float activeTime;
-
-		public float angle;
-		public float time;
-
-		public void Active() {
-			LevelCtrl.Instance.RotateLevel(angle, time);
-		}
-
-		public RotateLevelData(float activeTime, float angle, float time) {
-			this.activeTime = activeTime;
-			this.angle = angle;
-			this.time = time;
-		}
-	}
-
-	/// <summary>
-	/// 레벨을 확대하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct EnlargeLevelData {
-		public float activeTime;
-
-		public float rate;
-		public float time;
-
-		public void Active() {
-			LevelCtrl.Instance.EnlargeLevel(rate, time);
-		}
-
-		public EnlargeLevelData(float activeTime, float rate, float time) {
-			this.activeTime = activeTime;
-			this.rate = rate;
-			this.time = time;
-		}
-	}
-
-	/// <summary>
-	/// 카메라를 이동하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct MoveLevelData {
-		public float activeTime;
-
-		public float x;
-		public float y;
-		public float time;
-
-		public void Active() {
-			LevelCtrl.Instance.MoveLevel(x, y, time);
-		}
-
-		public MoveLevelData(float activeTime, float x, float y, float time) {
-			this.activeTime = activeTime;
-			this.x = x;
-			this.y = y;
-			this.time = time;
-		}
-	}
-
-	/// <summary>
-	/// 플레이어의 투명 여부를 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct PlayerVisibleData {
-		public float activeTime;
-
-		public bool visible;
-
-		public void Active() {
-			LevelCtrl.Instance.PlayerVisible(visible);
-		}
-
-		public PlayerVisibleData(float activeTime, bool visible) {
-			this.activeTime = activeTime;
-			this.visible = visible;
-		}
-	}
-
-	/// <summary>
-	/// 플레이어 위치를 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct ReplacePlayerData {
-		public float activeTime;
-
-		public int x;
-		public int y;
-
-		public void Active() {
-			LevelCtrl.Instance.ReplacePlayer(x, y);
-		}
-
-		public ReplacePlayerData(float activeTime, int x, int y) {
-			this.activeTime = activeTime;
-			this.x = x;
-			this.y = y;
-		}
-	}
-
-	/// <summary>
-	/// 특정 태그를 가진 엔티티를 제거하는 명령어의 생성 정보를 나타내는 구조체입니다.
-	/// </summary>
-	public struct KillEntityData {
-		public float activeTime;
-
-		public string tag;
-
-		public void Active() {
-			LevelCtrl.Instance.KillEntity(tag);
-		}
-
-		public KillEntityData(float activeTime, string tag) {
-			this.activeTime = activeTime;
-			this.tag = tag;
-		}
-	}
-	#endregion
 
 	#region Lists
 	List<EnemyData> enemyDataList = new List<EnemyData>();
@@ -504,6 +504,5 @@ public class ReadLevel : MonoBehaviour {
 		// http://phiru.tistory.com/337
 		// http://phiru.tistory.com/327
 	}
-
 }
 
