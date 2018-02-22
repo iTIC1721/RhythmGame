@@ -19,11 +19,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	// 플레이어
 	public GameObject player;
 	#endregion
-
-	// 플레이어 생존 여부 확인용 변수
-	[NonSerialized]
-	public bool playing = true;
-
+	
 	// 상수
 	#region Const
 	// 게임판의 고정 크기
@@ -44,6 +40,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	private AudioSource audioSource;
 	#endregion
 
+	// 부드러운 변환용
 	#region SmoothChange
 	#region BackColor
 	// 배경 색 변화 여부
@@ -91,6 +88,20 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	#endregion
 	#endregion
 
+	// 플레이어 생존 여부 확인용 변수
+	[NonSerialized]
+	public bool playing = true;
+
+	/// <summary>
+	/// 방향 열거형
+	/// </summary>
+	public enum Direction {
+		Right,
+		Down,
+		Left,
+		Up
+	}
+
 	// 오브젝트가 생성되었을 때 실행
 	private void Awake() {
 		// 플레이어 오브젝트의 스프라이트 렌더러를 가져옴
@@ -133,206 +144,202 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="spawnPos">생성될 위치</param>
 	/// <param name="speed">Enemy 오브젝트의 속도</param>
 	/// <param name="velo">Enemy 오브젝트의 가속도</param>
-	public void SpawnEnemy(int spawnDir, int spawnPos, float speed, float velo, bool isHeart = false) {
+	public void SpawnEnemy(Direction spawnDir, int spawnPos, float speed, float velo, bool isHeart = false) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 장애물의 EnemyCtrl 스크립트를 받아오기 위해 사용되는 변수
 			EnemyCtrl enemyCtrl;
 			// 하트의 HeartCtrl 스크립트를 받아오기 위해 사용되는 변수
 			HeartCtrl heartCtrl;
-			
-			// 올바른 방향일 경우
-			if (spawnDir <= 3 && spawnDir >= 0) {
-				switch (spawnDir) {
-					// 오른쪽
-					case 0:
-						// 플레이어와의 상대적 위치에서 소환될 경우
-						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
-							// 플레이어의 위치에 맞춰 스폰 위치 설정
-							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
+			switch (spawnDir) {
+				// 오른쪽
+				case Direction.Right:
+					// 플레이어와의 상대적 위치에서 소환될 경우
+					if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+						// 플레이어의 위치에 맞춰 스폰 위치 설정
+						spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
 
-						// 스폰 위치가 올바른 값일 때
-						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
-							// 장애물인 경우
-							if (!isHeart) {
-								// 장애물을 지정된 위치에 스폰
-								GameObject enemy = Instantiate(
-									enemyPrefab, 
-									new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-									Quaternion.identity);
-								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
-								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
-								// 방향 설정
-								enemyCtrl.dir = 0;
-								// 스폰 위치 설정
-								enemyCtrl.spawnPos = spawnPos;
-								// 속도 설정
-								enemyCtrl.speed = speed;
-								// 가속도 설정
-								enemyCtrl.velo = velo;
-							}
-							// 하트인 경우
-							else {
-								// 하트를 지정된 위치에 스폰
-								GameObject heart = Instantiate(
-									heartPrefab, 
-									new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-									Quaternion.identity);
-								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
-								heartCtrl = heart.GetComponent<HeartCtrl>();
-								// 방향 설정
-								heartCtrl.dir = 0;
-								// 스폰 위치 설정
-								heartCtrl.spawnPos = spawnPos;
-								// 속도 설정
-								heartCtrl.speed = speed;
-								// 가속도 설정
-								heartCtrl.velo = velo;
-							}
+					// 스폰 위치가 올바른 값일 때
+					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
+						// 장애물인 경우
+						if (!isHeart) {
+							// 장애물을 지정된 위치에 스폰
+							GameObject enemy = Instantiate(
+								enemyPrefab,
+								new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+								Quaternion.identity);
+							// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
+							enemyCtrl = enemy.GetComponent<EnemyCtrl>();
+							// 방향 설정
+							enemyCtrl.dir = 0;
+							// 스폰 위치 설정
+							enemyCtrl.spawnPos = spawnPos;
+							// 속도 설정
+							enemyCtrl.speed = speed;
+							// 가속도 설정
+							enemyCtrl.velo = velo;
 						}
-						break;
-					// 아래쪽
-					case 1:
-						// 플레이어와의 상대적 위치에서 소환될 경우
-						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
-							// 플레이어의 위치에 맞춰 스폰 위치 설정
-							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
-						
-						// 스폰 위치가 올바른 값일 때
-						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
-							// 장애물인 경우
-							if (!isHeart) {
-								// 장애물을 지정된 위치에 스폰
-								GameObject enemy = Instantiate(
-									enemyPrefab, 
-									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0), 
-									Quaternion.identity);
-								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
-								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
-								// 방향 설정
-								enemyCtrl.dir = 1;
-								// 스폰 위치 설정
-								enemyCtrl.spawnPos = spawnPos;
-								// 속도 설정
-								enemyCtrl.speed = speed;
-								// 가속도 설정
-								enemyCtrl.velo = velo;
-							}
-							// 하트인 경우
-							else {
-								// 하트를 지정된 위치에 스폰
-								GameObject heart = Instantiate(
-									heartPrefab, 
-									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0), 
-									Quaternion.identity);
-								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
-								heartCtrl = heart.GetComponent<HeartCtrl>();
-								// 방향 설정
-								heartCtrl.dir = 1;
-								// 스폰 위치 설정
-								heartCtrl.spawnPos = spawnPos;
-								// 속도 설정
-								heartCtrl.speed = speed;
-								// 가속도 설정
-								heartCtrl.velo = velo;
-							}
+						// 하트인 경우
+						else {
+							// 하트를 지정된 위치에 스폰
+							GameObject heart = Instantiate(
+								heartPrefab,
+								new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+								Quaternion.identity);
+							// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
+							heartCtrl = heart.GetComponent<HeartCtrl>();
+							// 방향 설정
+							heartCtrl.dir = 0;
+							// 스폰 위치 설정
+							heartCtrl.spawnPos = spawnPos;
+							// 속도 설정
+							heartCtrl.speed = speed;
+							// 가속도 설정
+							heartCtrl.velo = velo;
 						}
-						break;
-					// 왼쪽
-					case 2:
-						// 플레이어와의 상대적 위치에서 소환될 경우
-						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
-							// 플레이어의 위치에 맞춰 스폰 위치 설정
-							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
-						
-						// 스폰 위치가 올바른 값일 때
-						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
-							// 장애물인 경우
-							if (!isHeart) {
-								// 장애물을 지정된 위치에 스폰
-								GameObject enemy = Instantiate(
-									enemyPrefab, 
-									new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-									Quaternion.identity);
-								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
-								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
-								// 방향 설정
-								enemyCtrl.dir = 2;
-								// 스폰 위치 설정
-								enemyCtrl.spawnPos = spawnPos;
-								// 속도 설정
-								enemyCtrl.speed = speed;
-								// 가속도 설정
-								enemyCtrl.velo = velo;
-							}
-							// 하트인 경우
-							else {
-								// 하트를 지정된 위치에 스폰
-								GameObject heart = Instantiate(
-									heartPrefab, 
-									new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-									Quaternion.identity);
-								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
-								heartCtrl = heart.GetComponent<HeartCtrl>();
-								// 방향 설정
-								heartCtrl.dir = 2;
-								// 스폰 위치 설정
-								heartCtrl.spawnPos = spawnPos;
-								// 속도 설정
-								heartCtrl.speed = speed;
-								// 가속도 설정
-								heartCtrl.velo = velo;
-							}
+					}
+					break;
+				// 아래쪽
+				case Direction.Down:
+					// 플레이어와의 상대적 위치에서 소환될 경우
+					if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+						// 플레이어의 위치에 맞춰 스폰 위치 설정
+						spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
+
+					// 스폰 위치가 올바른 값일 때
+					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
+						// 장애물인 경우
+						if (!isHeart) {
+							// 장애물을 지정된 위치에 스폰
+							GameObject enemy = Instantiate(
+								enemyPrefab,
+								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0),
+								Quaternion.identity);
+							// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
+							enemyCtrl = enemy.GetComponent<EnemyCtrl>();
+							// 방향 설정
+							enemyCtrl.dir = 1;
+							// 스폰 위치 설정
+							enemyCtrl.spawnPos = spawnPos;
+							// 속도 설정
+							enemyCtrl.speed = speed;
+							// 가속도 설정
+							enemyCtrl.velo = velo;
 						}
-						break;
-					// 위쪽
-					case 3:
-						// 플레이어와의 상대적 위치에서 소환될 경우
-						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
-							// 플레이어의 위치에 맞춰 스폰 위치 설정
-							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
-						
-						// 스폰 위치가 올바른 값일 때
-						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
-							// 장애물인 경우
-							if (!isHeart) {
-								// 장애물을 지정된 위치에 스폰
-								GameObject enemy = Instantiate(
-									enemyPrefab, 
-									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0), 
-									Quaternion.identity);
-								// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
-								enemyCtrl = enemy.GetComponent<EnemyCtrl>();
-								// 방향 설정
-								enemyCtrl.dir = 3;
-								// 스폰 위치 설정
-								enemyCtrl.spawnPos = spawnPos;
-								// 속도 설정
-								enemyCtrl.speed = speed;
-								// 가속도 설정
-								enemyCtrl.velo = velo;
-							}
-							// 하트인 경우
-							else {
-								// 하트를 지정된 위치에 스폰
-								GameObject heart = Instantiate(
-									heartPrefab, 
-									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0), 
-									Quaternion.identity);
-								// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
-								heartCtrl = heart.GetComponent<HeartCtrl>();
-								// 방향 설정
-								heartCtrl.dir = 3;
-								// 스폰 위치 설정
-								heartCtrl.spawnPos = spawnPos;
-								// 속도 설정
-								heartCtrl.speed = speed;
-								// 가속도 설정
-								heartCtrl.velo = velo;
-							}
+						// 하트인 경우
+						else {
+							// 하트를 지정된 위치에 스폰
+							GameObject heart = Instantiate(
+								heartPrefab,
+								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0),
+								Quaternion.identity);
+							// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
+							heartCtrl = heart.GetComponent<HeartCtrl>();
+							// 방향 설정
+							heartCtrl.dir = 1;
+							// 스폰 위치 설정
+							heartCtrl.spawnPos = spawnPos;
+							// 속도 설정
+							heartCtrl.speed = speed;
+							// 가속도 설정
+							heartCtrl.velo = velo;
 						}
-						break;
-				}
+					}
+					break;
+				// 왼쪽
+				case Direction.Left:
+					// 플레이어와의 상대적 위치에서 소환될 경우
+					if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+						// 플레이어의 위치에 맞춰 스폰 위치 설정
+						spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
+
+					// 스폰 위치가 올바른 값일 때
+					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
+						// 장애물인 경우
+						if (!isHeart) {
+							// 장애물을 지정된 위치에 스폰
+							GameObject enemy = Instantiate(
+								enemyPrefab,
+								new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+								Quaternion.identity);
+							// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
+							enemyCtrl = enemy.GetComponent<EnemyCtrl>();
+							// 방향 설정
+							enemyCtrl.dir = 2;
+							// 스폰 위치 설정
+							enemyCtrl.spawnPos = spawnPos;
+							// 속도 설정
+							enemyCtrl.speed = speed;
+							// 가속도 설정
+							enemyCtrl.velo = velo;
+						}
+						// 하트인 경우
+						else {
+							// 하트를 지정된 위치에 스폰
+							GameObject heart = Instantiate(
+								heartPrefab,
+								new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+								Quaternion.identity);
+							// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
+							heartCtrl = heart.GetComponent<HeartCtrl>();
+							// 방향 설정
+							heartCtrl.dir = 2;
+							// 스폰 위치 설정
+							heartCtrl.spawnPos = spawnPos;
+							// 속도 설정
+							heartCtrl.speed = speed;
+							// 가속도 설정
+							heartCtrl.velo = velo;
+						}
+					}
+					break;
+				// 위쪽
+				case Direction.Up:
+					// 플레이어와의 상대적 위치에서 소환될 경우
+					if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+						// 플레이어의 위치에 맞춰 스폰 위치 설정
+						spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
+
+					// 스폰 위치가 올바른 값일 때
+					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
+						// 장애물인 경우
+						if (!isHeart) {
+							// 장애물을 지정된 위치에 스폰
+							GameObject enemy = Instantiate(
+								enemyPrefab,
+								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0),
+								Quaternion.identity);
+							// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
+							enemyCtrl = enemy.GetComponent<EnemyCtrl>();
+							// 방향 설정
+							enemyCtrl.dir = 3;
+							// 스폰 위치 설정
+							enemyCtrl.spawnPos = spawnPos;
+							// 속도 설정
+							enemyCtrl.speed = speed;
+							// 가속도 설정
+							enemyCtrl.velo = velo;
+						}
+						// 하트인 경우
+						else {
+							// 하트를 지정된 위치에 스폰
+							GameObject heart = Instantiate(
+								heartPrefab,
+								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0),
+								Quaternion.identity);
+							// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
+							heartCtrl = heart.GetComponent<HeartCtrl>();
+							// 방향 설정
+							heartCtrl.dir = 3;
+							// 스폰 위치 설정
+							heartCtrl.spawnPos = spawnPos;
+							// 속도 설정
+							heartCtrl.speed = speed;
+							// 가속도 설정
+							heartCtrl.velo = velo;
+						}
+					}
+					break;
 			}
 		}
 	}
@@ -344,108 +351,105 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="spawnDir">생성될 방향</param>
 	/// <param name="spawnPos">생성될 위치</param>
 	/// <param name="time">유지 시간</param>
-	public void SpawnLaser(int spawnDir, int spawnPos, float time) {
+	public void SpawnLaser(Direction spawnDir, int spawnPos, float time) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
-			// 올바른 방향인 경우
-			if (spawnDir <= 3 && spawnDir >= 0) {
-				switch (spawnDir) {
-					// 오른쪽
-					case 0:
-						// 플레이어와의 상대적 위치에서 소환될 경우
-						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
-							// 플레이어의 위치에 맞춰 스폰 위치 설정
-							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
-						
-						// 스폰 위치가 올바른 값일 때
-						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
-							// 장애물을 지정된 위치에 스폰
-							GameObject enemy = Instantiate(
-								laserPrefab, 
-								new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-								Quaternion.identity);
-							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
-							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
-							// 방향 설정
-							laserCtrl.dir = 0;
-							// 스폰 위치 설정
-							laserCtrl.spawnPos = spawnPos;
-							// 유지 시간 설정
-							laserCtrl.time = time;
-						}
-						break;
-					// 아래쪽
-					case 1:
-						// 플레이어와의 상대적 위치에서 소환될 경우
-						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
-							// 플레이어의 위치에 맞춰 스폰 위치 설정
-							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
-						
-						// 스폰 위치가 올바른 값일 때
-						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
-							// 장애물을 지정된 위치에 스폰
-							GameObject enemy = Instantiate(
-								laserPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), 
-								Quaternion.identity);
-							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
-							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
-							// 방향 설정
-							laserCtrl.dir = 1;
-							// 스폰 위치 설정
-							laserCtrl.spawnPos = spawnPos;
-							// 유지 시간 설정
-							laserCtrl.time = time;
-						}
-						break;
-					// 왼쪽
-					case 2:
-						// 플레이어와의 상대적 위치에서 소환될 경우
-						if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
-							// 플레이어의 위치에 맞춰 스폰 위치 설정
-							spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
-						
-						// 스폰 위치가 올바른 값일 때
-						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
-							// 장애물을 지정된 위치에 스폰
-							GameObject enemy = Instantiate(
-								laserPrefab, 
-								new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0), 
-								Quaternion.identity);
-							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
-							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
-							// 방향 설정
-							laserCtrl.dir = 2;
-							// 스폰 위치 설정
-							laserCtrl.spawnPos = spawnPos;
-							// 유지 시간 설정
-							laserCtrl.time = time;
-						}
-						break;
-					// 위쪽
-					case 3:
-						// 플레이어와의 상대적 위치에서 소환될 경우
-						if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
-							// 플레이어의 위치에 맞춰 스폰 위치 설정
-							spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
-						
-						// 스폰 위치가 올바른 값일 때
-						if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
-							// 장애물을 지정된 위치에 스폰
-							GameObject enemy = Instantiate(
-								laserPrefab, 
-								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0), 
-								Quaternion.identity);
-							// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
-							LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
-							// 방향 설정
-							laserCtrl.dir = 3;
-							// 스폰 위치 설정
-							laserCtrl.spawnPos = spawnPos;
-							// 유지 시간 설정
-							laserCtrl.time = time;
-						}
-						break;
-				}
+			switch (spawnDir) {
+				// 오른쪽
+				case Direction.Right:
+					// 플레이어와의 상대적 위치에서 소환될 경우
+					if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+						// 플레이어의 위치에 맞춰 스폰 위치 설정
+						spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
+
+					// 스폰 위치가 올바른 값일 때
+					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
+						// 장애물을 지정된 위치에 스폰
+						GameObject enemy = Instantiate(
+							laserPrefab,
+							new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+							Quaternion.identity);
+						// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
+						LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
+						// 방향 설정
+						laserCtrl.dir = 0;
+						// 스폰 위치 설정
+						laserCtrl.spawnPos = spawnPos;
+						// 유지 시간 설정
+						laserCtrl.time = time;
+					}
+					break;
+				// 아래쪽
+				case Direction.Down:
+					// 플레이어와의 상대적 위치에서 소환될 경우
+					if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+						// 플레이어의 위치에 맞춰 스폰 위치 설정
+						spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
+
+					// 스폰 위치가 올바른 값일 때
+					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
+						// 장애물을 지정된 위치에 스폰
+						GameObject enemy = Instantiate(
+							laserPrefab, new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0),
+							Quaternion.identity);
+						// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
+						LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
+						// 방향 설정
+						laserCtrl.dir = 1;
+						// 스폰 위치 설정
+						laserCtrl.spawnPos = spawnPos;
+						// 유지 시간 설정
+						laserCtrl.time = time;
+					}
+					break;
+				// 왼쪽
+				case Direction.Left:
+					// 플레이어와의 상대적 위치에서 소환될 경우
+					if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+						// 플레이어의 위치에 맞춰 스폰 위치 설정
+						spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
+
+					// 스폰 위치가 올바른 값일 때
+					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
+						// 장애물을 지정된 위치에 스폰
+						GameObject enemy = Instantiate(
+							laserPrefab,
+							new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+							Quaternion.identity);
+						// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
+						LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
+						// 방향 설정
+						laserCtrl.dir = 2;
+						// 스폰 위치 설정
+						laserCtrl.spawnPos = spawnPos;
+						// 유지 시간 설정
+						laserCtrl.time = time;
+					}
+					break;
+				// 위쪽
+				case Direction.Up:
+					// 플레이어와의 상대적 위치에서 소환될 경우
+					if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+						// 플레이어의 위치에 맞춰 스폰 위치 설정
+						spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
+
+					// 스폰 위치가 올바른 값일 때
+					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
+						// 장애물을 지정된 위치에 스폰
+						GameObject enemy = Instantiate(
+							laserPrefab,
+							new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0),
+							Quaternion.identity);
+						// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
+						LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
+						// 방향 설정
+						laserCtrl.dir = 3;
+						// 스폰 위치 설정
+						laserCtrl.spawnPos = spawnPos;
+						// 유지 시간 설정
+						laserCtrl.time = time;
+					}
+					break;
 			}
 		}
 	}

@@ -17,7 +17,7 @@ public class EnemyData {
 	public bool isHeart;
 
 	public void Active() {
-		LevelCtrl.Instance.SpawnEnemy(spawnDir, spawnPos, speed, velo, isHeart);
+		LevelCtrl.Instance.SpawnEnemy((LevelCtrl.Direction)spawnDir, spawnPos, speed, velo, isHeart);
 	}
 
 	public EnemyData(float activeTime, int spawnDir, int spawnPos, float speed, float velo, bool isHeart) {
@@ -41,7 +41,7 @@ public class LaserData {
 	public float time;
 
 	public void Active() {
-		LevelCtrl.Instance.SpawnLaser(spawnDir, spawnPos, time);
+		LevelCtrl.Instance.SpawnLaser((LevelCtrl.Direction)spawnDir, spawnPos, time);
 	}
 
 	public LaserData(float activeTime, int spawnDir, int spawnPos, float time) {
