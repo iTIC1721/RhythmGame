@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 
+#region Reference URLs
+// http://wergia.tistory.com/53
+// http://phiru.tistory.com/337
+// http://phiru.tistory.com/327
+// https://forum.unity.com/threads/importing-audio-files-at-runtime.140088/
+#endregion
+
 #region Data Classes
 /// <summary>
 /// 일반적인 블럭 장애물의 생성 정보를 나타내는 클래스입니다.
@@ -234,6 +241,7 @@ public class KillEntityData {
 public class ReadLevel : MonoBehaviour {
 
 	#region Lists
+	List<string> infoList = new List<string>();
 	List<EnemyData> enemyDataList = new List<EnemyData>();
 	List<LaserData> laserDataList = new List<LaserData>();
 	List<ResizeLevelData> resizeDataList = new List<ResizeLevelData>();
@@ -413,8 +421,17 @@ public class ReadLevel : MonoBehaviour {
 
 	#region Publics
 	public TextAsset levelDataFile;
+	public AudioClip audioClip;
+
+	public AudioSource audioSource;
 	#endregion
 
+	#region Privates
+	private string audioPath = string.Empty;
+	bool isReady = false;
+	#endregion
+
+	#region Methods
 	/// <summary>
 	/// levelDataFile로 지정된 Xml 파일을 읽어와 리스트에 저장합니다.
 	/// </summary>
@@ -440,7 +457,17 @@ public class ReadLevel : MonoBehaviour {
 		xmlDoc.LoadXml(levelDataFile.text);
 		XmlNodeList nodes;
 
-		#region EnemySpawn
+		#region Add Info
+		nodes = xmlDoc.SelectNodes("CustomLevel/Info");
+		foreach (XmlNode node in nodes) {
+			infoList.Add(node.SelectSingleNode("LevelName").InnerText);
+			infoList.Add(node.SelectSingleNode("LevelDesigner").InnerText);
+			infoList.Add(node.SelectSingleNode("MusicName").InnerText);
+			infoList.Add(node.SelectSingleNode("Composer").InnerText);
+		}
+		#endregion
+
+		#region Add EnemySpawn
 		nodes = xmlDoc.SelectNodes("CustomLevel/EnemySpawn");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -460,7 +487,7 @@ public class ReadLevel : MonoBehaviour {
 		}
 		#endregion
 
-		#region LaserSpawn
+		#region Add LaserSpawn
 		nodes = xmlDoc.SelectNodes("CustomLevel/LaserSpawn");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -478,7 +505,7 @@ public class ReadLevel : MonoBehaviour {
 		}
 		#endregion
 
-		#region ResizeLevel
+		#region Add ResizeLevel
 		nodes = xmlDoc.SelectNodes("CustomLevel/ResizeLevel");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -495,7 +522,7 @@ public class ReadLevel : MonoBehaviour {
 		}
 		#endregion
 
-		#region ColorChange
+		#region Add ColorChange
 		nodes = xmlDoc.SelectNodes("CustomLevel/ColorChange");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -515,7 +542,7 @@ public class ReadLevel : MonoBehaviour {
 		}
 		#endregion
 
-		#region RotateLevel
+		#region Add RotateLevel
 		nodes = xmlDoc.SelectNodes("CustomLevel/RotateLevel");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -532,7 +559,7 @@ public class ReadLevel : MonoBehaviour {
 		}
 		#endregion
 
-		#region EnlargeLevel
+		#region Add EnlargeLevel
 		nodes = xmlDoc.SelectNodes("CustomLevel/EnlargeLevel");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -549,7 +576,7 @@ public class ReadLevel : MonoBehaviour {
 		}
 		#endregion
 
-		#region MoveLevel
+		#region Add MoveLevel
 		nodes = xmlDoc.SelectNodes("CustomLevel/MoveLevel");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -567,7 +594,7 @@ public class ReadLevel : MonoBehaviour {
 		}
 		#endregion
 
-		#region PlayerVisible
+		#region Add PlayerVisible
 		nodes = xmlDoc.SelectNodes("CustomLevel/PlayerVisible");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -583,7 +610,7 @@ public class ReadLevel : MonoBehaviour {
 		}
 		#endregion
 
-		#region ReplacePlayer
+		#region Add ReplacePlayer
 		nodes = xmlDoc.SelectNodes("CustomLevel/ReplacePlayer");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -600,7 +627,7 @@ public class ReadLevel : MonoBehaviour {
 		}
 		#endregion
 
-		#region KillEntity
+		#region Add KillEntity
 		nodes = xmlDoc.SelectNodes("CustomLevel/KillEntity");
 		foreach (XmlNode node in nodes) {
 			try {
@@ -615,10 +642,29 @@ public class ReadLevel : MonoBehaviour {
 			}
 		}
 		#endregion
-
-		// http://wergia.tistory.com/53
-		// http://phiru.tistory.com/337
-		// http://phiru.tistory.com/327
 	}
+
+	/// <summary>
+	/// 폴더 경로에서 musicName와 동일한 이름을 가진 .mp3 파일을 불러옵니다.
+	/// </summary>
+	/// <returns></returns>
+	IEnumerator GetAudio() {
+		WWW www = null;
+		try {
+			www = new WWW("file://" + Model.folderPath + infoList[2] + ".mp3");
+			audioClip = www.GetAudioClip();
+		}
+		catch (Exception) {
+			yield break;
+		}
+
+		while (audioClip.loadState == AudioDataLoadState.Loading || audioClip.loadState == AudioDataLoadState.Unloaded) {
+			yield return www;
+		}
+
+		audioSource.clip = audioClip;
+		isReady = true;
+	}
+	#endregion
 }
 

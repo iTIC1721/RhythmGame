@@ -1,7 +1,16 @@
-﻿using System.Xml;
+﻿using System;
+using System.IO;
+using System.Xml;
 using UnityEngine;
 
 public class WriteLevel : MonoBehaviour {
+
+	#region Publics
+	public string levelName = "Level Name";
+	public string levelDesigner = "Level Designer";
+	public string composer = "Composer";
+	public string musicName = "Music";
+	#endregion
 
 	XmlDocument doc;
 	XmlElement root;
@@ -12,14 +21,21 @@ public class WriteLevel : MonoBehaviour {
 	/// </summary>
 	private void InitialXml() {
 		doc = new XmlDocument();
-		// xml 버전, 인코틔딩, Standalone
+		// xml 버전, 인코딩, Standalone
 		XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", "true");
-		// 해당 정보를 xml에 추가.
+		// 해당 정보를 xml에 추가
 		doc.AppendChild(xmlDeclaration);
-		// 루트를 만듭니다.
+		// 루트 생성
 		root = doc.CreateElement("CustomLevel");
-		// 루트도 추가.
+		// 루트 추가
 		doc.AppendChild(root);
+
+		// 기본 정보 추가
+		XmlElement Item = (XmlElement)root.AppendChild(doc.CreateElement("Info"));
+		Item.SetAttribute("LevelName", levelName);
+		Item.SetAttribute("LevelDesigner", levelDesigner);
+		Item.SetAttribute("MusicName", musicName);
+		Item.SetAttribute("Composer", composer);
 	}
 
 	/// <summary>
@@ -126,6 +142,20 @@ public class WriteLevel : MonoBehaviour {
 		XmlElement Item = (XmlElement)root.AppendChild(doc.CreateElement("KillEntity"));
 		Item.SetAttribute("ActiveTime", activeTime.ToString());
 		Item.SetAttribute("Tag", tag);
+	}
+
+	/// <summary>
+	/// Xml 파일 저장
+	/// </summary>
+	private void SaveXml() {
+		//폴더 유무 확인 후 생성
+		DirectoryInfo diInfo = new DirectoryInfo(Model.folderPath);
+		if (!diInfo.Exists)
+			diInfo.Create();
+
+		//파일 생성
+		string filePath = Model.folderPath + levelName + ".xml";
+		doc.Save(filePath);
 	}
 	#endregion
 }
