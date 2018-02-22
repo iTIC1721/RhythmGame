@@ -19,6 +19,8 @@ public class LaserCtrl : MonoBehaviour {
 
 	private Color enemyColor;
 
+	private bool collisionEnabled = true;
+
 	// 오브젝트의 스프라이트 렌더러
 	private SpriteRenderer sprRen;
 
@@ -44,7 +46,7 @@ public class LaserCtrl : MonoBehaviour {
 	// 충돌이 발생했을 때
 	private void OnTriggerEnter2D(Collider2D collision) {
 		// 충돌한 대상이 무적이 아닌 플레이어일 때
-		if (collision.CompareTag("Player") && !LevelData.Instance.isInvincible && !LevelData.Instance.invincibleMode) {
+		if (collisionEnabled && collision.CompareTag("Player") && !LevelData.Instance.isInvincible && !LevelData.Instance.invincibleMode) {
 			// 플레이어의 생명을 1 감소시킴
 			LevelData.Instance.playerHeart -= 1;
 			HeartText.Instance.TextUpdate();
@@ -87,8 +89,13 @@ public class LaserCtrl : MonoBehaviour {
 		sprRen.color = new Color(enemyColor.r, enemyColor.g, enemyColor.b, alpha);
 
 		// 투명도 변화
-		if (alpha > 0) {
+		if (alpha > 0.3f) {
 			alpha -= (Time.deltaTime / time);
+			collisionEnabled = true;
+		}
+		else if (alpha > 0f) {
+			alpha -= (Time.deltaTime / time);
+			collisionEnabled = false;
 		}
 		else {
 			alpha = 0;
