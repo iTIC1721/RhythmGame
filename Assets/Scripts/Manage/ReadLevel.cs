@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 
 #region Data Classes
 /// <summary>
-/// 일반적인 블럭 장애물의 생성 정보를 나타내는 구조체입니다.
+/// 일반적인 블럭 장애물의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
 public class EnemyData {
 	public float activeTime;
@@ -17,7 +18,7 @@ public class EnemyData {
 	public bool isHeart;
 
 	public void Active() {
-		LevelCtrl.Instance.SpawnEnemy((LevelCtrl.Direction)spawnDir, spawnPos, speed, velo, isHeart);
+		LevelCtrl.Instance.SpawnEnemy((Direction)spawnDir, spawnPos, speed, velo, isHeart);
 	}
 
 	public EnemyData(float activeTime, int spawnDir, int spawnPos, float speed, float velo, bool isHeart) {
@@ -31,7 +32,7 @@ public class EnemyData {
 }
 
 /// <summary>
-/// 레이저 장애물의 생성 정보를 나타내는 구조체입니다.
+/// 레이저 장애물의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
 public class LaserData {
 	public float activeTime;
@@ -41,7 +42,7 @@ public class LaserData {
 	public float time;
 
 	public void Active() {
-		LevelCtrl.Instance.SpawnLaser((LevelCtrl.Direction)spawnDir, spawnPos, time);
+		LevelCtrl.Instance.SpawnLaser((Direction)spawnDir, spawnPos, time);
 	}
 
 	public LaserData(float activeTime, int spawnDir, int spawnPos, float time) {
@@ -53,7 +54,7 @@ public class LaserData {
 }
 
 /// <summary>
-/// 레벨 크기를 조정하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// 레벨 크기를 조정하는 명령어의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
 public class ResizeLevelData {
 	public float activeTime;
@@ -73,85 +74,45 @@ public class ResizeLevelData {
 }
 
 /// <summary>
-/// 배경색을 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// 색을 변경하는 명령어의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
-public class BackColorData {
+public class ColorData {
+	public ColorDataList colorData;
 	public float activeTime;
 
 	public float r;
 	public float g;
 	public float b;
-	public float a;
 	public float time;
 
 	public void Active() {
-		LevelCtrl.Instance.ChangeBackColor(new Color(r, g, b, a), time);
+		switch (colorData) {
+			case ColorDataList.Back:
+				LevelCtrl.Instance.ChangeBackColor(new Color(r, g, b), time);
+				break;
+
+			case ColorDataList.Level:
+				LevelCtrl.Instance.ChangeLevelColor(new Color(r, g, b), time);
+				break;
+
+			case ColorDataList.Enemy:
+				LevelCtrl.Instance.ChangeEnemyColor(new Color(r, g, b), time);
+				break;
+		}		
 	}
 
-	public BackColorData(float activetime, float r, float g, float b, float a, float time) {
+	public ColorData(ColorDataList colorData, float activetime, float r, float g, float b, float time) {
+		this.colorData = colorData;
 		this.activeTime = activetime;
 		this.r = r;
 		this.g = g;
 		this.b = b;
-		this.a = a;
 		this.time = time;
 	}
 }
 
 /// <summary>
-/// 외벽 색을 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
-/// </summary>
-public class LevelColorData {
-	public float activeTime;
-
-	public float r;
-	public float g;
-	public float b;
-	public float a;
-	public float time;
-
-	public void Active() {
-		LevelCtrl.Instance.ChangeLevelColor(new Color(r, g, b, a), time);
-	}
-
-	public LevelColorData(float activetime, float r, float g, float b, float a, float time) {
-		this.activeTime = activetime;
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
-		this.time = time;
-	}
-}
-
-/// <summary>
-/// 장애물의 색을 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
-/// </summary>
-public class EnemyColorData {
-	public float activeTime;
-
-	public float r;
-	public float g;
-	public float b;
-	public float a;
-	public float time;
-
-	public void Active() {
-		LevelCtrl.Instance.ChangeEnemyColor(new Color(r, g, b, a), time);
-	}
-
-	public EnemyColorData(float activetime, float r, float g, float b, float a, float time) {
-		this.activeTime = activetime;
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
-		this.time = time;
-	}
-}
-
-/// <summary>
-/// 카메라를 회전하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// 카메라를 회전하는 명령어의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
 public class RotateLevelData {
 	public float activeTime;
@@ -171,7 +132,7 @@ public class RotateLevelData {
 }
 
 /// <summary>
-/// 레벨을 확대하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// 레벨을 확대하는 명령어의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
 public class EnlargeLevelData {
 	public float activeTime;
@@ -191,7 +152,7 @@ public class EnlargeLevelData {
 }
 
 /// <summary>
-/// 카메라를 이동하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// 카메라를 이동하는 명령어의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
 public class MoveLevelData {
 	public float activeTime;
@@ -213,7 +174,7 @@ public class MoveLevelData {
 }
 
 /// <summary>
-/// 플레이어의 투명 여부를 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// 플레이어의 투명 여부를 변경하는 명령어의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
 public class PlayerVisibleData {
 	public float activeTime;
@@ -231,7 +192,7 @@ public class PlayerVisibleData {
 }
 
 /// <summary>
-/// 플레이어 위치를 변경하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// 플레이어 위치를 변경하는 명령어의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
 public class ReplacePlayerData {
 	public float activeTime;
@@ -251,7 +212,7 @@ public class ReplacePlayerData {
 }
 
 /// <summary>
-/// 특정 태그를 가진 엔티티를 제거하는 명령어의 생성 정보를 나타내는 구조체입니다.
+/// 특정 태그를 가진 엔티티를 제거하는 명령어의 생성 정보를 나타내는 클래스입니다.
 /// </summary>
 public class KillEntityData {
 	public float activeTime;
@@ -276,9 +237,7 @@ public class ReadLevel : MonoBehaviour {
 	List<EnemyData> enemyDataList = new List<EnemyData>();
 	List<LaserData> laserDataList = new List<LaserData>();
 	List<ResizeLevelData> resizeDataList = new List<ResizeLevelData>();
-	List<BackColorData> backColDataList = new List<BackColorData>();
-	List<LevelColorData> levelColDataList = new List<LevelColorData>();
-	List<EnemyColorData> enemyColDataList = new List<EnemyColorData>();
+	List<ColorData> colDataList = new List<ColorData>();
 	List<RotateLevelData> rotateDataList = new List<RotateLevelData>();
 	List<EnlargeLevelData> enlargeDataList = new List<EnlargeLevelData>();
 	List<MoveLevelData> moveDataList = new List<MoveLevelData>();
@@ -291,9 +250,7 @@ public class ReadLevel : MonoBehaviour {
 	IEnumerator spawnEnemyCor;
 	IEnumerator spawnLaserCor;
 	IEnumerator resizeLevelCor;
-	IEnumerator backColorCor;
-	IEnumerator levelColorCor;
-	IEnumerator enemyColorCor;
+	IEnumerator colorCor;
 	IEnumerator rotateCor;
 	IEnumerator enlargeCor;
 	IEnumerator moveCor;
@@ -352,44 +309,14 @@ public class ReadLevel : MonoBehaviour {
 	/// 배경색 변경 코루틴
 	/// </summary>
 	/// <returns></returns>
-	IEnumerator BackColorCor() {
-		for (int i = 0; i < backColDataList.Count; i++) {
+	IEnumerator ColorCor() {
+		for (int i = 0; i < colDataList.Count; i++) {
 			// 다음 실행까지 대기
 			// 이전 실행이 있었을 경우 실행할 내용의 activeTime에서 이전 실행의 activeTime을 감한 만큼 대기
 			// 이전 실행이 없었을 경우(첫 실행일 경우) 실행할 내용의 activeTime만큼 대기
-			yield return new WaitForSeconds(backColDataList[i].activeTime - (i > 0 ? backColDataList[i - 1].activeTime : 0));
+			yield return new WaitForSeconds(colDataList[i].activeTime - (i > 0 ? colDataList[i - 1].activeTime : 0));
 			// 실행
-			backColDataList[i].Active();
-		}
-	}
-
-	/// <summary>
-	/// 외벽 색 변경 코루틴
-	/// </summary>
-	/// <returns></returns>
-	IEnumerator LevelColorCor() {
-		for (int i = 0; i < levelColDataList.Count; i++) {
-			// 다음 실행까지 대기
-			// 이전 실행이 있었을 경우 실행할 내용의 activeTime에서 이전 실행의 activeTime을 감한 만큼 대기
-			// 이전 실행이 없었을 경우(첫 실행일 경우) 실행할 내용의 activeTime만큼 대기
-			yield return new WaitForSeconds(levelColDataList[i].activeTime - (i > 0 ? levelColDataList[i - 1].activeTime : 0));
-			// 실행
-			levelColDataList[i].Active();
-		}
-	}
-
-	/// <summary>
-	/// 장애물 색 변경 코루틴
-	/// </summary>
-	/// <returns></returns>
-	IEnumerator EnemyColorCor() {
-		for (int i = 0; i < enemyColDataList.Count; i++) {
-			// 다음 실행까지 대기
-			// 이전 실행이 있었을 경우 실행할 내용의 activeTime에서 이전 실행의 activeTime을 감한 만큼 대기
-			// 이전 실행이 없었을 경우(첫 실행일 경우) 실행할 내용의 activeTime만큼 대기
-			yield return new WaitForSeconds(enemyColDataList[i].activeTime - (i > 0 ? enemyColDataList[i - 1].activeTime : 0));
-			// 실행
-			enemyColDataList[i].Active();
+			colDataList[i].Active();
 		}
 	}
 
@@ -488,17 +415,206 @@ public class ReadLevel : MonoBehaviour {
 	public TextAsset levelDataFile;
 	#endregion
 
+	/// <summary>
+	/// levelDataFile로 지정된 Xml 파일을 읽어와 리스트에 저장합니다.
+	/// </summary>
 	public void LoadXml() {
+		// 리스트 초기화
+		#region Initialize Lists
+
+		enemyDataList.Clear();
+		laserDataList.Clear();
+		resizeDataList.Clear();
+		colDataList.Clear();
+		rotateDataList.Clear();
+		enlargeDataList.Clear();
+		moveDataList.Clear();
+		visibleDataList.Clear();
+		replacePlayerDataList.Clear();
+		killDataList.Clear();
+
+		#endregion
+
+		// Xml 불러오기
 		XmlDocument xmlDoc = new XmlDocument();
 		xmlDoc.LoadXml(levelDataFile.text);
+		XmlNodeList nodes;
 
-		XmlNodeList nodes = xmlDoc.SelectNodes("CharacterInfo/Character");
-
+		#region EnemySpawn
+		nodes = xmlDoc.SelectNodes("CustomLevel/EnemySpawn");
 		foreach (XmlNode node in nodes) {
-			Debug.Log("Name :: " + node.SelectSingleNode("Name").InnerText);
-			Debug.Log("Level :: " + node.SelectSingleNode("Level").InnerText);
-			Debug.Log("Exp :: " + node.SelectSingleNode("Experience").InnerText);
+			try {
+				EnemyData data = new EnemyData(
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					int.Parse(node.SelectSingleNode("SpawnDir").InnerText),
+					int.Parse(node.SelectSingleNode("SpawnPos").InnerText),
+					float.Parse(node.SelectSingleNode("Speed").InnerText),
+					float.Parse(node.SelectSingleNode("Velo").InnerText),
+					bool.Parse(node.SelectSingleNode("IsHeart").InnerText)
+					);
+				enemyDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
 		}
+		#endregion
+
+		#region LaserSpawn
+		nodes = xmlDoc.SelectNodes("CustomLevel/LaserSpawn");
+		foreach (XmlNode node in nodes) {
+			try {
+				LaserData data = new LaserData(
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					int.Parse(node.SelectSingleNode("SpawnDir").InnerText),
+					int.Parse(node.SelectSingleNode("SpawnPos").InnerText),
+					float.Parse(node.SelectSingleNode("Time").InnerText)
+					);
+				laserDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
+		}
+		#endregion
+
+		#region ResizeLevel
+		nodes = xmlDoc.SelectNodes("CustomLevel/ResizeLevel");
+		foreach (XmlNode node in nodes) {
+			try {
+				ResizeLevelData data = new ResizeLevelData(
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					int.Parse(node.SelectSingleNode("Width").InnerText),
+					int.Parse(node.SelectSingleNode("Height").InnerText)
+					);
+				resizeDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
+		}
+		#endregion
+
+		#region ColorChange
+		nodes = xmlDoc.SelectNodes("CustomLevel/ColorChange");
+		foreach (XmlNode node in nodes) {
+			try {
+				ColorData data = new ColorData(
+					(ColorDataList)Enum.Parse(typeof(ColorDataList), node.SelectSingleNode("ColorData").InnerText),
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					float.Parse(node.SelectSingleNode("R").InnerText),
+					float.Parse(node.SelectSingleNode("G").InnerText),
+					float.Parse(node.SelectSingleNode("B").InnerText),
+					float.Parse(node.SelectSingleNode("Time").InnerText)
+					);
+				colDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
+		}
+		#endregion
+
+		#region RotateLevel
+		nodes = xmlDoc.SelectNodes("CustomLevel/RotateLevel");
+		foreach (XmlNode node in nodes) {
+			try {
+				RotateLevelData data = new RotateLevelData(
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					float.Parse(node.SelectSingleNode("Angle").InnerText),
+					float.Parse(node.SelectSingleNode("Time").InnerText)
+					);
+				rotateDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
+		}
+		#endregion
+
+		#region EnlargeLevel
+		nodes = xmlDoc.SelectNodes("CustomLevel/EnlargeLevel");
+		foreach (XmlNode node in nodes) {
+			try {
+				EnlargeLevelData data = new EnlargeLevelData(
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					float.Parse(node.SelectSingleNode("Rate").InnerText),
+					float.Parse(node.SelectSingleNode("Time").InnerText)
+					);
+				enlargeDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
+		}
+		#endregion
+
+		#region MoveLevel
+		nodes = xmlDoc.SelectNodes("CustomLevel/MoveLevel");
+		foreach (XmlNode node in nodes) {
+			try {
+				MoveLevelData data = new MoveLevelData(
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					float.Parse(node.SelectSingleNode("X").InnerText),
+					float.Parse(node.SelectSingleNode("Y").InnerText),
+					float.Parse(node.SelectSingleNode("Time").InnerText)
+					);
+				moveDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
+		}
+		#endregion
+
+		#region PlayerVisible
+		nodes = xmlDoc.SelectNodes("CustomLevel/PlayerVisible");
+		foreach (XmlNode node in nodes) {
+			try {
+				PlayerVisibleData data = new PlayerVisibleData(
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					bool.Parse(node.SelectSingleNode("Visible").InnerText)
+					);
+				visibleDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
+		}
+		#endregion
+
+		#region ReplacePlayer
+		nodes = xmlDoc.SelectNodes("CustomLevel/ReplacePlayer");
+		foreach (XmlNode node in nodes) {
+			try {
+				ReplacePlayerData data = new ReplacePlayerData(
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					int.Parse(node.SelectSingleNode("X").InnerText),
+					int.Parse(node.SelectSingleNode("Y").InnerText)
+					);
+				replacePlayerDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
+		}
+		#endregion
+
+		#region KillEntity
+		nodes = xmlDoc.SelectNodes("CustomLevel/KillEntity");
+		foreach (XmlNode node in nodes) {
+			try {
+				KillEntityData data = new KillEntityData(
+					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
+					node.SelectSingleNode("Tag").InnerText
+					);
+				killDataList.Add(data);
+			}
+			catch (FormatException ex) {
+				Debug.LogError(ex);
+			}
+		}
+		#endregion
 
 		// http://wergia.tistory.com/53
 		// http://phiru.tistory.com/337

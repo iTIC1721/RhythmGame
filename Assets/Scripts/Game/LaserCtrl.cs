@@ -9,7 +9,7 @@ public class LaserCtrl : MonoBehaviour {
 	private const float spriteMaxScale = 500f;
 	
 	// 방향 -> 0 : 오른쪽, 1 : 아래쪽, 2 : 왼쪽, 3 : 위쪽
-	public int dir = 0;
+	public Direction dir = 0;
 	// 시작 점
 	public int spawnPos = 0;
 	// 유지 시간
@@ -64,14 +64,14 @@ public class LaserCtrl : MonoBehaviour {
 	private void ReplaceLaser() {
 		// 크기 설정
 		switch (dir) {
-			case 0:
-			case 2:
+			case Direction.Right:
+			case Direction.Left:
 				gameObject.transform.localScale = new Vector3(1000, spriteMaxScale / ((LevelData.Instance.levelHeight * 2) + 1), 1);
 				gameObject.transform.position = new Vector3(0, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0);
 				break;
 
-			case 1:
-			case 3:
+			case Direction.Down:
+			case Direction.Up:
 				gameObject.transform.localScale = new Vector3(spriteMaxScale / ((LevelData.Instance.levelWidth * 2) + 1), 1000, 1);
 				gameObject.transform.position = new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 0, 0);
 				break;

@@ -7,7 +7,7 @@ public class HeartCtrl : MonoBehaviour {
 	private const float spriteMaxScale = 500f;
 
 	// 방향 -> 0 : 오른쪽, 1 : 아래쪽, 2 : 왼쪽, 3 : 위쪽
-	public int dir = 0;
+	public Direction dir = 0;
 	// 시작 점
 	public int spawnPos = 0;
 	// 속도
@@ -51,16 +51,16 @@ public class HeartCtrl : MonoBehaviour {
 	private void ReplaceEnemy() {
 		gameObject.transform.localScale = new Vector3(spriteMaxScale / ((LevelData.Instance.levelWidth * 2) + 1), spriteMaxScale / ((LevelData.Instance.levelHeight * 2) + 1), 1);
 		switch (dir) {
-			case 0:
+			case Direction.Right:
 				gameObject.transform.position += new Vector3(-speed, 0, 0);
 				break;
-			case 1:
+			case Direction.Down:
 				gameObject.transform.position += new Vector3(0, speed, 0);
 				break;
-			case 2:
+			case Direction.Left:
 				gameObject.transform.position += new Vector3(speed, 0, 0);
 				break;
-			case 3:
+			case Direction.Up:
 				gameObject.transform.position += new Vector3(0, -speed, 0);
 				break;
 		}

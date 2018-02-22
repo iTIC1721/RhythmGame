@@ -92,16 +92,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	[NonSerialized]
 	public bool playing = true;
 
-	/// <summary>
-	/// 방향 열거형
-	/// </summary>
-	public enum Direction {
-		Right,
-		Down,
-		Left,
-		Up
-	}
-
 	// 오브젝트가 생성되었을 때 실행
 	private void Awake() {
 		// 플레이어 오브젝트의 스프라이트 렌더러를 가져옴
@@ -171,7 +161,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 							enemyCtrl = enemy.GetComponent<EnemyCtrl>();
 							// 방향 설정
-							enemyCtrl.dir = 0;
+							enemyCtrl.dir = Direction.Right;
 							// 스폰 위치 설정
 							enemyCtrl.spawnPos = spawnPos;
 							// 속도 설정
@@ -189,7 +179,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 							heartCtrl = heart.GetComponent<HeartCtrl>();
 							// 방향 설정
-							heartCtrl.dir = 0;
+							heartCtrl.dir = Direction.Right;
 							// 스폰 위치 설정
 							heartCtrl.spawnPos = spawnPos;
 							// 속도 설정
@@ -218,7 +208,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 							enemyCtrl = enemy.GetComponent<EnemyCtrl>();
 							// 방향 설정
-							enemyCtrl.dir = 1;
+							enemyCtrl.dir = Direction.Down;
 							// 스폰 위치 설정
 							enemyCtrl.spawnPos = spawnPos;
 							// 속도 설정
@@ -236,7 +226,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 							heartCtrl = heart.GetComponent<HeartCtrl>();
 							// 방향 설정
-							heartCtrl.dir = 1;
+							heartCtrl.dir = Direction.Down;
 							// 스폰 위치 설정
 							heartCtrl.spawnPos = spawnPos;
 							// 속도 설정
@@ -265,7 +255,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 							enemyCtrl = enemy.GetComponent<EnemyCtrl>();
 							// 방향 설정
-							enemyCtrl.dir = 2;
+							enemyCtrl.dir = Direction.Left;
 							// 스폰 위치 설정
 							enemyCtrl.spawnPos = spawnPos;
 							// 속도 설정
@@ -283,7 +273,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 							heartCtrl = heart.GetComponent<HeartCtrl>();
 							// 방향 설정
-							heartCtrl.dir = 2;
+							heartCtrl.dir = Direction.Left;
 							// 스폰 위치 설정
 							heartCtrl.spawnPos = spawnPos;
 							// 속도 설정
@@ -312,7 +302,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 스폰된 장애물의 EnemyCtrl 스크립트를 가져옴
 							enemyCtrl = enemy.GetComponent<EnemyCtrl>();
 							// 방향 설정
-							enemyCtrl.dir = 3;
+							enemyCtrl.dir = Direction.Up;
 							// 스폰 위치 설정
 							enemyCtrl.spawnPos = spawnPos;
 							// 속도 설정
@@ -330,7 +320,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 스폰된 하트의 HeartCtrl 스크립트를 가져옴
 							heartCtrl = heart.GetComponent<HeartCtrl>();
 							// 방향 설정
-							heartCtrl.dir = 3;
+							heartCtrl.dir = Direction.Up;
 							// 스폰 위치 설정
 							heartCtrl.spawnPos = spawnPos;
 							// 속도 설정
@@ -372,7 +362,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 						LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
 						// 방향 설정
-						laserCtrl.dir = 0;
+						laserCtrl.dir = Direction.Right;
 						// 스폰 위치 설정
 						laserCtrl.spawnPos = spawnPos;
 						// 유지 시간 설정
@@ -395,7 +385,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 						LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
 						// 방향 설정
-						laserCtrl.dir = 1;
+						laserCtrl.dir = Direction.Down;
 						// 스폰 위치 설정
 						laserCtrl.spawnPos = spawnPos;
 						// 유지 시간 설정
@@ -419,7 +409,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 						LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
 						// 방향 설정
-						laserCtrl.dir = 2;
+						laserCtrl.dir = Direction.Left;
 						// 스폰 위치 설정
 						laserCtrl.spawnPos = spawnPos;
 						// 유지 시간 설정
@@ -443,7 +433,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 						// 스폰된 장애물의 LaserCtrl 스크립트를 가져옴
 						LaserCtrl laserCtrl = enemy.GetComponent<LaserCtrl>();
 						// 방향 설정
-						laserCtrl.dir = 3;
+						laserCtrl.dir = Direction.Up;
 						// 스폰 위치 설정
 						laserCtrl.spawnPos = spawnPos;
 						// 유지 시간 설정
@@ -476,23 +466,24 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				// TODO: 좌표 줄이기 수정
 				switch (enemyCtrl.dir) {
 					// 오른쪽
-					case 0:
+					case Direction.Right:
 						enemyObj.transform.position = new Vector3(enemyObj.transform.position.x, enemyCtrl.spawnPos * (levelSize / ((height * 2) + 1)), 0);
 						break;
 					// 아래쪽
-					case 1:
+					case Direction.Down:
 						enemyObj.transform.position = new Vector3(enemyCtrl.spawnPos * (levelSize / ((width * 2) + 1)), enemyObj.transform.position.y, 0);
 						break;
 					// 왼쪽
-					case 2:
+					case Direction.Left:
 						enemyObj.transform.position = new Vector3(enemyObj.transform.position.x, enemyCtrl.spawnPos * (levelSize / ((height * 2) + 1)), 0);
 						break;
 					// 위쪽
-					case 3:
+					case Direction.Up:
 						enemyObj.transform.position = new Vector3(enemyCtrl.spawnPos * (levelSize / ((width * 2) + 1)), enemyObj.transform.position.y, 0);
 						break;
 				}
 			}
+			// TODO: 레이저 & 하트도 적용
 		}
 	}
 

@@ -9,7 +9,7 @@ public class EnemyCtrl : MonoBehaviour {
 	private const float spriteMaxScale = 500f;
 
 	// 방향 -> 0 : 오른쪽, 1 : 아래쪽, 2 : 왼쪽, 3 : 위쪽
-	public int dir = 0;
+	public Direction dir = Direction.Right;
 	// 시작 점
 	public int spawnPos = 0;
 	// 속도
@@ -67,16 +67,16 @@ public class EnemyCtrl : MonoBehaviour {
 
 		// 움직임 설정
 		switch (dir) {
-			case 0:
+			case Direction.Right:
 				gameObject.transform.position += new Vector3(-speed, 0, 0);
 				break;
-			case 1:
+			case Direction.Down:
 				gameObject.transform.position += new Vector3(0, speed, 0);
 				break;
-			case 2:
+			case Direction.Left:
 				gameObject.transform.position += new Vector3(speed, 0, 0);
 				break;
-			case 3:
+			case Direction.Up:
 				gameObject.transform.position += new Vector3(0, -speed, 0);
 				break;
 		}
