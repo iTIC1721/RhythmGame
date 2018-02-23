@@ -26,14 +26,23 @@ public enum LerpType {
 	None,
 	EaseIn1,
 	EaseIn2,
+	EaseIn3,
+	EaseIn4,
+	EaseIn5,
+	EaseIn6,
 	EaseOut1,
 	EaseOut2,
+	EaseOut3,
+	EaseOut4,
+	EaseOut5,
+	EaseOut6,
 	SmoothStep1,
 	SmoothStep2,
 	SmoothStep3,
 	SmoothStep4,
 	SmoothStep5,
-	SmoothStep6
+	SmoothStep6,
+	InvSmoothStep1
 }
 
 public static class Model {
