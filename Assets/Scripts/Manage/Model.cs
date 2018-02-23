@@ -19,6 +19,23 @@ public enum Direction {
 	Up
 }
 
+/// <summary>
+/// Lerp용 열거형
+/// </summary>
+public enum LerpType {
+	None,
+	EaseIn1,
+	EaseIn2,
+	EaseOut1,
+	EaseOut2,
+	SmoothStep1,
+	SmoothStep2,
+	SmoothStep3,
+	SmoothStep4,
+	SmoothStep5,
+	SmoothStep6
+}
+
 public static class Model {
 	public static string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\RhythmGame\";
 }

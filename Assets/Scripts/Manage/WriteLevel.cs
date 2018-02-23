@@ -75,7 +75,7 @@ public class WriteLevel : MonoBehaviour {
 	/// <summary>
 	/// 색 변경
 	/// </summary>
-	private void AddColorChange(ColorDataList colorData, float activeTime, float r, float g, float b, float time) {
+	private void AddColorChange(ColorDataList colorData, float activeTime, float r, float g, float b, float time, LerpType lerpType) {
 		XmlElement Item = (XmlElement)root.AppendChild(doc.CreateElement("ColorChange"));
 		Item.SetAttribute("ColorData", colorData.ToString());
 		Item.SetAttribute("ActiveTime", activeTime.ToString());
@@ -83,37 +83,41 @@ public class WriteLevel : MonoBehaviour {
 		Item.SetAttribute("G", g.ToString());
 		Item.SetAttribute("B", b.ToString());
 		Item.SetAttribute("Time", time.ToString());
+		Item.SetAttribute("LerpType", lerpType.ToString());
 	}
 
 	/// <summary>
 	/// 카메라 회전
 	/// </summary>
-	private void AddRotateLevel(float activeTime, float angle, float time) {
+	private void AddRotateLevel(float activeTime, float angle, float time, LerpType lerpType) {
 		XmlElement Item = (XmlElement)root.AppendChild(doc.CreateElement("RotateLevel"));
 		Item.SetAttribute("ActiveTime", activeTime.ToString());
 		Item.SetAttribute("Angle", angle.ToString());
 		Item.SetAttribute("Time", time.ToString());
+		Item.SetAttribute("LerpType", lerpType.ToString());
 	}
 
 	/// <summary>
 	/// 카메라 확대
 	/// </summary>
-	private void AddEnlargeLevel(float activeTime, float rate, float time) {
+	private void AddEnlargeLevel(float activeTime, float rate, float time, LerpType lerpType) {
 		XmlElement Item = (XmlElement)root.AppendChild(doc.CreateElement("EnlargeLevel"));
 		Item.SetAttribute("ActiveTime", activeTime.ToString());
 		Item.SetAttribute("Rate", rate.ToString());
 		Item.SetAttribute("Time", time.ToString());
+		Item.SetAttribute("LerpType", lerpType.ToString());
 	}
 
 	/// <summary>
 	/// 카메라 이동
 	/// </summary>
-	private void AddMoveLevel(float activeTime, float x, float y, float time) {
+	private void AddMoveLevel(float activeTime, float x, float y, float time, LerpType lerpType) {
 		XmlElement Item = (XmlElement)root.AppendChild(doc.CreateElement("MoveLevel"));
 		Item.SetAttribute("ActiveTime", activeTime.ToString());
 		Item.SetAttribute("X", x.ToString());
 		Item.SetAttribute("Y", y.ToString());
 		Item.SetAttribute("Time", time.ToString());
+		Item.SetAttribute("LerpType", lerpType.ToString());
 	}
 
 	/// <summary>
