@@ -88,30 +88,24 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	#endregion
 
 	#region Methods
-	private float GetLerpTime(LerpType lerpType, float currentTime, float time) {
+	private float GetLerpTime(LerpType lerpType, int level, float currentTime, float time) {
 		switch (lerpType) {
 			case LerpType.None:
 				return currentTime / time;
-			case LerpType.EaseIn1:
-				return ExpMath.EaseIn1(currentTime / time);
-			case LerpType.EaseIn2:
-				return ExpMath.EaseIn2(currentTime / time);
-			case LerpType.EaseOut1:
-				return ExpMath.EaseOut1(currentTime / time);
-			case LerpType.EaseOut2:
-				return ExpMath.EaseOut2(currentTime / time);
-			case LerpType.SmoothStep1:
-				return ExpMath.SmoothStep1(currentTime / time);
-			case LerpType.SmoothStep2:
-				return ExpMath.SmoothStep2(currentTime / time);
-			case LerpType.SmoothStep3:
-				return ExpMath.SmoothStep3(currentTime / time);
-			case LerpType.SmoothStep4:
-				return ExpMath.SmoothStep4(currentTime / time);
-			case LerpType.SmoothStep5:
-				return ExpMath.SmoothStep5(currentTime / time);
-			case LerpType.SmoothStep6:
-				return ExpMath.SmoothStep6(currentTime / time);
+			case LerpType.EaseIn:
+				return ExpMath.EaseIn(currentTime / time, level);
+			case LerpType.EaseOut:
+				return ExpMath.EaseOut(currentTime / time, level);
+			case LerpType.SmoothStep:
+				return ExpMath.SmoothStep(currentTime / time, level);
+			case LerpType.InvSmoothStep:
+				return ExpMath.InvSmoothStep(currentTime / time, level);
+			case LerpType.Wobble:
+				return ExpMath.Wobble(currentTime / time, level);
+			case LerpType.SmoothWobble:
+				return ExpMath.SmoothWobble(currentTime / time, level);
+			case LerpType.Bounce:
+				return ExpMath.Bounce(currentTime / time, level);
 			default:
 				return currentTime / time;
 		}
@@ -523,7 +517,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="color">바꿀 색상</param>
 	/// <param name="time">바꿀 시간</param>
-	public void ChangeBackColor(Color color, float time, LerpType lerpType) {
+	public void ChangeBackColor(Color color, float time, LerpType lerpType, int level = 1) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 변화 중이라면
@@ -532,13 +526,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				bChangeEnable = false;
 				StopCoroutine(bChangeCoroutine);
 			}
-			bChangeCoroutine = BackChangeCoroutine(color, time, lerpType);
+			bChangeCoroutine = BackChangeCoroutine(color, time, lerpType, level);
 			StartCoroutine(bChangeCoroutine);
 		}
 	}
 
 	// 배경색 변화 코루틴
-	private IEnumerator BackChangeCoroutine(Color changeColor, float time, LerpType lerpType) {
+	private IEnumerator BackChangeCoroutine(Color changeColor, float time, LerpType lerpType, int level) {
 		bChangeEnable = true;
 		Color originalColor = LevelData.Instance.backColor;
 		float tempTime = 0;
@@ -551,7 +545,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 					LevelData.Instance.backColor = Color.Lerp(
 						originalColor,
 						changeColor,
-						GetLerpTime(lerpType, tempTime, time));
+						GetLerpTime(lerpType, level, tempTime, time));
 					// 시간 카운트
 					tempTime += Time.deltaTime;
 				}
@@ -580,7 +574,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="color">바꿀 색상</param>
 	/// <param name="time">바꿀 시간</param>
-	public void ChangeLevelColor(Color color, float time, LerpType lerpType) {
+	public void ChangeLevelColor(Color color, float time, LerpType lerpType, int level = 1) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 변화 중이라면
@@ -589,13 +583,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				lChangeEnable = false;
 				StopCoroutine(lChangeCoroutine);
 			}
-			lChangeCoroutine = LevelChangeCoroutine(color, time, lerpType);
+			lChangeCoroutine = LevelChangeCoroutine(color, time, lerpType, level);
 			StartCoroutine(lChangeCoroutine);
 		}
 	}
 
 	// 외벽 색 변화 코루틴
-	private IEnumerator LevelChangeCoroutine(Color changeColor, float time, LerpType lerpType) {
+	private IEnumerator LevelChangeCoroutine(Color changeColor, float time, LerpType lerpType, int level) {
 		lChangeEnable = true;
 		Color originalColor = LevelData.Instance.levelColor;
 		float tempTime = 0;
@@ -608,7 +602,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 					LevelData.Instance.levelColor = Color.Lerp(
 						originalColor,
 						changeColor,
-						GetLerpTime(lerpType, tempTime, time));
+						GetLerpTime(lerpType, level, tempTime, time));
 					// 시간 카운트
 					tempTime += Time.deltaTime;
 				}
@@ -637,7 +631,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="color">바꿀 색상</param>
 	/// <param name="time">바꿀 시간</param>
-	public void ChangeEnemyColor(Color color, float time, LerpType lerpType) {
+	public void ChangeEnemyColor(Color color, float time, LerpType lerpType, int level = 1) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 변화 중이라면
@@ -646,13 +640,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				eChangeEnable = false;
 				StopCoroutine(eChangeCoroutine);
 			}
-			eChangeCoroutine = EnemyChangeCoroutine(color, time, lerpType);
+			eChangeCoroutine = EnemyChangeCoroutine(color, time, lerpType, level);
 			StartCoroutine(eChangeCoroutine);
 		}
 	}
 
 	// 장애물 색 변화 코루틴
-	private IEnumerator EnemyChangeCoroutine(Color changeColor, float time, LerpType lerpType) {
+	private IEnumerator EnemyChangeCoroutine(Color changeColor, float time, LerpType lerpType, int level) {
 		eChangeEnable = true;
 		Color originalColor = LevelData.Instance.enemyColor;
 		float tempTime = 0;
@@ -665,7 +659,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 					LevelData.Instance.enemyColor = Color.Lerp(
 						originalColor,
 						changeColor,
-						GetLerpTime(lerpType, tempTime, time));
+						GetLerpTime(lerpType, level, tempTime, time));
 					// 시간 카운트
 					tempTime += Time.deltaTime;
 				}
@@ -694,7 +688,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="angle">회전시킬 각도</param>
 	/// <param name="time">회전시킬 시간</param>
-	public void RotateLevel(float angle, float time, LerpType lerpType) {
+	public void RotateLevel(float angle, float time, LerpType lerpType, int level = 1) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 변화 중이라면
@@ -703,13 +697,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				rotateEnable = false;
 				StopCoroutine(rotateCoroutine);
 			}
-			rotateCoroutine = RotateCoroutine(angle, time, lerpType);
+			rotateCoroutine = RotateCoroutine(angle, time, lerpType, level);
 			StartCoroutine(rotateCoroutine);
 		}
 	}
 
 	// 카메라 회전 코루틴
-	private IEnumerator RotateCoroutine(float rotateAngle, float time, LerpType lerpType) {
+	private IEnumerator RotateCoroutine(float rotateAngle, float time, LerpType lerpType, int level) {
 		rotateEnable = true;
 		float originalAngle = mainCamera.transform.localRotation.z;
 		float tempTime = 0;
@@ -722,7 +716,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 					mainCamera.transform.localRotation = Quaternion.Lerp(
 						new Quaternion(mainCamera.transform.localRotation.x, mainCamera.transform.localRotation.y, originalAngle, mainCamera.transform.localRotation.w),
 						new Quaternion(mainCamera.transform.localRotation.x, mainCamera.transform.localRotation.y, rotateAngle, mainCamera.transform.localRotation.w),
-						GetLerpTime(lerpType, tempTime, time));
+						GetLerpTime(lerpType, level, tempTime, time));
 					// 시간 카운트
 					tempTime += Time.deltaTime;
 				}
@@ -756,7 +750,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="rate">확대시킬 비율</param>
 	/// <param name="time">확대시킬 시간</param>
-	public void EnlargeLevel(float rate, float time, LerpType lerpType) {
+	public void EnlargeLevel(float rate, float time, LerpType lerpType, int level = 1) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 변화 중이라면
@@ -765,13 +759,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				enlargeEnable = false;
 				StopCoroutine(enlargeCoroutine);
 			}
-			enlargeCoroutine = EnlargeCoroutine(rate, time, lerpType);
+			enlargeCoroutine = EnlargeCoroutine(rate, time, lerpType, level);
 			StartCoroutine(enlargeCoroutine);
 		}
 	}
 
 	// 확대 코루틴
-	private IEnumerator EnlargeCoroutine(float enlargeRate, float time, LerpType lerpType) {
+	private IEnumerator EnlargeCoroutine(float enlargeRate, float time, LerpType lerpType, int level) {
 		enlargeEnable = true;
 		float originalSize = cameraComp.orthographicSize;
 		float tempTime = 0;
@@ -784,7 +778,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 					cameraComp.orthographicSize = Mathf.Lerp(
 						originalSize,
 						enlargeRate * cameraSize,
-						GetLerpTime(lerpType, tempTime, time));
+						GetLerpTime(lerpType, level, tempTime, time));
 					// 시간 카운트
 					tempTime += Time.deltaTime;
 				}
@@ -814,7 +808,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="x">이동시킬 x좌표</param>
 	/// <param name="y">이동시킬 y좌표</param>
 	/// <param name="time">이동시킬 시간</param>
-	public void MoveLevel(float x, float y, float time, LerpType lerpType) {
+	public void MoveLevel(float x, float y, float time, LerpType lerpType, int level = 1) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 변화 중이라면
@@ -823,13 +817,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				moveEnable = false;
 				StopCoroutine(moveCoroutine);
 			}
-			moveCoroutine = MoveCoroutine(x, y, time, lerpType);
+			moveCoroutine = MoveCoroutine(x, y, time, lerpType, level);
 			StartCoroutine(moveCoroutine);
 		}
 	}
 
 	// 이동 코루틴
-	private IEnumerator MoveCoroutine(float x, float y, float time, LerpType lerpType) {
+	private IEnumerator MoveCoroutine(float x, float y, float time, LerpType lerpType, int level) {
 		moveEnable = true;
 		Vector3 originalVector = mainCamera.transform.position;
 		float tempTime = 0;
@@ -844,7 +838,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 					mainCamera.transform.position = Vector3.Lerp(
 						originalVector,
 						moveVector,
-						GetLerpTime(lerpType, tempTime, time));
+						GetLerpTime(lerpType, level, tempTime, time));
 					// 시간 카운트
 					tempTime += Time.deltaTime;
 				}

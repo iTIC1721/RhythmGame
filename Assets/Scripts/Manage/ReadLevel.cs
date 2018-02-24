@@ -93,24 +93,25 @@ public class ColorData {
 	public float time;
 
 	public LerpType lerpType;
+	public int level;
 
 	public void Active() {
 		switch (colorData) {
 			case ColorDataList.Back:
-				LevelCtrl.Instance.ChangeBackColor(new Color(r, g, b), time, lerpType);
+				LevelCtrl.Instance.ChangeBackColor(new Color(r, g, b), time, lerpType, level);
 				break;
 
 			case ColorDataList.Level:
-				LevelCtrl.Instance.ChangeLevelColor(new Color(r, g, b), time, lerpType);
+				LevelCtrl.Instance.ChangeLevelColor(new Color(r, g, b), time, lerpType, level);
 				break;
 
 			case ColorDataList.Enemy:
-				LevelCtrl.Instance.ChangeEnemyColor(new Color(r, g, b), time, lerpType);
+				LevelCtrl.Instance.ChangeEnemyColor(new Color(r, g, b), time, lerpType, level);
 				break;
 		}		
 	}
 
-	public ColorData(ColorDataList colorData, float activetime, float r, float g, float b, float time, LerpType lerpType) {
+	public ColorData(ColorDataList colorData, float activetime, float r, float g, float b, float time, LerpType lerpType, int level) {
 		this.colorData = colorData;
 		this.activeTime = activetime;
 		this.r = r;
@@ -118,6 +119,7 @@ public class ColorData {
 		this.b = b;
 		this.time = time;
 		this.lerpType = lerpType;
+		this.level = level;
 	}
 }
 
@@ -131,16 +133,18 @@ public class RotateLevelData {
 	public float time;
 
 	public LerpType lerpType;
+	public int level;
 
 	public void Active() {
-		LevelCtrl.Instance.RotateLevel(angle, time, lerpType);
+		LevelCtrl.Instance.RotateLevel(angle, time, lerpType, level);
 	}
 
-	public RotateLevelData(float activeTime, float angle, float time, LerpType lerpType) {
+	public RotateLevelData(float activeTime, float angle, float time, LerpType lerpType, int level) {
 		this.activeTime = activeTime;
 		this.angle = angle;
 		this.time = time;
 		this.lerpType = lerpType;
+		this.level = level;
 	}
 }
 
@@ -154,16 +158,18 @@ public class EnlargeLevelData {
 	public float time;
 
 	public LerpType lerpType;
+	public int level;
 
 	public void Active() {
-		LevelCtrl.Instance.EnlargeLevel(rate, time, lerpType);
+		LevelCtrl.Instance.EnlargeLevel(rate, time, lerpType, level);
 	}
 
-	public EnlargeLevelData(float activeTime, float rate, float time, LerpType lerpType) {
+	public EnlargeLevelData(float activeTime, float rate, float time, LerpType lerpType, int level) {
 		this.activeTime = activeTime;
 		this.rate = rate;
 		this.time = time;
 		this.lerpType = lerpType;
+		this.level = level;
 	}
 }
 
@@ -178,17 +184,19 @@ public class MoveLevelData {
 	public float time;
 
 	public LerpType lerpType;
+	public int level;
 
 	public void Active() {
-		LevelCtrl.Instance.MoveLevel(x, y, time, lerpType);
+		LevelCtrl.Instance.MoveLevel(x, y, time, lerpType, level);
 	}
 
-	public MoveLevelData(float activeTime, float x, float y, float time, LerpType lerpType) {
+	public MoveLevelData(float activeTime, float x, float y, float time, LerpType lerpType, int level) {
 		this.activeTime = activeTime;
 		this.x = x;
 		this.y = y;
 		this.time = time;
 		this.lerpType = lerpType;
+		this.level = level;
 	}
 }
 
@@ -545,7 +553,8 @@ public class ReadLevel : MonoBehaviour {
 					float.Parse(node.SelectSingleNode("G").InnerText),
 					float.Parse(node.SelectSingleNode("B").InnerText),
 					float.Parse(node.SelectSingleNode("Time").InnerText),
-					(LerpType)Enum.Parse(typeof(LerpType), node.SelectSingleNode("LerpType").InnerText)
+					(LerpType)Enum.Parse(typeof(LerpType), node.SelectSingleNode("LerpType").InnerText),
+					int.Parse(node.SelectSingleNode("Level").InnerText)
 					);
 				colDataList.Add(data);
 			}
@@ -563,7 +572,8 @@ public class ReadLevel : MonoBehaviour {
 					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
 					float.Parse(node.SelectSingleNode("Angle").InnerText),
 					float.Parse(node.SelectSingleNode("Time").InnerText),
-					(LerpType)Enum.Parse(typeof(LerpType), node.SelectSingleNode("LerpType").InnerText)
+					(LerpType)Enum.Parse(typeof(LerpType), node.SelectSingleNode("LerpType").InnerText),
+					int.Parse(node.SelectSingleNode("Level").InnerText)
 					);
 				rotateDataList.Add(data);
 			}
@@ -581,7 +591,8 @@ public class ReadLevel : MonoBehaviour {
 					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
 					float.Parse(node.SelectSingleNode("Rate").InnerText),
 					float.Parse(node.SelectSingleNode("Time").InnerText),
-					(LerpType)Enum.Parse(typeof(LerpType), node.SelectSingleNode("LerpType").InnerText)
+					(LerpType)Enum.Parse(typeof(LerpType), node.SelectSingleNode("LerpType").InnerText),
+					int.Parse(node.SelectSingleNode("Level").InnerText)
 					);
 				enlargeDataList.Add(data);
 			}
@@ -600,7 +611,8 @@ public class ReadLevel : MonoBehaviour {
 					float.Parse(node.SelectSingleNode("X").InnerText),
 					float.Parse(node.SelectSingleNode("Y").InnerText),
 					float.Parse(node.SelectSingleNode("Time").InnerText),
-					(LerpType)Enum.Parse(typeof(LerpType), node.SelectSingleNode("LerpType").InnerText)
+					(LerpType)Enum.Parse(typeof(LerpType), node.SelectSingleNode("LerpType").InnerText),
+					int.Parse(node.SelectSingleNode("Level").InnerText)
 					);
 				moveDataList.Add(data);
 			}
