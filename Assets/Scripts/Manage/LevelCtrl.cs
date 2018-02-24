@@ -100,12 +100,16 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				return ExpMath.SmoothStep(currentTime / time, level);
 			case LerpType.InvSmoothStep:
 				return ExpMath.InvSmoothStep(currentTime / time, level);
-			case LerpType.Wobble:
-				return ExpMath.Wobble(currentTime / time, level);
-			case LerpType.SmoothWobble:
-				return ExpMath.SmoothWobble(currentTime / time, level);
 			case LerpType.Bounce:
 				return ExpMath.Bounce(currentTime / time, level);
+			case LerpType.TriWave:
+				return ExpMath.TriWave(currentTime / time, level);
+			case LerpType.SinWave:
+				return ExpMath.SinWave(currentTime / time, level);
+			case LerpType.SqrWave:
+				return ExpMath.SqrWave(currentTime / time, level);
+			case LerpType.SawWave:
+				return ExpMath.SawWave(currentTime / time, level);
 			default:
 				return currentTime / time;
 		}

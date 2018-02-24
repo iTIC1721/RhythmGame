@@ -13,6 +13,7 @@ public class Test1 : MonoBehaviour {
 		StartCoroutine(testCor);
 
 		audioSource.clip = music;
+		audioSource.time = 0.0f;
 		audioSource.Play();
 
 		LevelCtrl.Instance.StartGame("Invincible", "FlArEs", 2, 2);

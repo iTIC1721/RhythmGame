@@ -9,23 +9,15 @@ public static class ExpMath {
 	/// <param name="t"></param>
 	/// <returns></returns>
 	public static float EaseIn(float t, int level) {
-		if (t >= 0f && t <= 1f) {
-			switch (level) {
-				case 1:
-					return 1f - Mathf.Cos(t * Mathf.PI * 0.5f);
-				case 2:
-					return Mathf.Pow(t, 2f);
-				case 3:
-					return Mathf.Pow(t, 4f);
-				case 4:
-					return Mathf.Pow(t, 6f);
-				case 5:
-					return Mathf.Pow(t, 8f);
-				default:
-					return t;
-			}
+		if (t > 0f && t < 1f) {
+			if (level == 1)
+				return 1f - Mathf.Cos(t * Mathf.PI * 0.5f);
+			else if (level > 1)
+				return Mathf.Pow(t, (level - 1) * 2);
+			else
+				return t;
 		}
-		else if (t < 0f)
+		else if (t <= 0f)
 			return 0;
 		else
 			return 1;
@@ -37,23 +29,15 @@ public static class ExpMath {
 	/// <param name="t"></param>
 	/// <returns></returns>
 	public static float EaseOut(float t, int level) {
-		if (t >= 0f && t <= 1f) {
-			switch (level) {
-				case 1:
-					return Mathf.Sin(t * Mathf.PI * 0.5f);
-				case 2:
-					return Mathf.Pow(t, 0.5f);
-				case 3:
-					return Mathf.Pow(t, 0.25f);
-				case 4:
-					return Mathf.Pow(t, 1.0f / 6.0f);
-				case 5:
-					return Mathf.Pow(t, 0.125f);
-				default:
-					return t;
-			}
+		if (t > 0f && t < 1f) {
+			if (level == 1)
+				return Mathf.Sin(t * Mathf.PI * 0.5f);
+			else if (level > 1)
+				return Mathf.Pow(t, 1f / ((level - 1) * 2));
+			else
+				return t;
 		}
-		else if (t < 0f)
+		else if (t <= 0f)
 			return 0;
 		else
 			return 1;
@@ -65,7 +49,7 @@ public static class ExpMath {
 	/// <param name="t"></param>
 	/// <returns></returns>
 	public static float SmoothStep(float t, int level) {
-		if (t >= 0f && t <= 1f) {
+		if (t > 0f && t < 1f) {
 			switch (level) {
 				case 1:
 					return t * t * (3 - 2 * t);
@@ -77,11 +61,13 @@ public static class ExpMath {
 					return t * t * t * t * t * (t * (t * (t * (70f * t - 315f) + 540f) - 420f) + 126f);
 				case 5:
 					return t * t * t * t * t * t * (t * (t * (t * (t * (-252f * t + 1386f) - 3080f) + 3465f) - 1980f) + 462f);
+				case 6:
+					return t * t * t * t * t * t * t * (t * (t * (t * (t * (t * (924f * t - 6006f) + 16380f) - 24024f) + 20020f) - 9009f) + 1716f);
 				default:
 					return t;
 			}
 		}
-		else if (t < 0f)
+		else if (t <= 0f)
 			return 0;
 		else
 			return 1;
@@ -93,71 +79,17 @@ public static class ExpMath {
 	/// <param name="t"></param>
 	/// <returns></returns>
 	public static float InvSmoothStep(float t, int level) {
-		if (t >= 0f && t <= 1f) {
+		if (t > 0f && t < 1f) {
 			switch (level) {
 				case 1:
-					return t * (t * (2 * t - 3) + 2);
-				default:
-					return t;
-			}
-		}
-		else if (t < 0f)
-			return 0;
-		else
-			return 1;
-	}
-
-	/// <summary>
-	/// Wobble
-	/// </summary>
-	/// <param name="t"></param>
-	/// <returns></returns>
-	public static float Wobble(float t, int level) {
-		if (t >= 0f && t <= 1f) {
-			switch (level) {
-				case 1:
-					return TriWave(t, 0f, 2.0f / 3.0f, 0, 1);
+					return t * (t * (2f * t - 3f) + 2f);
 				case 2:
-					return TriWave(t, 0f, 2.0f / 5.0f, 0, 1);
-				case 3:
-					return TriWave(t, 0f, 2.0f / 7.0f, 0, 1);
-				case 4:
-					return TriWave(t, 0f, 2.0f / 9.0f, 0, 1);
-				case 5:
-					return TriWave(t, 0f, 2.0f / 11.0f, 0, 1);
+					return 2.8f * t * (t * (t - 1.5f) + (6f / 7f));
 				default:
 					return t;
 			}
 		}
-		else if (t < 0f)
-			return 0;
-		else
-			return 1;
-	}
-
-	/// <summary>
-	/// SmoothWobble
-	/// </summary>
-	/// <param name="t"></param>
-	/// <returns></returns>
-	public static float SmoothWobble(float t, int level) {
-		if (t >= 0f && t <= 1f) {
-			switch (level) {
-				case 1:
-					return 0.5f * (Mathf.Sin(Mathf.PI * (3 * t - 0.5f)) + 1f);
-				case 2:
-					return 0.5f * (Mathf.Sin(Mathf.PI * (5 * t - 0.5f)) + 1f);
-				case 3:
-					return 0.5f * (Mathf.Sin(Mathf.PI * (7 * t - 0.5f)) + 1f);
-				case 4:
-					return 0.5f * (Mathf.Sin(Mathf.PI * (9 * t - 0.5f)) + 1f);
-				case 5:
-					return 0.5f * (Mathf.Sin(Mathf.PI * (11 * t - 0.5f)) + 1f);
-				default:
-					return t;
-			}
-		}
-		else if (t < 0f)
+		else if (t <= 0f)
 			return 0;
 		else
 			return 1;
@@ -169,57 +101,88 @@ public static class ExpMath {
 	/// <param name="t"></param>
 	/// <returns></returns>
 	public static float Bounce(float t, int level) {
-		if (t >= 0f && t <= 1f) {
-			switch (level) {
-				case 1:
-					return Mathf.Abs(Mathf.Sin(1.5f * Mathf.PI * t));
-				case 2:
-					return Mathf.Abs(Mathf.Sin(2.5f * Mathf.PI * t));
-				case 3:
-					return Mathf.Abs(Mathf.Sin(3.5f * Mathf.PI * t));
-				case 4:
-					return Mathf.Abs(Mathf.Sin(4.5f * Mathf.PI * t));
-				case 5:
-					return Mathf.Abs(Mathf.Sin(5.5f * Mathf.PI * t));
-				default:
-					return t;
-			}
+		if (t > 0f && t < 1f) {
+			if (level > 0)
+				return Mathf.Abs(Mathf.Sin((level + 0.5f) * Mathf.PI * t));
+			else
+				return t;
 		}
-		else if (t < 0f)
+		else if (t <= 0f)
 			return 0;
 		else
 			return 1;
 	}
-	#endregion
 
-	#region Additional
 	/// <summary>
-	/// t에 대한 삼각파를 반환합니다.
+	/// TriWave
 	/// </summary>
-	/// <param name="t">입력값</param>
-	/// <param name="minX">주기의 최소 x값</param>
-	/// <param name="maxX">주기의 최대 x값</param>
-	/// <param name="minY">주기의 최소 y값</param>
-	/// <param name="maxY">주기의 최대 y값</param>
-	/// <returns>t값에 대한 삼각파 함수값</returns>
-	public static float TriWave(float t, float minX, float maxX, float minY, float maxY) {
-		float period = maxX - minX;
-		float midPointX = (minX + maxX) / 2.0f;
-		if (t > maxX)
-			t += period * Mathf.Ceil((minX - t) / period);
-		else if (t < minX)
-			t += period * Mathf.Ceil((t - maxX) / period);
+	/// <param name="t"></param>
+	/// <returns></returns>
+	public static float TriWave(float t, int level) {
+		if (t > 0f && t < 1f) {
+			if (level > 0)
+				return Mathf.Abs((2 / Mathf.PI) * Mathf.Asin(Mathf.Sin(((2f * Mathf.PI) / (4.0f / ((level * 2) + 1))) * t)));
+			else
+				return t;
+		}
+		else if (t <= 0f)
+			return 0;
+		else
+			return 1;
+	}
 
-		float gradient = (maxY - minY) / (midPointX - minX);
-		if (t < midPointX) {
-			return (gradient * (t - minX)) + minX;
+	/// <summary>
+	/// SinWave
+	/// </summary>
+	/// <param name="t"></param>
+	/// <returns></returns>
+	public static float SinWave(float t, int level) {
+		if (t > 0f && t < 1f) {
+			if (level > 0)
+				return 0.5f * (Mathf.Sin(Mathf.PI * (((level * 2) + 1) * t - 0.5f)) + 1f);
+			else
+				return t;
 		}
-		else if (t > midPointX) {
-			return (-gradient * (t - midPointX)) + maxX;
+		else if (t <= 0f)
+			return 0;
+		else
+			return 1;
+	}
+
+	/// <summary>
+	/// SqrWave
+	/// </summary>
+	/// <param name="t"></param>
+	/// <returns></returns>
+	public static float SqrWave(float t, int level) {
+		if (t > 0f && t < 1f) {
+			if (level > 0)
+				return (0.5f * Mathf.Sign(Mathf.Sin(((level * 2) + 1) * Mathf.PI * t))) + 0.5f;
+			else
+				return t;
 		}
-		else {
-			return maxY;
+		else if (t <= 0f)
+			return 0;
+		else
+			return 1;
+	}
+
+	/// <summary>
+	/// SawWave
+	/// </summary>
+	/// <param name="t"></param>
+	/// <returns></returns>
+	public static float SawWave(float t, int level) {
+		if (t > 0f && t < 1f) {
+			if (level > 0)
+				return (-(1 / Mathf.PI) * Mathf.Atan(1 / Mathf.Tan((Mathf.PI * t) / (1.0f / (level + 1))))) + 0.5f;
+			else
+				return t;
 		}
+		else if (t <= 0f)
+			return 0;
+		else
+			return 1;
 	}
 	#endregion
 }

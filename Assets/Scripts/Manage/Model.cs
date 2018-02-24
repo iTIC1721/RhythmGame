@@ -28,9 +28,11 @@ public enum LerpType {
 	EaseOut,
 	SmoothStep,
 	InvSmoothStep,
-	Wobble,
-	SmoothWobble,
-	Bounce
+	Bounce,
+	TriWave,
+	SinWave,
+	SqrWave,
+	SawWave
 }
 
 public static class Model {
