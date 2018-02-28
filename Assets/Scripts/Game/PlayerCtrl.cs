@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour {
 
@@ -42,16 +41,16 @@ public class PlayerCtrl : MonoBehaviour {
 
 	// 플레이어 움직임 설정
 	private void MoveData() {
-		if (Input.GetKeyDown(KeyCode.RightArrow) && playerPos.x < LevelData.Instance.levelWidth) {
+		if ((Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) && playerPos.x < LevelData.Instance.levelWidth) {
 			playerPos = new Vector2(playerPos.x + 1, playerPos.y);
 		}
-		if (Input.GetKeyDown(KeyCode.LeftArrow) && playerPos.x > -LevelData.Instance.levelWidth) {
+		if ((Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) && playerPos.x > -LevelData.Instance.levelWidth) {
 			playerPos = new Vector2(playerPos.x - 1, playerPos.y);
 		}
-		if (Input.GetKeyDown(KeyCode.UpArrow) && playerPos.y < LevelData.Instance.levelHeight) {
+		if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && playerPos.y < LevelData.Instance.levelHeight) {
 			playerPos = new Vector2(playerPos.x, playerPos.y + 1);
 		}
-		if (Input.GetKeyDown(KeyCode.DownArrow) && playerPos.y > -LevelData.Instance.levelHeight) {
+		if ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) && playerPos.y > -LevelData.Instance.levelHeight) {
 			playerPos = new Vector2(playerPos.x, playerPos.y - 1);
 		}
 	}

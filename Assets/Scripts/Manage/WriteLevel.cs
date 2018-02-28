@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 using UnityEngine;
 
@@ -41,7 +40,7 @@ public class WriteLevel : MonoBehaviour {
 	/// <summary>
 	/// 장애물 스폰
 	/// </summary>
-	private void AddSpawnEnemy(float activeTime, int spawnDir, int spawnPos, float speed, float velo, bool isHeart) {
+	private void AddSpawnEnemy(float activeTime, int spawnDir, int spawnPos, float speed, float velo, bool isHeart, bool follow) {
 		XmlElement Item = (XmlElement)root.AppendChild(doc.CreateElement("EnemySpawn"));		
 		Item.SetAttribute("ActiveTime", activeTime.ToString());
 		Item.SetAttribute("SpawnDir", spawnDir.ToString());
@@ -49,17 +48,19 @@ public class WriteLevel : MonoBehaviour {
 		Item.SetAttribute("Speed", speed.ToString());
 		Item.SetAttribute("Velo", velo.ToString());
 		Item.SetAttribute("IsHeart", isHeart.ToString());
+		Item.SetAttribute("Follow", follow.ToString());
 	}
 
 	/// <summary>
 	/// 레이저 스폰
 	/// </summary>
-	private void AddSpawnLaser(float activeTime, int spawnDir, int spawnPos, float time) {
+	private void AddSpawnLaser(float activeTime, int spawnDir, int spawnPos, float time, bool follow) {
 		XmlElement Item = (XmlElement)root.AppendChild(doc.CreateElement("LaserSpawn"));
 		Item.SetAttribute("ActiveTime", activeTime.ToString());
 		Item.SetAttribute("SpawnDir", spawnDir.ToString());
 		Item.SetAttribute("SpawnPos", spawnPos.ToString());
 		Item.SetAttribute("Time", time.ToString());
+		Item.SetAttribute("Follow", follow.ToString());
 	}
 
 	/// <summary>

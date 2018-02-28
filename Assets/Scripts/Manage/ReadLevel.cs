@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 
-#region Reference URLs
+#region Reference Documents
 // http://wergia.tistory.com/53
 // http://phiru.tistory.com/337
 // http://phiru.tistory.com/327
@@ -23,18 +23,20 @@ public class EnemyData {
 	public float speed;
 	public float velo;
 	public bool isHeart;
+	public bool follow;
 
 	public void Active() {
-		LevelCtrl.Instance.SpawnEnemy((Direction)spawnDir, spawnPos, speed, velo, isHeart);
+		LevelCtrl.Instance.SpawnEnemy((Direction)spawnDir, spawnPos, speed, velo, isHeart, follow);
 	}
 
-	public EnemyData(float activeTime, int spawnDir, int spawnPos, float speed, float velo, bool isHeart) {
+	public EnemyData(float activeTime, int spawnDir, int spawnPos, float speed, float velo, bool isHeart, bool follow) {
 		this.activeTime = activeTime;
 		this.spawnDir = spawnDir;
 		this.spawnPos = spawnPos;
 		this.speed = speed;
 		this.velo = velo;
 		this.isHeart = isHeart;
+		this.follow = follow;
 	}
 }
 
@@ -47,16 +49,18 @@ public class LaserData {
 	public int spawnDir;
 	public int spawnPos;
 	public float time;
+	public bool follow;
 
 	public void Active() {
-		LevelCtrl.Instance.SpawnLaser((Direction)spawnDir, spawnPos, time);
+		LevelCtrl.Instance.SpawnLaser((Direction)spawnDir, spawnPos, time, follow);
 	}
 
-	public LaserData(float activeTime, int spawnDir, int spawnPos, float time) {
+	public LaserData(float activeTime, int spawnDir, int spawnPos, float time, bool follow) {
 		this.activeTime = activeTime;
 		this.spawnDir = spawnDir;
 		this.spawnPos = spawnPos;
 		this.time = time;
+		this.follow = follow;
 	}
 }
 
@@ -448,7 +452,7 @@ public class ReadLevel : MonoBehaviour {
 
 	#region Privates
 	private string audioPath = string.Empty;
-	bool isReady = false;
+	private bool isReady = false;
 	#endregion
 
 	#region Methods
@@ -497,7 +501,8 @@ public class ReadLevel : MonoBehaviour {
 					int.Parse(node.SelectSingleNode("SpawnPos").InnerText),
 					float.Parse(node.SelectSingleNode("Speed").InnerText),
 					float.Parse(node.SelectSingleNode("Velo").InnerText),
-					bool.Parse(node.SelectSingleNode("IsHeart").InnerText)
+					bool.Parse(node.SelectSingleNode("IsHeart").InnerText),
+					bool.Parse(node.SelectSingleNode("Follow").InnerText)
 					);
 				enemyDataList.Add(data);
 			}
@@ -515,7 +520,8 @@ public class ReadLevel : MonoBehaviour {
 					float.Parse(node.SelectSingleNode("ActiveTime").InnerText),
 					int.Parse(node.SelectSingleNode("SpawnDir").InnerText),
 					int.Parse(node.SelectSingleNode("SpawnPos").InnerText),
-					float.Parse(node.SelectSingleNode("Time").InnerText)
+					float.Parse(node.SelectSingleNode("Time").InnerText),
+					bool.Parse(node.SelectSingleNode("Follow").InnerText)
 					);
 				laserDataList.Add(data);
 			}
@@ -686,13 +692,13 @@ public class ReadLevel : MonoBehaviour {
 			yield break;
 		}
 
-		while (audioClip.loadState == AudioDataLoadState.Loading || audioClip.loadState == AudioDataLoadState.Unloaded) {
+		while (audioClip.loadState != AudioDataLoadState.Loaded) {
 			yield return www;
 		}
 
 		audioSource.clip = audioClip;
 		isReady = true;
 	}
-	#endregion
 }
+	#endregion
 

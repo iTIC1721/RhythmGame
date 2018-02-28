@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LaserCtrl : MonoBehaviour {
 
@@ -7,6 +6,8 @@ public class LaserCtrl : MonoBehaviour {
 	private const int levelSize = 512;
 	// 스프라이트의 기본 크기
 	private const float spriteMaxScale = 500f;
+	// 레이저 충돌 감지 중지 시간
+	private const float stopCollide = 0.3f;
 	
 	// 방향 -> 0 : 오른쪽, 1 : 아래쪽, 2 : 왼쪽, 3 : 위쪽
 	public Direction dir = 0;
@@ -89,7 +90,7 @@ public class LaserCtrl : MonoBehaviour {
 		sprRen.color = new Color(enemyColor.r, enemyColor.g, enemyColor.b, alpha);
 
 		// 투명도 변화
-		if (alpha > 0.3f) {
+		if (alpha > stopCollide) {
 			alpha -= (Time.deltaTime / time);
 			collisionEnabled = true;
 		}

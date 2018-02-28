@@ -153,6 +153,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		playerCtrl.playerPos = Vector2.zero;
 		// 플레이어 생존 시작
 		playing = true;
+		// 하트 초기화
+		HeartText.Instance.TextUpdate();
 	}
 
 	/// <summary>
@@ -163,7 +165,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="spawnPos">생성될 위치</param>
 	/// <param name="speed">Enemy 오브젝트의 속도</param>
 	/// <param name="velo">Enemy 오브젝트의 가속도</param>
-	public void SpawnEnemy(Direction spawnDir, int spawnPos, float speed, float velo, bool isHeart = false) {
+	public void SpawnEnemy(Direction spawnDir, int spawnPos, float speed, float velo, bool isHeart = false, bool follow = false) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 장애물의 EnemyCtrl 스크립트를 받아오기 위해 사용되는 변수
@@ -174,9 +176,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				// 오른쪽
 				case Direction.Right:
 					// 플레이어와의 상대적 위치에서 소환될 경우
-					if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+					if (follow)
 						// 플레이어의 위치에 맞춰 스폰 위치 설정
-						spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
+						spawnPos = (int)playerCtrl.playerPos.y + spawnPos;
 
 					// 스폰 위치가 올바른 값일 때
 					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
@@ -221,9 +223,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				// 아래쪽
 				case Direction.Down:
 					// 플레이어와의 상대적 위치에서 소환될 경우
-					if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+					if (follow)
 						// 플레이어의 위치에 맞춰 스폰 위치 설정
-						spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
+						spawnPos = (int)playerCtrl.playerPos.x + spawnPos;
 
 					// 스폰 위치가 올바른 값일 때
 					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
@@ -268,9 +270,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				// 왼쪽
 				case Direction.Left:
 					// 플레이어와의 상대적 위치에서 소환될 경우
-					if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+					if (follow)
 						// 플레이어의 위치에 맞춰 스폰 위치 설정
-						spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
+						spawnPos = (int)playerCtrl.playerPos.y + spawnPos;
 
 					// 스폰 위치가 올바른 값일 때
 					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
@@ -315,9 +317,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				// 위쪽
 				case Direction.Up:
 					// 플레이어와의 상대적 위치에서 소환될 경우
-					if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+					if (follow)
 						// 플레이어의 위치에 맞춰 스폰 위치 설정
-						spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
+						spawnPos = (int)playerCtrl.playerPos.x + spawnPos;
 
 					// 스폰 위치가 올바른 값일 때
 					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
@@ -370,16 +372,16 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="spawnDir">생성될 방향</param>
 	/// <param name="spawnPos">생성될 위치</param>
 	/// <param name="time">유지 시간</param>
-	public void SpawnLaser(Direction spawnDir, int spawnPos, float time) {
+	public void SpawnLaser(Direction spawnDir, int spawnPos, float time, bool follow = false) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			switch (spawnDir) {
 				// 오른쪽
 				case Direction.Right:
 					// 플레이어와의 상대적 위치에서 소환될 경우
-					if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+					if (follow)
 						// 플레이어의 위치에 맞춰 스폰 위치 설정
-						spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
+						spawnPos = (int)playerCtrl.playerPos.y + spawnPos;
 
 					// 스폰 위치가 올바른 값일 때
 					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
@@ -401,9 +403,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				// 아래쪽
 				case Direction.Down:
 					// 플레이어와의 상대적 위치에서 소환될 경우
-					if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+					if (follow)
 						// 플레이어의 위치에 맞춰 스폰 위치 설정
-						spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
+						spawnPos = (int)playerCtrl.playerPos.x + spawnPos;
 
 					// 스폰 위치가 올바른 값일 때
 					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
@@ -424,9 +426,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				// 왼쪽
 				case Direction.Left:
 					// 플레이어와의 상대적 위치에서 소환될 경우
-					if (spawnPos >= 100 - LevelData.Instance.levelHeight && spawnPos <= 100 + LevelData.Instance.levelHeight)
+					if (follow)
 						// 플레이어의 위치에 맞춰 스폰 위치 설정
-						spawnPos = (int)playerCtrl.playerPos.y + (spawnPos - 100);
+						spawnPos = (int)playerCtrl.playerPos.y + spawnPos;
 
 					// 스폰 위치가 올바른 값일 때
 					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {
@@ -448,9 +450,9 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				// 위쪽
 				case Direction.Up:
 					// 플레이어와의 상대적 위치에서 소환될 경우
-					if (spawnPos >= 100 - LevelData.Instance.levelWidth && spawnPos <= 100 + LevelData.Instance.levelWidth)
+					if (follow)
 						// 플레이어의 위치에 맞춰 스폰 위치 설정
-						spawnPos = (int)playerCtrl.playerPos.x + (spawnPos - 100);
+						spawnPos = (int)playerCtrl.playerPos.x + spawnPos;
 
 					// 스폰 위치가 올바른 값일 때
 					if (spawnPos <= LevelData.Instance.levelWidth && spawnPos >= -LevelData.Instance.levelWidth) {

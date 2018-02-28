@@ -737,23 +737,23 @@ public class Test1 : MonoBehaviour {
 
 		yield return new WaitForSeconds(0.5f);
 
-		LevelCtrl.Instance.SpawnEnemy(Direction.Left, 102, 25f, 0f);
-		LevelCtrl.Instance.SpawnEnemy(Direction.Left, 101, 25f, 0f);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Left, 2, 25f, 0f, false, true);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Left, 1, 25f, 0f, false, true);
 
 		yield return new WaitForSeconds(0.12f);
 
-		LevelCtrl.Instance.SpawnEnemy(Direction.Down, 98, 25f, 0f);
-		LevelCtrl.Instance.SpawnEnemy(Direction.Down, 99, 25f, 0f);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Down, -2, 25f, 0f, false, true);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Down, -1, 25f, 0f, false, true);
 
 		yield return new WaitForSeconds(0.12f);
 
-		LevelCtrl.Instance.SpawnEnemy(Direction.Right, 98, 25f, 0f);
-		LevelCtrl.Instance.SpawnEnemy(Direction.Right, 99, 25f, 0f);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Right, -2, 25f, 0f, false, true);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Right, -1, 25f, 0f, false, true);
 
 		yield return new WaitForSeconds(0.12f);
 
-		LevelCtrl.Instance.SpawnEnemy(Direction.Up, 102, 25f, 0f);
-		LevelCtrl.Instance.SpawnEnemy(Direction.Up, 101, 25f, 0f);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Up, 2, 25f, 0f, false, true);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Up, 1, 25f, 0f, false, true);
 
 		yield return new WaitForSeconds(0.16f);
 
@@ -775,19 +775,19 @@ public class Test1 : MonoBehaviour {
 
 		yield return new WaitForSeconds(0.27f);
 
-		LevelCtrl.Instance.SpawnEnemy(Direction.Down, 100, 25f, 0f);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Down, 0, 25f, 0f, false, true);
 
 		yield return new WaitForSeconds(0.12f);
 
-		LevelCtrl.Instance.SpawnEnemy(Direction.Up, 100, 25f, 0f);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Up, 0, 25f, 0f, false, true);
 
 		yield return new WaitForSeconds(0.12f);
 
-		LevelCtrl.Instance.SpawnEnemy(Direction.Left, 100, 25f, 0f);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Left, 0, 25f, 0f, false, true);
 
 		yield return new WaitForSeconds(0.12f);
 		
-		LevelCtrl.Instance.SpawnEnemy(Direction.Right, 100, 25f, 0f);
+		LevelCtrl.Instance.SpawnEnemy(Direction.Right, 0, 25f, 0f, false, true);
 
 		yield return new WaitForSeconds(0.2f);
 

@@ -15,8 +15,8 @@ public class BoxCtrl : MonoBehaviour {
 	private void Update() {
 		// 게임판의 색 설정
 		Color color = LevelData.Instance.levelColor;
-		foreach (var boxSprRen in sprRen) {
-			boxSprRen.color = color;
+		for (int i = 0; i < sprRen.Length; i++) {
+			sprRen[i].color = color;
 		}
 	}
 }
