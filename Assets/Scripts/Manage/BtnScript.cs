@@ -1,16 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class BtnScript : MonoBehaviour {
-
-	// 레벨 타입을 나타내는 열거형
-	public enum LevelPlayType {
-		NonDamage,
-		Normal,
-		Challenge
-	}
 
 	// 메인 씬에서 플레이 버튼을 누를 시 실행
 	public void Main_PlayButton_Clicked() {

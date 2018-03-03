@@ -1,6 +1,15 @@
 ﻿using System;
 
 /// <summary>
+/// 레벨 타입을 나타내는 열거형
+/// </summary>
+public enum LevelPlayType {
+	NonDamage,
+	Normal,
+	Challenge
+}
+
+/// <summary>
 /// 가능한 색 변경 열거형
 /// </summary>
 public enum ColorDataList {
