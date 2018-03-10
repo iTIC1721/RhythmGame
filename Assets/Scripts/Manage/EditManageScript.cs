@@ -59,7 +59,7 @@ public class EditManageScript : MonoBehaviour {
 	private void EditorContentMouseClick() {
 		if (Input.GetMouseButtonDown(1)) {
 			if (Input.mousePosition.y >= 0 && Input.mousePosition.y <= 300) {
-				GameObject commandObj = Instantiate(commandPrefab, new Vector3(Input.mousePosition.x, 150, 0), Quaternion.identity, editorContent) as GameObject;
+				GameObject commandObj = Instantiate(commandPrefab, new Vector3(Input.mousePosition.x, 160, 0), Quaternion.identity, editorContent) as GameObject;
 				commandObj.transform.localScale = new Vector3(1 / size, 1, 1);
 			}
 		}
