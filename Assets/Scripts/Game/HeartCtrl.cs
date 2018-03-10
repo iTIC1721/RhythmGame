@@ -29,8 +29,10 @@ public class HeartCtrl : MonoBehaviour {
 
 	// 매 프레임마다 실행
 	private void Update() {
-		ReplaceEnemy();
-		ColorUpdate();
+		if (!LevelCtrl.Instance.isPaused) {
+			ReplaceEnemy();
+			ColorUpdate();
+		}
 	}
 
 	private void OnBecameInvisible() {

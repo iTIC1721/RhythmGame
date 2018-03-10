@@ -3,8 +3,6 @@ using UnityEngine.UI;
 
 public class EditManageScript : MonoBehaviour {
 
-	private const string MouseScrollWheel = "Mouse ScrollWheel";
-
 	public RectTransform editorContent;
 	public Scrollbar scrollbar;
 	public Text sizeRateText;
@@ -25,7 +23,7 @@ public class EditManageScript : MonoBehaviour {
 
 	private void MouseScroll() {
 		if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))) {
-			if (Input.GetAxis(MouseScrollWheel) > 0) {
+			if (Input.GetAxis("Mouse ScrollWheel") > 0) {
 				if (size * sizeRate <= 10000f) {
 					// 위로 스크롤
 					editorContent.localScale = new Vector3(sizeRate * editorContent.localScale.x, 1, 1);
@@ -41,7 +39,7 @@ public class EditManageScript : MonoBehaviour {
 					sizeRateText.text = Mathf.Round((size * 100)).ToString() + "%";
 				}
 			}
-			else if (Input.GetAxis(MouseScrollWheel) < 0) {
+			else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
 				if (size >= 1) {
 					// 아래로 스크롤
 					if (size >= sizeRate) {

@@ -35,8 +35,10 @@ public class LaserCtrl : MonoBehaviour {
 
 	// 매 프레임마다 실행
 	private void Update() {
-		ReplaceLaser();
-		ColorUpdate();
+		if (!LevelCtrl.Instance.isPaused) {
+			ReplaceLaser();
+			ColorUpdate();
+		}
 	}
 
 	// 게임 화면을 벗어났을 때

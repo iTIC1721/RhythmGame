@@ -31,8 +31,10 @@ public class EnemyCtrl : MonoBehaviour {
 
 	// 매 프레임마다 실행
 	private void Update() {
-		ReplaceEnemy();
-		ColorUpdate();
+		if (!LevelCtrl.Instance.isPaused) {
+			ReplaceEnemy();
+			ColorUpdate();
+		}
 	}
 
 	// 게임 화면을 벗어났을 때

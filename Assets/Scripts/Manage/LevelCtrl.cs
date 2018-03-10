@@ -121,6 +121,10 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	[NonSerialized]
 	public bool playing = true;
 
+	// 일시정지 여부 확인용 변수
+	[NonSerialized]
+	public bool isPaused = false;
+
 	// 오브젝트가 생성되었을 때 실행
 	private void Awake() {
 		// 플레이어 오브젝트의 스프라이트 렌더러를 가져옴
@@ -155,6 +159,24 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		playing = true;
 		// 하트 초기화
 		HeartText.Instance.TextUpdate();
+	}
+
+	/// <summary>
+	/// 게임 일시정지
+	/// </summary>
+	public void PauseResume() {
+		if (playing) {
+			if (!isPaused) {
+				isPaused = true;
+				audioSource.Pause();
+				Time.timeScale = 0;
+			}
+			else {
+				isPaused = false;
+				audioSource.UnPause();
+				Time.timeScale = 1;
+			}
+		}
 	}
 
 	/// <summary>

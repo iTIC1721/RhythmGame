@@ -34,9 +34,11 @@ public class PlayerCtrl : MonoBehaviour {
 
 	// 매 프레임마다 실행
 	private void Update() {
-		MoveData();
-		ReplacePlayer();
-		Invincible();
+		if (!LevelCtrl.Instance.isPaused) {
+			MoveData();
+			ReplacePlayer();
+			Invincible();
+		}
 	}
 
 	// 플레이어 움직임 설정

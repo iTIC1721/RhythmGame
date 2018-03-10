@@ -460,6 +460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   editorContent: {fileID: 2057218341}
   scrollbar: {fileID: 1391407186}
+  sizeRateText: {fileID: 2013831496}
   commandPrefab: {fileID: 1837936804979976, guid: 893f4584db1069b4d97c2eea567b923b,
     type: 2}
 --- !u!1 &628204230
@@ -957,6 +958,7 @@ GameObject:
   - component: {fileID: 2013831495}
   - component: {fileID: 2013831497}
   - component: {fileID: 2013831496}
+  - component: {fileID: 2013831498}
   m_Layer: 5
   m_Name: SizeRateText
   m_TagString: Untagged
@@ -994,7 +996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1021,6 +1023,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2013831494}
+--- !u!114 &2013831498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2013831494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f8022c4699f48c4bbc9960616ed667d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2057218340
 GameObject:
   m_ObjectHideFlags: 0
