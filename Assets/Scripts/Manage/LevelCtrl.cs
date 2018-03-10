@@ -91,7 +91,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	#endregion
 
 	#region Methods
-	private float GetLerpTime(LerpType lerpType, int level, float currentTime, float time) {
+	public float GetLerpTime(LerpType lerpType, int level, float currentTime, float time) {
 		switch (lerpType) {
 			case LerpType.None:
 				return currentTime / time;
@@ -179,7 +179,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				isPaused = false;
 				pauseUI.SetActive(false);
 				audioSource.UnPause();
-				Time.timeScale = 1;
+				Time.timeScale = 1f;
 			}
 		}
 	}
