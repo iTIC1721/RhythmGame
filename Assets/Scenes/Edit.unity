@@ -460,7 +460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   editorContent: {fileID: 2057218341}
   scrollbar: {fileID: 1391407186}
-  commandPrefab: {fileID: 1529155537316792, guid: a2536634c2a8fbc48b75e310e4946280,
+  commandPrefab: {fileID: 1837936804979976, guid: 893f4584db1069b4d97c2eea567b923b,
     type: 2}
 --- !u!1 &628204230
 GameObject:

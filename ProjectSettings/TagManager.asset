@@ -7,7 +7,7 @@ TagManager:
   - Enemy
   - Laser
   - Heart
-  - Pooled
+  - Command
   layers:
   - Default
   - TransparentFX
