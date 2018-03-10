@@ -34,7 +34,11 @@ public class CommandData : MonoBehaviour {
 	[NonSerialized]
 	public ColorDataList colorDataList = ColorDataList.Back;
 	[NonSerialized]
-	public Color color = Color.black;
+	public float r = 0;
+	[NonSerialized]
+	public float g = 0;
+	[NonSerialized]
+	public float b = 0;
 	[NonSerialized]
 	public LerpType lerpType = LerpType.None;
 	[NonSerialized]

@@ -22,6 +22,27 @@ public class CommandSettingData : MonoBehaviour {
 	public InputField timeInput1;
 	public Toggle followToggle2;
 
+	public Dropdown colorTypeDropDown;
+	public InputField rInput;
+	public InputField gInput;
+	public InputField bInput;
+	public InputField timeInput2;
+	public Dropdown modeDropDown1;
+	public InputField levelInput1;
+
+	public InputField widthInput;
+	public InputField heightInput;
+
+	public InputField angleInput;
+	public InputField timeInput3;
+	public Dropdown modeDropDown2;
+	public InputField levelInput2;
+
+	public InputField rateInput;
+	public InputField timeInput4;
+	public Dropdown modeDropDown3;
+	public InputField levelInput3;
+
 	private CommandData commandData;
 
 	private void ReloadTabs(int tab) {
@@ -69,16 +90,16 @@ public class CommandSettingData : MonoBehaviour {
 				ReloadTabs(1);
 				switch (commandData.spawnDir) {
 					case Direction.Right:
-						dirDropDown2.value = 0;
+						colorTypeDropDown.value = 0;
 						break;
 					case Direction.Down:
-						dirDropDown2.value = 1;
+						colorTypeDropDown.value = 1;
 						break;
 					case Direction.Left:
-						dirDropDown2.value = 2;
+						colorTypeDropDown.value = 2;
 						break;
 					case Direction.Up:
-						dirDropDown2.value = 3;
+						colorTypeDropDown.value = 3;
 						break;
 				}
 				spawnPosInput2.text = commandData.spawnPos.ToString();
@@ -88,18 +109,142 @@ public class CommandSettingData : MonoBehaviour {
 
 			case CommandType.ChangeColor:
 				typeDropDown.value = 2;
+				ReloadTabs(2);
+				switch (commandData.colorDataList) {
+					case ColorDataList.Back:
+						dirDropDown2.value = 0;
+						break;
+					case ColorDataList.Level:
+						dirDropDown2.value = 1;
+						break;
+					case ColorDataList.Enemy:
+						dirDropDown2.value = 2;
+						break;
+				}
+				rInput.text = commandData.r.ToString();
+				gInput.text = commandData.g.ToString();
+				bInput.text = commandData.b.ToString();
+				timeInput2.text = commandData.time.ToString();
+				switch (commandData.lerpType) {
+					case LerpType.None:
+						modeDropDown1.value = 0;
+						break;
+					case LerpType.EaseIn:
+						modeDropDown1.value = 1;
+						break;
+					case LerpType.EaseOut:
+						modeDropDown1.value = 2;
+						break;
+					case LerpType.SmoothStep:
+						modeDropDown1.value = 3;
+						break;
+					case LerpType.InvSmoothStep:
+						modeDropDown1.value = 4;
+						break;
+					case LerpType.Bounce:
+						modeDropDown1.value = 5;
+						break;
+					case LerpType.TriWave:
+						modeDropDown1.value = 6;
+						break;
+					case LerpType.SinWave:
+						modeDropDown1.value = 7;
+						break;
+					case LerpType.SqrWave:
+						modeDropDown1.value = 8;
+						break;
+					case LerpType.SawWave:
+						modeDropDown1.value = 9;
+						break;
+				}
+				levelInput1.text = commandData.level.ToString();
 				break;
 
 			case CommandType.ResizeLevel:
 				typeDropDown.value = 3;
+				ReloadTabs(3);
+				widthInput.text = commandData.width.ToString();
+				heightInput.text = commandData.height.ToString();
 				break;
 
 			case CommandType.RotateLevel:
 				typeDropDown.value = 4;
+				ReloadTabs(4);
+				angleInput.text = commandData.angle.ToString();
+				timeInput3.text = commandData.time.ToString();
+				switch (commandData.lerpType) {
+					case LerpType.None:
+						modeDropDown2.value = 0;
+						break;
+					case LerpType.EaseIn:
+						modeDropDown2.value = 1;
+						break;
+					case LerpType.EaseOut:
+						modeDropDown2.value = 2;
+						break;
+					case LerpType.SmoothStep:
+						modeDropDown2.value = 3;
+						break;
+					case LerpType.InvSmoothStep:
+						modeDropDown2.value = 4;
+						break;
+					case LerpType.Bounce:
+						modeDropDown2.value = 5;
+						break;
+					case LerpType.TriWave:
+						modeDropDown2.value = 6;
+						break;
+					case LerpType.SinWave:
+						modeDropDown2.value = 7;
+						break;
+					case LerpType.SqrWave:
+						modeDropDown2.value = 8;
+						break;
+					case LerpType.SawWave:
+						modeDropDown2.value = 9;
+						break;
+				}
+				levelInput2.text = commandData.level.ToString();
 				break;
 
 			case CommandType.EnlargeLevel:
 				typeDropDown.value = 5;
+				ReloadTabs(5);
+				rateInput.text = commandData.rate.ToString();
+				timeInput4.text = commandData.time.ToString();
+				switch (commandData.lerpType) {
+					case LerpType.None:
+						modeDropDown3.value = 0;
+						break;
+					case LerpType.EaseIn:
+						modeDropDown3.value = 1;
+						break;
+					case LerpType.EaseOut:
+						modeDropDown3.value = 2;
+						break;
+					case LerpType.SmoothStep:
+						modeDropDown3.value = 3;
+						break;
+					case LerpType.InvSmoothStep:
+						modeDropDown3.value = 4;
+						break;
+					case LerpType.Bounce:
+						modeDropDown3.value = 5;
+						break;
+					case LerpType.TriWave:
+						modeDropDown3.value = 6;
+						break;
+					case LerpType.SinWave:
+						modeDropDown3.value = 7;
+						break;
+					case LerpType.SqrWave:
+						modeDropDown3.value = 8;
+						break;
+					case LerpType.SawWave:
+						modeDropDown3.value = 9;
+						break;
+				}
+				levelInput3.text = commandData.level.ToString();
 				break;
 
 			case CommandType.MoveLevel:
@@ -144,7 +289,7 @@ public class CommandSettingData : MonoBehaviour {
 			commandData.spawnPos = int.Parse(spawnPos);
 		}
 		catch (Exception) {
-			Debug.LogWarning("Can't Parse " + spawnPos + " to integer");
+			Debug.LogWarning("Can't Parse " + spawnPos + " to integer number");
 		}
 	}
 
@@ -180,6 +325,96 @@ public class CommandSettingData : MonoBehaviour {
 		}
 		catch (Exception) {
 			Debug.LogWarning("Can't Parse " + time + " to demial number");
+		}
+	}
+
+	public void UpdateColorType(int colortype) {
+		try {
+			commandData.colorDataList = (ColorDataList)Enum.Parse(typeof(ColorDataList), colortype.ToString());
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + colortype + " to ColorDataList");
+		}
+	}
+
+	public void UpdateR(string r) {
+		try {
+			commandData.r = float.Parse(r);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + r + " to demial number");
+		}
+	}
+
+	public void UpdateG(string g) {
+		try {
+			commandData.g = float.Parse(g);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + g + " to demial number");
+		}
+	}
+
+	public void UpdateB(string b) {
+		try {
+			commandData.b = float.Parse(b);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + b + " to demial number");
+		}
+	}
+
+	public void UpdateLerpType(int lerptype) {
+		try {
+			commandData.lerpType = (LerpType)Enum.Parse(typeof(LerpType), lerptype.ToString());
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + lerptype + " to LerpType");
+		}
+	}
+
+	public void UpdateLevel(string level) {
+		try {
+			commandData.level = int.Parse(level);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + level + " to integer number");
+		}
+	}
+
+	public void UpdateWidth(string width) {
+		try {
+			commandData.width = int.Parse(width);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + width + " to integer number");
+		}
+	}
+
+	public void UpdateHeight(string height) {
+		try {
+			commandData.height = int.Parse(height);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + height + " to integer number");
+		}
+	}
+
+	public void UpdateAngle(string angle) {
+		try {
+			commandData.angle = float.Parse(angle);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + angle + " to demial number");
+		}
+	}
+
+	public void UpdateRate(string rate) {
+		try {
+			commandData.rate = float.Parse(rate);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + rate + " to demial number");
 		}
 	}
 }

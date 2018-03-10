@@ -115,9 +115,9 @@ public class ColorData {
 		}		
 	}
 
-	public ColorData(ColorDataList colorData, float activetime, float r, float g, float b, float time, LerpType lerpType, int level) {
+	public ColorData(ColorDataList colorData, float activeTime, float r, float g, float b, float time, LerpType lerpType, int level) {
 		this.colorData = colorData;
-		this.activeTime = activetime;
+		this.activeTime = activeTime;
 		this.r = r;
 		this.g = g;
 		this.b = b;
