@@ -18,6 +18,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	public GameObject mainCamera;
 	// 플레이어
 	public GameObject player;
+	// 일시정지 화면
+	public GameObject pauseUI;
 	#endregion
 	
 	// 상수
@@ -37,7 +39,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	// 메인 카메라 오브젝트의 Camera 컴포넌트를 받아오기 위한 변수
 	private Camera cameraComp;
 	// 오디오 플레이어 컴포넌트를 받아오기 위한 변수
-	private AudioSource audioSource;
+	[NonSerialized]
+	public AudioSource audioSource;
 	#endregion
 
 	// 부드러운 변환용
@@ -168,11 +171,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		if (playing) {
 			if (!isPaused) {
 				isPaused = true;
+				pauseUI.SetActive(true);
 				audioSource.Pause();
 				Time.timeScale = 0;
 			}
 			else {
 				isPaused = false;
+				pauseUI.SetActive(false);
 				audioSource.UnPause();
 				Time.timeScale = 1;
 			}
