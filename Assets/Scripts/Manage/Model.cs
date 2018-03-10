@@ -44,6 +44,19 @@ public enum LerpType {
 	SawWave
 }
 
+public enum CommandType {
+	SpawnEnemy,
+	SpawnLaser,
+	ChangeColor,
+	ResizeLevel,
+	RotateLevel,
+	EnlargeLevel,
+	MoveLevel,
+	ReplacePlayer,
+	PlayerVisible,
+	Kill
+}
+
 public static class Model {
 	public static string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\RhythmGame\";
 }

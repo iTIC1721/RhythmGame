@@ -957,11 +957,11 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// 현재 존재하는 특정 엔티티를 전부 제거한다.
 	/// </summary>
 	/// <param name="tag">제거할 엔티티 태그</param>
-	public void KillEntity(string tag) {
+	public void KillEntity(string entityTag) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 특정 태그를 가진 장애물을 제거한다.
-			GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
+			GameObject[] objects = GameObject.FindGameObjectsWithTag(entityTag);
 			for (int i = 0; i < objects.Length; i++) {
 				Destroy(objects[i]);
 			}

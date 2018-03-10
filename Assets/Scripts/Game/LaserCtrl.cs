@@ -93,18 +93,14 @@ public class LaserCtrl : MonoBehaviour {
 
 		sprRen.color = new Color(enemyColor.r, enemyColor.g, enemyColor.b, alpha);
 
+		// 투명도 변화
 		if (alpha > stopCollide) {
+			alpha -= (Time.deltaTime / time);
 			collisionEnabled = true;
 		}
-		else {
-			collisionEnabled = false;
-		}
-
-		alpha = Mathf.Lerp(1f, 0f, tempTime);
-
-		// 투명도 변화
-		if (alpha > 0f) {
+		else if (alpha > 0f) {
 			alpha -= (Time.deltaTime / time);
+			collisionEnabled = false;
 		}
 		else {
 			alpha = 0;
