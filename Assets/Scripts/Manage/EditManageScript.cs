@@ -15,6 +15,14 @@ public class EditManageScript : MonoBehaviour {
 
 	private Color textColor;
 
+	[System.NonSerialized]
+	public GameObject commandSettingObj;
+
+	private void Awake() {
+		commandSettingObj = GameObject.FindGameObjectWithTag("CommandSetting");
+		commandSettingObj.SetActive(false);
+	}
+
 	private void Update() {
 		MouseScroll();
 		LeftRightMove();

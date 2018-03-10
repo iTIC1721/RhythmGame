@@ -9,6 +9,7 @@ TagManager:
   - Heart
   - Command
   - CommandSetting
+  - EditManager
   layers:
   - Default
   - TransparentFX

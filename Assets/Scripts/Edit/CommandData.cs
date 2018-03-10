@@ -61,12 +61,14 @@ public class CommandData : MonoBehaviour {
 	public string entityTag = "Enemy";
 	#endregion
 
+	private EditManageScript editManage;
 	private GameObject commandSettingObj;
 
 	private CommandSettingData data;
 
 	private void Awake() {
-		commandSettingObj = GameObject.FindGameObjectWithTag("CommandSetting");
+		editManage = GameObject.FindGameObjectWithTag("EditManager").GetComponent<EditManageScript>();
+		commandSettingObj = editManage.commandSettingObj;
 		data = commandSettingObj.GetComponent<CommandSettingData>();
 	}
 
@@ -75,6 +77,9 @@ public class CommandData : MonoBehaviour {
 	}
 
 	public void OpenSetting() {
+		if (!commandSettingObj.activeSelf) 
+			commandSettingObj.SetActive(true);
+
 		data.commandObj = gameObject;
 		data.Load();
 	}
