@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CommandData : MonoBehaviour, IDragHandler {
 
@@ -73,9 +74,12 @@ public class CommandData : MonoBehaviour, IDragHandler {
 	private CommandSettingData data;
 	private bool clicked;
 
+	public Image[] imageComps;
+
 	private void Awake() {
 		commandSettingObj = EditManageScript.Instance.commandSettingObj;
 		data = commandSettingObj.GetComponent<CommandSettingData>();
+		imageComps = gameObject.GetComponentsInChildren<Image>(true);
 	}
 
 	private void Start() {

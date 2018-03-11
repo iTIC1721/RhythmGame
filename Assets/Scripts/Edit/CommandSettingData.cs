@@ -100,6 +100,9 @@ public class CommandSettingData : MonoBehaviour {
 				veloInput.text = commandData.velo.ToString();
 				isHeartToggle.isOn = commandData.isHeart;
 				followToggle1.isOn = commandData.follow;
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(1, 0, 0);
+				}
 				break;
 
 			case CommandType.SpawnLaser:
@@ -122,6 +125,9 @@ public class CommandSettingData : MonoBehaviour {
 				spawnPosInput2.text = commandData.spawnPos.ToString();
 				timeInput1.text = commandData.time.ToString();
 				followToggle2.isOn = commandData.follow;
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(1, 0.51f, 0);
+				}
 				break;
 
 			case CommandType.ChangeColor:
@@ -175,6 +181,9 @@ public class CommandSettingData : MonoBehaviour {
 						break;
 				}
 				levelInput1.text = commandData.level.ToString();
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(1, 1, 0);
+				}
 				break;
 
 			case CommandType.ResizeLevel:
@@ -182,6 +191,9 @@ public class CommandSettingData : MonoBehaviour {
 				ReloadTabs(3);
 				widthInput.text = commandData.width.ToString();
 				heightInput.text = commandData.height.ToString();
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(0.25f, 0.8f, 0.45f);
+				}
 				break;
 
 			case CommandType.RotateLevel:
@@ -222,6 +234,9 @@ public class CommandSettingData : MonoBehaviour {
 						break;
 				}
 				levelInput2.text = commandData.level.ToString();
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(0, 0.5f, 0.15f);
+				}
 				break;
 
 			case CommandType.EnlargeLevel:
@@ -262,6 +277,9 @@ public class CommandSettingData : MonoBehaviour {
 						break;
 				}
 				levelInput3.text = commandData.level.ToString();
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(0, 0.6f, 0.75f);
+				}
 				break;
 
 			case CommandType.MoveLevel:
@@ -303,6 +321,9 @@ public class CommandSettingData : MonoBehaviour {
 						break;
 				}
 				levelInput4.text = commandData.level.ToString();
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(0, 0.32f, 0.65f);
+				}
 				break;
 
 			case CommandType.ReplacePlayer:
@@ -310,12 +331,18 @@ public class CommandSettingData : MonoBehaviour {
 				ReloadTabs(7);
 				playerXInput.text = commandData.playerX.ToString();
 				playerYInput.text = commandData.playerY.ToString();
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(0, 0.15f, 0.58f);
+				}
 				break;
 
 			case CommandType.PlayerVisible:
 				typeDropDown.value = 8;
 				ReloadTabs(8);
 				visibleToggle.isOn = commandData.visible;
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(0.6f, 0.07f, 0.55f);
+				}
 				break;
 
 			case CommandType.Kill:
@@ -334,6 +361,9 @@ public class CommandSettingData : MonoBehaviour {
 					default:
 						tagDropDown.value = 0;
 						break;
+				}
+				foreach (var item in commandData.imageComps) {
+					item.color = new Color(1f, 0.01f, 0.41f);
 				}
 				break;
 		}
