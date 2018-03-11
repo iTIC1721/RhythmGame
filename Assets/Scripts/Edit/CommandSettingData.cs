@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CommandSettingData : MonoBehaviour {
 
+	[NonSerialized]
+	public GameObject preCommandObj = null;
+	[NonSerialized]
 	public GameObject commandObj;
 
 	public Copy copyData;
@@ -59,6 +63,9 @@ public class CommandSettingData : MonoBehaviour {
 
 	public Dropdown tagDropDown;
 
+	public Text tipText;
+	public List<string> tips = new List<string>();
+
 	private CommandData commandData;
 
 	private void ReloadTabs(int tab) {
@@ -79,6 +86,7 @@ public class CommandSettingData : MonoBehaviour {
 		activeTimeInput.text = commandData.activeTime.ToString();
 		switch (commandData.type) {
 			case CommandType.SpawnEnemy:
+				#region SpawnEnemy
 				typeDropDown.value = 0;
 				ReloadTabs(0);
 				switch (commandData.spawnDir) {
@@ -103,9 +111,10 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(1, 0, 0);
 				}
+				#endregion
 				break;
-
 			case CommandType.SpawnLaser:
+				#region SpawnLaser
 				typeDropDown.value = 1;
 				ReloadTabs(1);
 				switch (commandData.spawnDir) {
@@ -128,9 +137,10 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(1, 0.51f, 0);
 				}
+				#endregion
 				break;
-
 			case CommandType.ChangeColor:
+				#region ChangeColor
 				typeDropDown.value = 2;
 				ReloadTabs(2);
 				switch (commandData.colorDataList) {
@@ -184,9 +194,10 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(1, 1, 0);
 				}
+				#endregion
 				break;
-
 			case CommandType.ResizeLevel:
+				#region ResizeLevel
 				typeDropDown.value = 3;
 				ReloadTabs(3);
 				widthInput.text = commandData.width.ToString();
@@ -194,9 +205,10 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0.25f, 0.8f, 0.45f);
 				}
+				#endregion
 				break;
-
 			case CommandType.RotateLevel:
+				#region RotateLevel
 				typeDropDown.value = 4;
 				ReloadTabs(4);
 				angleInput.text = commandData.angle.ToString();
@@ -237,9 +249,10 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0, 0.5f, 0.15f);
 				}
+				#endregion
 				break;
-
 			case CommandType.EnlargeLevel:
+				#region EnlargeLevel
 				typeDropDown.value = 5;
 				ReloadTabs(5);
 				rateInput.text = commandData.rate.ToString();
@@ -280,9 +293,10 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0, 0.6f, 0.75f);
 				}
+				#endregion
 				break;
-
 			case CommandType.MoveLevel:
+				#region MoveLevel
 				typeDropDown.value = 6;
 				ReloadTabs(6);
 				xInput.text = commandData.x.ToString();
@@ -324,9 +338,10 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0, 0.32f, 0.65f);
 				}
+				#endregion
 				break;
-
 			case CommandType.ReplacePlayer:
+				#region ReplacePlayer
 				typeDropDown.value = 7;
 				ReloadTabs(7);
 				playerXInput.text = commandData.playerX.ToString();
@@ -334,18 +349,20 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0, 0.15f, 0.58f);
 				}
+				#endregion
 				break;
-
 			case CommandType.PlayerVisible:
+				#region PlayerVisible
 				typeDropDown.value = 8;
 				ReloadTabs(8);
 				visibleToggle.isOn = commandData.visible;
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0.6f, 0.07f, 0.55f);
 				}
+				#endregion
 				break;
-
 			case CommandType.Kill:
+				#region Kill
 				typeDropDown.value = 9;
 				ReloadTabs(9);
 				switch (commandData.entityTag) {
@@ -365,6 +382,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(1f, 0.01f, 0.41f);
 				}
+				#endregion
 				break;
 		}
 	}
@@ -374,18 +392,18 @@ public class CommandSettingData : MonoBehaviour {
 		if (canParse) {
 			if (commandData.activeTime <= EditManageScript.Instance.musicLength) {
 				if (commandData.activeTime > 0) {
-					commandObj.transform.position = new Vector3((commandData.activeTime / EditManageScript.Instance.musicLength) * 1024.0f, 150, 0);
+					commandObj.transform.localPosition = new Vector3(((commandData.activeTime / EditManageScript.Instance.musicLength) * 1024.0f) - 512, 0, 0);
 				}
 				else {
 					commandData.activeTime = 0;
 					activeTimeInput.text = commandData.activeTime.ToString();
-					commandObj.transform.position = new Vector3(0, 150, 0);
+					commandObj.transform.localPosition = new Vector3(-512, 0, 0);
 				}
 			}
 			else {
 				commandData.activeTime = EditManageScript.Instance.musicLength;
 				activeTimeInput.text = commandData.activeTime.ToString();
-				commandObj.transform.position = new Vector3(1024, 150, 0);
+				commandObj.transform.localPosition = new Vector3(512, 0, 0);
 			}
 		}
 		else {
@@ -744,5 +762,23 @@ public class CommandSettingData : MonoBehaviour {
 				break;
 		}
 		commandData.OpenSetting();
+	}
+
+	public void Delete() {
+		Destroy(commandObj);
+		commandData = null;
+		gameObject.SetActive(false);
+	}
+
+	public void UpdateTip() {
+		if (preCommandObj != commandObj) {
+			if (tips.Count > 0) {
+				tipText.text = tips[UnityEngine.Random.Range(0, tips.Count)];
+				tipText.text = tipText.text.Replace("\\n", "\n");
+			}
+			else {
+				tipText.text = string.Empty;
+			}
+		}
 	}
 }

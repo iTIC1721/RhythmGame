@@ -83,7 +83,7 @@ public class CommandData : MonoBehaviour, IDragHandler {
 	}
 
 	private void Start() {
-		activeTime = (gameObject.transform.position.x / 1024.0f) * EditManageScript.Instance.musicLength;
+		activeTime = ((gameObject.transform.localPosition.x + 512) / 1024) * EditManageScript.Instance.musicLength;
 		OpenSetting();
 	}
 
@@ -93,11 +93,15 @@ public class CommandData : MonoBehaviour, IDragHandler {
 
 		data.commandObj = gameObject;
 		data.Load();
+		data.UpdateTip();
+		data.preCommandObj = gameObject;
 	}
 
 	public void OnDrag(PointerEventData eventData) {
-		gameObject.transform.position = new Vector3(Input.mousePosition.x, 150, 0);
-		activeTime = (Input.mousePosition.x / 1024) * EditManageScript.Instance.musicLength;
-		OpenSetting();
+		if (Input.mousePosition.x >= 0 && Input.mousePosition.x <= 1024) {
+			gameObject.transform.position = new Vector3(Input.mousePosition.x, 150, 0);
+			activeTime = ((gameObject.transform.localPosition.x + 512) / 1024) * EditManageScript.Instance.musicLength;
+			OpenSetting();
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class EditManageScript : Singleton<EditManageScript> {
@@ -13,7 +14,8 @@ public class EditManageScript : Singleton<EditManageScript> {
 	private float sizeRate = 1.12f;
 	private float contentMoveSpeed = 0.04f;
 
-	private float size = 1f;
+	[NonSerialized]
+	public float size = 1f;
 
 	private Color textColor;
 
