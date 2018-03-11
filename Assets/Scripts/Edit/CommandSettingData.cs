@@ -15,6 +15,7 @@ public class CommandSettingData : MonoBehaviour {
 	public GameObject[] tabs = new GameObject[10];
 
 	public Dropdown typeDropDown;
+	public Image typeColorImage;
 	public InputField activeTimeInput;
 
 	public Dropdown dirDropDown1;
@@ -111,6 +112,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(1, 0, 0);
 				}
+				typeColorImage.color = new Color(1, 0, 0);
 				#endregion
 				break;
 			case CommandType.SpawnLaser:
@@ -137,6 +139,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(1, 0.51f, 0);
 				}
+				typeColorImage.color = new Color(1, 0.51f, 0);
 				#endregion
 				break;
 			case CommandType.ChangeColor:
@@ -192,8 +195,9 @@ public class CommandSettingData : MonoBehaviour {
 				}
 				levelInput1.text = commandData.level.ToString();
 				foreach (var item in commandData.imageComps) {
-					item.color = new Color(1, 1, 0);
+					item.color = new Color(1, 0.9f, 0);
 				}
+				typeColorImage.color = new Color(1, 0.9f, 0);
 				#endregion
 				break;
 			case CommandType.ResizeLevel:
@@ -205,6 +209,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0.25f, 0.8f, 0.45f);
 				}
+				typeColorImage.color = new Color(0.25f, 0.8f, 0.45f);
 				#endregion
 				break;
 			case CommandType.RotateLevel:
@@ -249,6 +254,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0, 0.5f, 0.15f);
 				}
+				typeColorImage.color = new Color(0, 0.5f, 0.15f);
 				#endregion
 				break;
 			case CommandType.EnlargeLevel:
@@ -293,6 +299,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0, 0.6f, 0.75f);
 				}
+				typeColorImage.color = new Color(0, 0.6f, 0.75f);
 				#endregion
 				break;
 			case CommandType.MoveLevel:
@@ -338,6 +345,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0, 0.32f, 0.65f);
 				}
+				typeColorImage.color = new Color(0, 0.32f, 0.65f);
 				#endregion
 				break;
 			case CommandType.ReplacePlayer:
@@ -349,6 +357,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0, 0.15f, 0.58f);
 				}
+				typeColorImage.color = new Color(0, 0.15f, 0.58f);
 				#endregion
 				break;
 			case CommandType.PlayerVisible:
@@ -359,6 +368,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(0.6f, 0.07f, 0.55f);
 				}
+				typeColorImage.color = new Color(0.6f, 0.07f, 0.55f);
 				#endregion
 				break;
 			case CommandType.Kill:
@@ -382,6 +392,7 @@ public class CommandSettingData : MonoBehaviour {
 				foreach (var item in commandData.imageComps) {
 					item.color = new Color(1f, 0.01f, 0.41f);
 				}
+				typeColorImage.color = new Color(1f, 0.01f, 0.41f);
 				#endregion
 				break;
 		}
