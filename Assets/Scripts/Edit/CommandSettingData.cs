@@ -6,6 +6,8 @@ public class CommandSettingData : MonoBehaviour {
 
 	public GameObject commandObj;
 
+	public Copy copyData;
+
 	public GameObject[] tabs = new GameObject[10];
 
 	public Dropdown typeDropDown;
@@ -571,5 +573,146 @@ public class CommandSettingData : MonoBehaviour {
 				Debug.LogWarning("Unexpected Tag Index : " + tag);
 				break;
 		}
+	}
+
+	public void Copy() {
+		switch (commandData.type) {
+			case CommandType.SpawnEnemy:
+				copyData.type = CommandType.SpawnEnemy;
+				copyData.spawnDir = commandData.spawnDir;
+				copyData.spawnPos = commandData.spawnPos;
+				copyData.speed = commandData.speed;
+				copyData.velo = commandData.velo;
+				copyData.isHeart = commandData.isHeart;
+				copyData.follow = commandData.follow;
+				break;
+			case CommandType.SpawnLaser:
+				copyData.type = CommandType.SpawnLaser;
+				copyData.spawnDir = commandData.spawnDir;
+				copyData.spawnPos = commandData.spawnPos;
+				copyData.time = commandData.time;
+				copyData.follow = commandData.follow;
+				break;
+			case CommandType.ChangeColor:
+				copyData.type = CommandType.ChangeColor;
+				copyData.r = commandData.r;
+				copyData.g = commandData.g;
+				copyData.b = commandData.b;
+				copyData.time = commandData.time;
+				copyData.lerpType = commandData.lerpType;
+				copyData.level = commandData.level;
+				break;
+			case CommandType.ResizeLevel:
+				copyData.type = CommandType.ResizeLevel;
+				copyData.width = commandData.width;
+				copyData.height = commandData.height;
+				break;
+			case CommandType.RotateLevel:
+				copyData.type = CommandType.RotateLevel;
+				copyData.angle = commandData.angle;
+				copyData.time = commandData.time;
+				copyData.lerpType = commandData.lerpType;
+				copyData.level = commandData.level;
+				break;
+			case CommandType.EnlargeLevel:
+				copyData.type = CommandType.EnlargeLevel;
+				copyData.rate = commandData.rate;
+				copyData.time = commandData.time;
+				copyData.lerpType = commandData.lerpType;
+				copyData.level = commandData.level;
+				break;
+			case CommandType.MoveLevel:
+				copyData.type = CommandType.MoveLevel;
+				copyData.x = commandData.x;
+				copyData.y = commandData.y;
+				copyData.time = commandData.time;
+				copyData.lerpType = commandData.lerpType;
+				copyData.level = commandData.level;
+				break;
+			case CommandType.ReplacePlayer:
+				copyData.type = CommandType.ReplacePlayer;
+				copyData.playerX = commandData.playerX;
+				copyData.playerY = commandData.playerY;
+				break;
+			case CommandType.PlayerVisible:
+				copyData.type = CommandType.PlayerVisible;
+				copyData.visible = commandData.visible;
+				break;
+			case CommandType.Kill:
+				copyData.type = CommandType.Kill;
+				copyData.entityTag = commandData.entityTag;
+				break;
+		}
+	}
+
+	public void Paste() {
+		switch (copyData.type) {
+			case CommandType.SpawnEnemy:
+				commandData.type = CommandType.SpawnEnemy;
+				commandData.spawnDir = copyData.spawnDir;
+				commandData.spawnPos = copyData.spawnPos;
+				commandData.speed = copyData.speed;
+				commandData.velo = copyData.velo;
+				commandData.isHeart = copyData.isHeart;
+				commandData.follow = copyData.follow;
+				break;
+			case CommandType.SpawnLaser:
+				commandData.type = CommandType.SpawnLaser;
+				commandData.spawnDir = copyData.spawnDir;
+				commandData.spawnPos = copyData.spawnPos;
+				commandData.time = copyData.time;
+				commandData.follow = copyData.follow;
+				break;
+			case CommandType.ChangeColor:
+				commandData.type = CommandType.ChangeColor;
+				commandData.r = copyData.r;
+				commandData.g = copyData.g;
+				commandData.b = copyData.b;
+				commandData.time = copyData.time;
+				commandData.lerpType = copyData.lerpType;
+				commandData.level = copyData.level;
+				break;
+			case CommandType.ResizeLevel:
+				commandData.type = CommandType.ResizeLevel;
+				commandData.width = copyData.width;
+				commandData.height = copyData.height;
+				break;
+			case CommandType.RotateLevel:
+				commandData.type = CommandType.RotateLevel;
+				commandData.angle = copyData.angle;
+				commandData.time = copyData.time;
+				commandData.lerpType = copyData.lerpType;
+				commandData.level = copyData.level;
+				break;
+			case CommandType.EnlargeLevel:
+				commandData.type = CommandType.EnlargeLevel;
+				commandData.rate = copyData.rate;
+				commandData.time = copyData.time;
+				commandData.lerpType = copyData.lerpType;
+				commandData.level = copyData.level;
+				break;
+			case CommandType.MoveLevel:
+				commandData.type = CommandType.MoveLevel;
+				commandData.x = copyData.x;
+				commandData.y = copyData.y;
+				commandData.time = copyData.time;
+				commandData.lerpType = copyData.lerpType;
+				commandData.level = copyData.level;
+				break;
+			case CommandType.ReplacePlayer:
+				commandData.type = CommandType.ReplacePlayer;
+				commandData.playerX = copyData.playerX;
+				commandData.playerY = copyData.playerY;
+				break;
+			case CommandType.PlayerVisible:
+				commandData.type = CommandType.PlayerVisible;
+				commandData.visible = copyData.visible;
+				break;
+			case CommandType.Kill:
+				commandData.type = CommandType.Kill;
+				commandData.entityTag = copyData.entityTag;
+				break;
+		}
+		commandData.OpenSetting();
 	}
 }
