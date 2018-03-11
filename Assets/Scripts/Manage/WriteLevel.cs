@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class WriteLevel : MonoBehaviour {
 	public string musicName = "Music";
 	#endregion
 
+	public GameObject editorContent;
+
 	XmlDocument doc;
 	XmlElement root;
 
@@ -21,7 +24,7 @@ public class WriteLevel : MonoBehaviour {
 	private void InitialXml() {
 		doc = new XmlDocument();
 		// xml 버전, 인코딩, Standalone
-		XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", "true");
+		XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", "yes");
 		// 해당 정보를 xml에 추가
 		doc.AppendChild(xmlDeclaration);
 		// 루트 생성
@@ -165,6 +168,75 @@ public class WriteLevel : MonoBehaviour {
 		//파일 생성
 		string filePath = Model.folderPath + levelName + ".xml";
 		doc.Save(filePath);
+	}
+	#endregion
+
+	#region SaveMethods
+	public void Save() {
+		InitialXml();
+		GetContents();
+		SaveXml();
+	}
+
+	private void GetContents() {
+		CommandData[] commandDatas = editorContent.GetComponentsInChildren<CommandData>();
+		List<CommandData>[] dataLists = new List<CommandData>[10];
+
+		// 리스트 배열 초기화
+		for (int i = 0; i < 10; i++) {
+			dataLists[i] = new List<CommandData>();
+		}
+
+		// 모든 command들을 종류별로 리스트에 담음
+		foreach (CommandData commandData in commandDatas) {
+			dataLists[(int)commandData.type].Add(commandData);
+		}
+
+		// activeTime 순서대로 정렬
+		foreach (var list in dataLists) {
+			list.Sort(delegate (CommandData A, CommandData B) {
+				if (A.activeTime > B.activeTime) return 1;
+				else if (A.activeTime < B.activeTime) return -1;
+				return 0;
+			});
+		}
+
+		for (int i = 0; i < 10; i++) {
+			foreach (var item in dataLists[i]) {
+				switch (i) {
+					case 0:
+						AddSpawnEnemy(item.activeTime, (int)item.spawnDir, item.spawnPos, item.speed, item.velo, item.isHeart, item.follow);
+						break;
+					case 1:
+						AddSpawnLaser(item.activeTime, (int)item.spawnDir, item.spawnPos, item.time, item.follow);
+						break;
+					case 2:
+						AddColorChange(item.colorDataList, item.activeTime, item.r, item.g, item.b, item.time, item.lerpType, item.level);
+						break;
+					case 3:
+						AddResizeLevel(item.activeTime, item.width, item.height);
+						break;
+					case 4:
+						AddRotateLevel(item.activeTime, item.angle, item.time, item.lerpType, item.level);
+						break;
+					case 5:
+						AddEnlargeLevel(item.activeTime, item.rate, item.time, item.lerpType, item.level);
+						break;
+					case 6:
+						AddMoveLevel(item.activeTime, item.x, item.y, item.time, item.lerpType, item.level);
+						break;
+					case 7:
+						AddReplacePlayer(item.activeTime, item.playerX, item.playerY);
+						break;
+					case 8:
+						AddPlayerVisible(item.activeTime, item.visible);
+						break;
+					case 9:
+						AddKillEntity(item.activeTime, item.tag);
+						break;
+				}
+			}
+		}
 	}
 	#endregion
 }

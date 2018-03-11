@@ -56,9 +56,9 @@ public class Copy : MonoBehaviour {
 	public bool visible = false;
 
 	[NonSerialized]
-	public float playerX = 0;
+	public int playerX = 0;
 	[NonSerialized]
-	public float playerY = 0;
+	public int playerY = 0;
 
 	[NonSerialized]
 	public string entityTag = "Enemy";

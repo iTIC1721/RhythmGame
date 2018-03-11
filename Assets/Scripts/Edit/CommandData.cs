@@ -61,9 +61,9 @@ public class CommandData : MonoBehaviour, IDragHandler {
 	public bool visible = false;
 
 	[NonSerialized]
-	public float playerX = 0;
+	public int playerX = 0;
 	[NonSerialized]
-	public float playerY = 0;
+	public int playerY = 0;
 
 	[NonSerialized]
 	public string entityTag = "Enemy";
@@ -74,6 +74,7 @@ public class CommandData : MonoBehaviour, IDragHandler {
 	private CommandSettingData data;
 	private bool clicked;
 
+	[NonSerialized]
 	public Image[] imageComps;
 
 	private void Awake() {

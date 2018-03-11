@@ -596,7 +596,7 @@ public class CommandSettingData : MonoBehaviour {
 
 	public void UpdatePlayerX(string x) {
 		try {
-			commandData.playerX = float.Parse(x);
+			commandData.playerX = int.Parse(x);
 		}
 		catch (Exception) {
 			Debug.LogWarning("Can't Parse " + x + " to integer number");
@@ -605,7 +605,7 @@ public class CommandSettingData : MonoBehaviour {
 
 	public void UpdatePlayerY(string y) {
 		try {
-			commandData.playerY = float.Parse(y);
+			commandData.playerY = int.Parse(y);
 		}
 		catch (Exception) {
 			Debug.LogWarning("Can't Parse " + y + " to integer number");
@@ -778,6 +778,10 @@ public class CommandSettingData : MonoBehaviour {
 	public void Delete() {
 		Destroy(commandObj);
 		commandData = null;
+		gameObject.SetActive(false);
+	}
+
+	public void OK() {
 		gameObject.SetActive(false);
 	}
 
