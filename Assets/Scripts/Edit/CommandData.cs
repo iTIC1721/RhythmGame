@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class CommandData : MonoBehaviour {
+public class CommandData : MonoBehaviour, IDragHandler {
 
 	#region Publics
 	[NonSerialized]
@@ -59,24 +60,26 @@ public class CommandData : MonoBehaviour {
 	public bool visible = false;
 
 	[NonSerialized]
-	public Vector2 pos = Vector2.zero;
+	public float playerX = 0;
+	[NonSerialized]
+	public float playerY = 0;
 
 	[NonSerialized]
 	public string entityTag = "Enemy";
 	#endregion
-
-	private EditManageScript editManage;
+	
 	private GameObject commandSettingObj;
 
 	private CommandSettingData data;
+	private bool clicked;
 
 	private void Awake() {
-		editManage = GameObject.FindGameObjectWithTag("EditManager").GetComponent<EditManageScript>();
-		commandSettingObj = editManage.commandSettingObj;
+		commandSettingObj = EditManageScript.Instance.commandSettingObj;
 		data = commandSettingObj.GetComponent<CommandSettingData>();
 	}
 
 	private void Start() {
+		activeTime = (gameObject.transform.position.x / 1024.0f) * EditManageScript.Instance.musicLength;
 		OpenSetting();
 	}
 
@@ -86,5 +89,11 @@ public class CommandData : MonoBehaviour {
 
 		data.commandObj = gameObject;
 		data.Load();
+	}
+
+	public void OnDrag(PointerEventData eventData) {
+		gameObject.transform.position = new Vector3(Input.mousePosition.x, 150, 0);
+		activeTime = (Input.mousePosition.x / 1024) * EditManageScript.Instance.musicLength;
+		OpenSetting();
 	}
 }

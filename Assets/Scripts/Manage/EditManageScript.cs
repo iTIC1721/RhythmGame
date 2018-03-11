@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class EditManageScript : MonoBehaviour {
+public class EditManageScript : Singleton<EditManageScript> {
 
 	public RectTransform editorContent;
 	public Scrollbar scrollbar;
 	public Text sizeRateText;
 	public GameObject commandPrefab;
+
+	public float musicLength = 0f;
 
 	private float sizeRate = 1.12f;
 	private float contentMoveSpeed = 0.04f;

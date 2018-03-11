@@ -9,6 +9,7 @@ public class CommandSettingData : MonoBehaviour {
 	public GameObject[] tabs = new GameObject[10];
 
 	public Dropdown typeDropDown;
+	public InputField activeTimeInput;
 
 	public Dropdown dirDropDown1;
 	public InputField spawnPosInput1;
@@ -43,6 +44,19 @@ public class CommandSettingData : MonoBehaviour {
 	public Dropdown modeDropDown3;
 	public InputField levelInput3;
 
+	public InputField xInput;
+	public InputField yInput;
+	public InputField timeInput5;
+	public Dropdown modeDropDown4;
+	public InputField levelInput4;
+
+	public InputField playerXInput;
+	public InputField playerYInput;
+
+	public Toggle visibleToggle;
+
+	public Dropdown tagDropDown;
+
 	private CommandData commandData;
 
 	private void ReloadTabs(int tab) {
@@ -60,6 +74,7 @@ public class CommandSettingData : MonoBehaviour {
 
 	public void Load() {
 		commandData = commandObj.GetComponent<CommandData>();
+		activeTimeInput.text = commandData.activeTime.ToString();
 		switch (commandData.type) {
 			case CommandType.SpawnEnemy:
 				typeDropDown.value = 0;
@@ -249,19 +264,101 @@ public class CommandSettingData : MonoBehaviour {
 
 			case CommandType.MoveLevel:
 				typeDropDown.value = 6;
+				ReloadTabs(6);
+				xInput.text = commandData.x.ToString();
+				yInput.text = commandData.y.ToString();
+				timeInput5.text = commandData.time.ToString();
+				switch (commandData.lerpType) {
+					case LerpType.None:
+						modeDropDown4.value = 0;
+						break;
+					case LerpType.EaseIn:
+						modeDropDown4.value = 1;
+						break;
+					case LerpType.EaseOut:
+						modeDropDown4.value = 2;
+						break;
+					case LerpType.SmoothStep:
+						modeDropDown4.value = 3;
+						break;
+					case LerpType.InvSmoothStep:
+						modeDropDown4.value = 4;
+						break;
+					case LerpType.Bounce:
+						modeDropDown4.value = 5;
+						break;
+					case LerpType.TriWave:
+						modeDropDown4.value = 6;
+						break;
+					case LerpType.SinWave:
+						modeDropDown4.value = 7;
+						break;
+					case LerpType.SqrWave:
+						modeDropDown4.value = 8;
+						break;
+					case LerpType.SawWave:
+						modeDropDown4.value = 9;
+						break;
+				}
+				levelInput4.text = commandData.level.ToString();
 				break;
 
 			case CommandType.ReplacePlayer:
 				typeDropDown.value = 7;
+				ReloadTabs(7);
+				playerXInput.text = commandData.playerX.ToString();
+				playerYInput.text = commandData.playerY.ToString();
 				break;
 
 			case CommandType.PlayerVisible:
 				typeDropDown.value = 8;
+				ReloadTabs(8);
+				visibleToggle.isOn = commandData.visible;
 				break;
 
 			case CommandType.Kill:
 				typeDropDown.value = 9;
+				ReloadTabs(9);
+				switch (commandData.entityTag) {
+					case "Enemy":
+						tagDropDown.value = 0;
+						break;
+					case "Laser":
+						tagDropDown.value = 1;
+						break;
+					case "Heart":
+						tagDropDown.value = 2;
+						break;
+					default:
+						tagDropDown.value = 0;
+						break;
+				}
 				break;
+		}
+	}
+
+	public void UpdateActiveTime(string activetime) {
+		bool canParse = float.TryParse(activetime, out commandData.activeTime);
+		if (canParse) {
+			if (commandData.activeTime <= EditManageScript.Instance.musicLength) {
+				if (commandData.activeTime > 0) {
+					commandObj.transform.position = new Vector3((commandData.activeTime / EditManageScript.Instance.musicLength) * 1024.0f, 150, 0);
+				}
+				else {
+					commandData.activeTime = 0;
+					activeTimeInput.text = commandData.activeTime.ToString();
+					commandObj.transform.position = new Vector3(0, 150, 0);
+				}
+			}
+			else {
+				commandData.activeTime = EditManageScript.Instance.musicLength;
+				activeTimeInput.text = commandData.activeTime.ToString();
+				commandObj.transform.position = new Vector3(1024, 150, 0);
+			}
+		}
+		else {
+			activeTimeInput.text = commandData.activeTime.ToString();
+			Debug.LogWarning("Can't Parse " + activetime + " to demical number");
 		}
 	}
 
@@ -415,6 +512,64 @@ public class CommandSettingData : MonoBehaviour {
 		}
 		catch (Exception) {
 			Debug.LogWarning("Can't Parse " + rate + " to demial number");
+		}
+	}
+
+	public void UpdateX(string x) {
+		try {
+			commandData.x = float.Parse(x);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + x + " to demial number");
+		}
+	}
+
+	public void UpdateY(string y) {
+		try {
+			commandData.y = float.Parse(y);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + y + " to demial number");
+		}
+	}
+
+	public void UpdatePlayerX(string x) {
+		try {
+			commandData.playerX = float.Parse(x);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + x + " to integer number");
+		}
+	}
+
+	public void UpdatePlayerY(string y) {
+		try {
+			commandData.playerY = float.Parse(y);
+		}
+		catch (Exception) {
+			Debug.LogWarning("Can't Parse " + y + " to integer number");
+		}
+	}
+
+	public void UpdateVisible(bool visible) {
+		commandData.visible = visible;
+	}
+
+	public void UpdateTag(int tag) {
+		switch (tag) {
+			case 0:
+				commandData.entityTag = "Enemy";
+				break;
+			case 1:
+				commandData.entityTag = "Laser";
+				break;
+			case 2:
+				commandData.entityTag = "Heart";
+				break;
+			default:
+				commandData.entityTag = "Enemy";
+				Debug.LogWarning("Unexpected Tag Index : " + tag);
+				break;
 		}
 	}
 }
