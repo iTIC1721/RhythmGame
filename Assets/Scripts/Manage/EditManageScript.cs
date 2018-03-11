@@ -9,6 +9,9 @@ public class EditManageScript : Singleton<EditManageScript> {
 	public Text sizeRateText;
 	public GameObject commandPrefab;
 
+	public GameObject timeBar;
+	private float selectedTime = 0f;
+
 	public float musicLength = 0f;
 
 	private float sizeRate = 1.12f;
@@ -31,6 +34,7 @@ public class EditManageScript : Singleton<EditManageScript> {
 		MouseScroll();
 		LeftRightMove();
 		EditorContentMouseClick();
+		UpdateTimeBar();
 	}
 
 	private void MouseScroll() {
@@ -86,6 +90,15 @@ public class EditManageScript : Singleton<EditManageScript> {
 			if (Input.mousePosition.y >= 0 && Input.mousePosition.y <= 300) {
 				GameObject commandObj = Instantiate(commandPrefab, new Vector3(Input.mousePosition.x, 150, 0), Quaternion.identity, editorContent) as GameObject;
 				commandObj.transform.localScale = new Vector3(1 / size, 1, 1);
+			}
+		}		
+	}
+
+	private void UpdateTimeBar() {
+		if (Input.GetMouseButton(0)) {
+			if (Input.mousePosition.y >= 0 && Input.mousePosition.y <= 300) {
+				timeBar.transform.position = new Vector3(Input.mousePosition.x, 160, 0);
+				selectedTime = ((gameObject.transform.localPosition.x + 512) / 1024) * musicLength;
 			}
 		}
 	}
