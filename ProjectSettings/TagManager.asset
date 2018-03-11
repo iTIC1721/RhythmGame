@@ -10,6 +10,7 @@ TagManager:
   - Command
   - CommandSetting
   - EditManager
+  - TimeBar
   layers:
   - Default
   - TransparentFX

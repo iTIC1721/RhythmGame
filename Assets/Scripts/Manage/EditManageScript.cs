@@ -11,6 +11,7 @@ public class EditManageScript : Singleton<EditManageScript> {
 
 	public GameObject timeBar;
 	private float selectedTime = 0f;
+	private bool canUpdateTimeBar = true;
 
 	public float musicLength = 0f;
 
@@ -45,7 +46,7 @@ public class EditManageScript : Singleton<EditManageScript> {
 					editorContent.localScale = new Vector3(sizeRate * editorContent.localScale.x, 1, 1);
 					RectTransform[] childContents = editorContent.GetComponentsInChildren<RectTransform>();
 					foreach (var content in childContents) {
-						if (content.CompareTag("Command"))
+						if (content.CompareTag("Command") || content.CompareTag("TimeBar"))
 							content.localScale = new Vector3((1 / sizeRate) * content.localScale.x, 1, 1);
 					}
 					size *= sizeRate;
@@ -62,7 +63,7 @@ public class EditManageScript : Singleton<EditManageScript> {
 						editorContent.localScale = new Vector3((1 / sizeRate) * editorContent.localScale.x, 1, 1);
 						RectTransform[] childContents = editorContent.GetComponentsInChildren<RectTransform>();
 						foreach (var content in childContents) {
-							if (content.CompareTag("Command"))
+							if (content.CompareTag("Command") || content.CompareTag("TimeBar"))
 								content.localScale = new Vector3(sizeRate * content.localScale.x, 1, 1);
 						}
 						size *= (1 / sizeRate);
@@ -95,9 +96,23 @@ public class EditManageScript : Singleton<EditManageScript> {
 	}
 
 	private void UpdateTimeBar() {
-		if (Input.GetMouseButton(0)) {
-			if (Input.mousePosition.y >= 0 && Input.mousePosition.y <= 300) {
-				timeBar.transform.position = new Vector3(Input.mousePosition.x, 160, 0);
+		if (Input.GetMouseButtonDown(0)) {
+			if ((Input.mousePosition.y >= 0 && Input.mousePosition.y <= 20) || (Input.mousePosition.y >= 280 && Input.mousePosition.y <= 768)) {
+				canUpdateTimeBar = false;
+			}
+			else {
+				canUpdateTimeBar = true;
+				scrollbar.interactable = false;
+			}
+		}
+		else if (Input.GetMouseButtonUp(0)) {
+			canUpdateTimeBar = true;
+			scrollbar.interactable = true;
+		}
+
+		if (Input.GetMouseButton(0) && canUpdateTimeBar) {
+			if ((Input.mousePosition.y >= 20 && Input.mousePosition.y <= 280) && (Input.mousePosition.x >= 0 && Input.mousePosition.x <= 1024)) {
+				timeBar.transform.position = new Vector3(Input.mousePosition.x, 150, 0);
 				selectedTime = ((gameObject.transform.localPosition.x + 512) / 1024) * musicLength;
 			}
 		}
