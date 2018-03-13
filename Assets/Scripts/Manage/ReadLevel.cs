@@ -683,18 +683,19 @@ public class ReadLevel : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	IEnumerator GetAudio() {
-		WWW www = null;
-		try {
-			www = new WWW("file://" + Model.folderPath + infoList[2] + ".mp3");
-			audioClip = www.GetAudioClip();
+		WWW www = new WWW("file://" + Model.folderPath + infoList[2] + ".mp3");
+
+		do {
+			yield return null;
 		}
-		catch (Exception) {
+		while (!www.isDone);
+
+		if (www.error != null) {
+			Debug.LogError("WWW Error : " + www.error);
 			yield break;
 		}
 
-		while (audioClip.loadState != AudioDataLoadState.Loaded) {
-			yield return www;
-		}
+		audioClip = www.GetAudioClip();
 
 		audioSource.clip = audioClip;
 		isReady = true;

@@ -1134,7 +1134,7 @@ GameObject:
   - component: {fileID: 103874420}
   - component: {fileID: 103874419}
   m_Layer: 5
-  m_Name: UpSizeButton
+  m_Name: SettingButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7113,7 +7113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &761683468
 RectTransform:
   m_ObjectHideFlags: 0
