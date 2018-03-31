@@ -683,7 +683,7 @@ public class ReadLevel : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	IEnumerator GetAudio() {
-		WWW www = new WWW("file://" + Model.folderPath + infoList[2] + ".mp3");
+		WWW www = new WWW("file:///" + Model.folderPath + infoList[2] + ".mp3");
 
 		do {
 			yield return null;
