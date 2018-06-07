@@ -10,7 +10,12 @@ public class CubesManager : MonoBehaviour {
 	public int cubesToSpawn;
 	public float yPositionOfCubes = -10f;
 
+	[System.NonSerialized]
+	public bool isDebugMode = true;
+
 	void Awake() {
+		isDebugMode = selectedBeatDetection.debugMode;
+
 		int j = 0;
 		for (int i = 0; i < cubesToSpawn; i++) {
 			CubeSound newCube = Instantiate<CubeSound>(cubePrefabObject);
@@ -20,7 +25,13 @@ public class CubesManager : MonoBehaviour {
 			newCube.cubesManager = gameObject.GetComponent<CubesManager>();
 			newCube.subbandsToEar = toEar;
 			newCube.smoothnessChange = 2f;
+			newCube.isDebugMode = this.isDebugMode;
 
+			if (!isDebugMode) {
+				MeshRenderer renderer = newCube.gameObject.GetComponent<MeshRenderer>();
+				renderer.material.color = new Color(0, 0, 0, 0);
+				Debug.Log("Alpha!");
+			}
 
 			//newCube.transform.position = Vector3.right * (-cubesToSpawn + i * 2);
 			newCube.transform.position = new Vector3(-cubesToSpawn + i * 2, yPositionOfCubes, 0);

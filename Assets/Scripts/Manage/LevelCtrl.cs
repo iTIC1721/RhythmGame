@@ -392,6 +392,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		}
 	}
 
+	public void SpawnRandomEnemy() {
+		Direction dir = Utility.GetRandomInEnum<Direction>();
+		int randNum = (dir == Direction.Down || dir == Direction.Up) ? LevelData.Instance.levelWidth : LevelData.Instance.levelHeight;
+		int pos = UnityEngine.Random.Range(-randNum, randNum + 1);
+		LevelCtrl.Instance.SpawnEnemy(dir, pos, UnityEngine.Random.Range(5, 25), UnityEngine.Random.Range(-1, 1));
+	}
+
 	/// <summary>
 	/// Laser 오브젝트를 지정한 위치에 생성한다.
 	/// spawnPos를 100 ± n으로 설정하면 플레이어의 위치 ± n에서 생성한다.

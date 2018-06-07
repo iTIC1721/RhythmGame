@@ -55,9 +55,11 @@ public class MoodManager : MonoBehaviour {
 	/// Manager 오브젝트가 생성될 때 실행되는 함수
 	/// </summary>
 	private void Start() {
-		// Output용 큐브를 cubeParent 오브젝트 하위에 생성
-		outputCube = Instantiate(prefabObject, new Vector3(-44f, -23f, 0f), Quaternion.identity, cubeParent);
-		outputCube.GetComponent<MeshRenderer>().material.color = Color.gray;
+		if (outputCube != null) {
+			// Output용 큐브를 cubeParent 오브젝트 하위에 생성
+			outputCube = Instantiate(prefabObject, new Vector3(-44f, -23f, 0f), Quaternion.identity, cubeParent);
+			outputCube.GetComponent<MeshRenderer>().material.color = Color.gray;
+		}
 
 		audioSource.Play();
 		Debug.Log("Audio Play");
@@ -93,9 +95,11 @@ public class MoodManager : MonoBehaviour {
 		}
 
 		beatAmount = temp;
-		// 배경색을 beatAmount에 따라 변경
-		mainCamera.backgroundColor = new Color((beatAmount >= maxMoodCount) ? 1f : beatAmount / maxMoodCount, 0f, 0f);
-		//Debug.Log("Beat : " + beatAmount);
+		if (mainCamera != null) {
+			// 배경색을 beatAmount에 따라 변경
+			mainCamera.backgroundColor = new Color((beatAmount >= maxMoodCount) ? 1f : beatAmount / maxMoodCount, 0f, 0f);
+			//Debug.Log("Beat : " + beatAmount);
+		}
 	}
 	
 	/// <summary>
@@ -134,8 +138,10 @@ public class MoodManager : MonoBehaviour {
 
 		outputAmount = result;
 		// result의 값을 비주얼라이저에 표시
-		outputCube.transform.localScale = new Vector3(result / 100f, 1f, 1f);
-		outputCube.transform.localPosition = new Vector3(-44f + (result / 200f), outputCube.transform.localPosition.y, outputCube.transform.localPosition.z);
+		if (outputCube != null) {
+			outputCube.transform.localScale = new Vector3(result / 100f, 1f, 1f);
+			outputCube.transform.localPosition = new Vector3(-44f + (result / 200f), outputCube.transform.localPosition.y, outputCube.transform.localPosition.z);
+		}
 	}
 
 	//=======================================================================
@@ -150,9 +156,11 @@ public class MoodManager : MonoBehaviour {
 
 		if (instantEnergy >= sensitivityConstant * GetAverage(historyBuffer) && instantEnergy >= bassConstant && isTimePassed) {
 			if (instantEnergy >= kickConstant)
-				Debug.LogWarning("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
+				//Debug.LogWarning("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
+				LevelCtrl.Instance.SpawnRandomEnemy();
 			else
-				Debug.Log("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
+				//Debug.Log("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
+				LevelCtrl.Instance.SpawnRandomEnemy();
 			timePassCoroutine = TimePassCoroutine(0.03f);
 			StartCoroutine(timePassCoroutine);
 		}

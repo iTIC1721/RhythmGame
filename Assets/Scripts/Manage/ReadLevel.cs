@@ -700,6 +700,6 @@ public class ReadLevel : MonoBehaviour {
 		audioSource.clip = audioClip;
 		isReady = true;
 	}
-}
 	#endregion
+}
 

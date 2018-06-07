@@ -60,3 +60,10 @@ public enum CommandType {
 public static class Model {
 	public static string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\RhythmGame\";
 }
+
+public static partial class Utility {
+	public static T GetRandomInEnum<T>() {
+		var v = Enum.GetValues(typeof(T));
+		return (T)v.GetValue(new Random().Next(v.Length));
+	}
+}

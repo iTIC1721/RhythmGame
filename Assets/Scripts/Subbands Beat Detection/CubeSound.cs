@@ -17,6 +17,9 @@ public class CubeSound : MonoBehaviour {
 	[System.NonSerialized]
 	public float beatedNum;
 
+	[System.NonSerialized]
+	public bool isDebugMode = true;
+
 	void Start() {
 		for (int i = 0; i < subbandsToEar.Length; i++) {
 			selectedBeatDetection.subBands[subbandsToEar[i]].OnBeat += OnBeat;
@@ -36,13 +39,23 @@ public class CubeSound : MonoBehaviour {
 		beatedColor = Color.Lerp(beatedColor, Color.black, smoothnessChange * Time.deltaTime);
 		beatedNum = Mathf.Lerp(beatedNum, 0, smoothnessChange * Time.deltaTime);
 
-		myMeshRenderer.material.color = beatedColor;
-		spectrumMeshRenderer.material.color = beatedColor;
+		if (isDebugMode) {
+			myMeshRenderer.material.color = beatedColor;
+			spectrumMeshRenderer.material.color = beatedColor;
+		}
 	}
 
 	void OnBeat() {
 		beatedColor = Color.yellow;
 		beatedNum = 1f;
+		/*
+		if (!isDebugMode) {
+			Direction dir = Utility.GetRandomInEnum<Direction>();
+			int randNum = (dir == Direction.Down || dir == Direction.Up) ? LevelData.Instance.levelWidth : LevelData.Instance.levelHeight;
+			int pos = Random.Range(-randNum, randNum + 1);
+			LevelCtrl.Instance.SpawnEnemy(dir, pos, Random.Range(5, 25), Random.Range(-1, 1));
+		}
+		*/
 	}
 
 	private void EnergyToSpectrum() {

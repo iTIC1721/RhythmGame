@@ -12,6 +12,7 @@ public class SubbandBeatDetection : MonoBehaviour {
 	public FFTWindow FFTWindow;
 
 	[Header("User Setting")]
+	public bool debugMode = true;
 	public Difficulty userDifficulty = Difficulty.Normal;
 	#endregion
 

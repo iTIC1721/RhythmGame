@@ -8,7 +8,7 @@ public enum Difficulty {
 	Impossible
 }
 
-public static class Utility {
+public static partial class Utility {
 
 	/// <summary>
 	/// Return float value with Difficulty
