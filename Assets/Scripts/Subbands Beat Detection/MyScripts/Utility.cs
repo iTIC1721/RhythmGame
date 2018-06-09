@@ -18,39 +18,17 @@ public static partial class Utility {
 	public static float GetBeatSensivityOfDifficulty(Difficulty dif) {
 		switch (dif) {
 			case Difficulty.Boring:
-				return 8f;
+				return 13f;
 			case Difficulty.Easy:
-				return 6.5f;
-			case Difficulty.Normal:
-				return 5f;
-			case Difficulty.Hard:
-				return 3.5f;
-			case Difficulty.Impossible:
-				return 2f;
-			default:
-				return 5f;
-		}
-	}
-
-	/// <summary>
-	/// Return float value with Difficulty
-	/// </summary>
-	/// <param name="dif"></param>
-	/// <returns></returns>
-	public static float GetAverageSpeedOfDifficulty(Difficulty dif) {
-		switch (dif) {
-			case Difficulty.Boring:
 				return 10f;
-			case Difficulty.Easy:
-				return 12f;
 			case Difficulty.Normal:
-				return 15f;
+				return 7f;
 			case Difficulty.Hard:
-				return 18f;
+				return 4f;
 			case Difficulty.Impossible:
-				return 21f;
+				return 1f;
 			default:
-				return 15f;
+				return 7f;
 		}
 	}
 }

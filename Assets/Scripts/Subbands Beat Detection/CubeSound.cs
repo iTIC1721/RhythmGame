@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class CubeSound : MonoBehaviour {
 
 	public SubbandBeatDetection selectedBeatDetection;
 	public CubesManager cubesManager;
+	public MoodManager moodManager;
 	public int[] subbandsToEar;
 
 	public float smoothnessChange;
@@ -48,15 +50,13 @@ public class CubeSound : MonoBehaviour {
 	void OnBeat() {
 		beatedColor = Color.yellow;
 		beatedNum = 1f;
-		/*
-		if (!isDebugMode) {
-			Direction dir = Utility.GetRandomInEnum<Direction>();
-			int randNum = (dir == Direction.Down || dir == Direction.Up) ? LevelData.Instance.levelWidth : LevelData.Instance.levelHeight;
-			int pos = Random.Range(-randNum, randNum + 1);
-			LevelCtrl.Instance.SpawnEnemy(dir, pos, Random.Range(5, 25), Random.Range(-1, 1));
+		if (cubesManager.isTimePassed) {
+			moodManager.SpawnRandom(((moodManager.beatAmount - (MoodManager.maxMoodCount / 2)) / (MoodManager.maxMoodCount / 2)) + 0.02f);
+			cubesManager.timePassCoroutine = cubesManager.TimePassCoroutine(0.1f);
+			StartCoroutine(cubesManager.timePassCoroutine);
 		}
-		*/
 	}
+
 
 	private void EnergyToSpectrum() {
 		float sumEnergy = 0;

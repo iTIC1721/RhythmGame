@@ -18,13 +18,14 @@ public class MoodManager : MonoBehaviour {
 	public Text uText;
 	#endregion
 
-	#region PRIVATE VAR
+	#region PRIVATE / PUBLIC VAR
 	// 모든 큐브에 대응하는 CubeSound를 담을 배열
 	private CubeSound[] cubeSounds;
 	// Output Detection에 사용될 큐브 오브젝트
 	private GameObject outputCube;
 
-	private float beatAmount;
+	[System.NonSerialized]
+	public float beatAmount;
 	private float outputAmount;
 
 	private float[] spectrumData0 = new float[1024];
@@ -44,7 +45,8 @@ public class MoodManager : MonoBehaviour {
 
 	#region CONSTANTS
 	// Mood의 한계치
-	private const float maxMoodCount = 12f;
+	[System.NonSerialized]
+	public const float maxMoodCount = 12f;
 
 	private const float sensitivityConstant = 1.935f;
 	private const float bassConstant = 0.236f;
@@ -157,10 +159,10 @@ public class MoodManager : MonoBehaviour {
 		if (instantEnergy >= sensitivityConstant * GetAverage(historyBuffer) && instantEnergy >= bassConstant && isTimePassed) {
 			if (instantEnergy >= kickConstant)
 				//Debug.LogWarning("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
-				LevelCtrl.Instance.SpawnRandomEnemy();
+				SpawnRandom(instantEnergy);
 			else
 				//Debug.Log("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
-				LevelCtrl.Instance.SpawnRandomEnemy();
+				SpawnRandom(instantEnergy);
 			timePassCoroutine = TimePassCoroutine(0.03f);
 			StartCoroutine(timePassCoroutine);
 		}
@@ -209,5 +211,11 @@ public class MoodManager : MonoBehaviour {
 		isTimePassed = false;
 		yield return new WaitForSeconds(time);
 		isTimePassed = true;
+	}
+
+	//=======================================================================
+
+	public void SpawnRandom(float energy) {
+		LevelCtrl.Instance.SpawnRandom(Mathf.CeilToInt(energy), energy, outputAmount / 1000f, beatAmount, maxMoodCount);
 	}
 }

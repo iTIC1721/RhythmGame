@@ -185,6 +185,27 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	}
 
 	/// <summary>
+	/// 랜덤으로 적 오브젝트를 생성한다.
+	/// </summary>
+	/// <param name="count"></param>
+	/// <param name="speedRate"></param>
+	public void SpawnRandom(int count, float mainEnergy, float outputEnergy, float beatEnergy, float maxMoodCount) {
+		for (int i = 0; i < count; i++) {
+			Direction dir = Utility.GetRandomInEnum<Direction>();
+
+			int randNum = (dir == Direction.Down || dir == Direction.Up) ? LevelData.Instance.levelWidth : LevelData.Instance.levelHeight;
+			int pos = UnityEngine.Random.Range(-randNum, randNum + 1);
+
+			float speed = UnityEngine.Random.Range(2f, 6f) * mainEnergy * outputEnergy * ((beatEnergy - (maxMoodCount / 2)) / (maxMoodCount / 2) + 1);
+			speed = (speed >= 2) ? speed : speed + 2;
+
+			float velo = UnityEngine.Random.Range(-0.05f * mainEnergy / 4, 0.05f * mainEnergy / 4);
+
+			SpawnEnemy(dir, pos, speed, velo);
+		}
+	}
+
+	/// <summary>
 	/// Enemy 오브젝트를 지정한 위치에 생성한다.
 	/// spawnPos를 100 ± n으로 설정하면 플레이어의 위치 ± n에서 생성한다.
 	/// </summary>
@@ -390,13 +411,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 					break;
 			}
 		}
-	}
-
-	public void SpawnRandomEnemy() {
-		Direction dir = Utility.GetRandomInEnum<Direction>();
-		int randNum = (dir == Direction.Down || dir == Direction.Up) ? LevelData.Instance.levelWidth : LevelData.Instance.levelHeight;
-		int pos = UnityEngine.Random.Range(-randNum, randNum + 1);
-		LevelCtrl.Instance.SpawnEnemy(dir, pos, UnityEngine.Random.Range(5, 25), UnityEngine.Random.Range(-1, 1));
 	}
 
 	/// <summary>

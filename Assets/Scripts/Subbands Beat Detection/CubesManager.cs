@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class CubesManager : MonoBehaviour {
 
@@ -9,6 +10,11 @@ public class CubesManager : MonoBehaviour {
 
 	public int cubesToSpawn;
 	public float yPositionOfCubes = -10f;
+
+	[System.NonSerialized]
+	public bool isTimePassed = true;
+	[System.NonSerialized]
+	public IEnumerator timePassCoroutine;
 
 	[System.NonSerialized]
 	public bool isDebugMode = true;
@@ -26,6 +32,7 @@ public class CubesManager : MonoBehaviour {
 			newCube.subbandsToEar = toEar;
 			newCube.smoothnessChange = 2f;
 			newCube.isDebugMode = this.isDebugMode;
+			newCube.moodManager = this.moodManager;
 
 			if (!isDebugMode) {
 				MeshRenderer renderer = newCube.gameObject.GetComponent<MeshRenderer>();
@@ -39,5 +46,13 @@ public class CubesManager : MonoBehaviour {
 		}
 
 		moodManager.GetCubeSounds(moodManager.cubeParent);
+	}
+
+
+
+	public IEnumerator TimePassCoroutine(float time) {
+		isTimePassed = false;
+		yield return new WaitForSeconds(time);
+		isTimePassed = true;
 	}
 }
