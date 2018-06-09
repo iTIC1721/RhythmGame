@@ -51,8 +51,8 @@ public class CubeSound : MonoBehaviour {
 		beatedColor = Color.yellow;
 		beatedNum = 1f;
 		if (cubesManager.isTimePassed) {
-			moodManager.SpawnRandom(((moodManager.beatAmount - (MoodManager.maxMoodCount / 2)) / (MoodManager.maxMoodCount / 2)) + 0.02f);
-			cubesManager.timePassCoroutine = cubesManager.TimePassCoroutine(0.1f);
+			moodManager.SpawnRandom(((moodManager.beatAmount - (MoodManager.maxMoodCount / 2)) / (MoodManager.maxMoodCount / 2)) + 0.1f);
+			cubesManager.timePassCoroutine = cubesManager.TimePassCoroutine(0.3f);
 			StartCoroutine(cubesManager.timePassCoroutine);
 		}
 	}

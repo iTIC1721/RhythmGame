@@ -164,6 +164,7 @@ MonoBehaviour:
   numSubbands: 64
   numSamples: 1024
   FFTWindow: 0
+  debugMode: 1
   userDifficulty: 2
 --- !u!4 &2140179
 Transform:
