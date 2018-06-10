@@ -7,13 +7,18 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 
 	// 장애물 프리팹
 	#region Prefabs
+	[Header("Enemy Objects")]
 	public GameObject enemyPrefab;
 	public GameObject laserPrefab;
 	public GameObject heartPrefab;
+
+	[Header("Particle Objects")]
+	public GameObject particlePrefab;
 	#endregion
 
 	// 오브젝트
 	#region Objects
+	[Header("Publics")]
 	// 메인 카메라
 	public GameObject mainCamera;
 	// 플레이어
@@ -189,7 +194,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="count"></param>
 	/// <param name="speedRate"></param>
-	public void DoRandom(int count, float mainEnergy, float outputEnergy, float beatEnergy, float maxMoodCount) {
+	public void DoRandom(int count, float mainEnergy, float outputEnergy, float beatEnergy, float maxMoodCount, bool spawnParticle = false, Color particleCol = default(Color)) {
 		// 같은 시점에 등장하는 장애물은 같은 방향에서 나오도록
 		Direction dir = Utility.GetRandomInEnum<Direction>();
 
@@ -204,7 +209,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 
 			bool follow = (UnityEngine.Random.Range(0, 50) == 0);
 			
-			SpawnEnemy(dir, pos, speed, velo, false, follow);
+			SpawnEnemy(dir, pos, speed, velo, false, follow, spawnParticle, particleCol);
 		}
 	}
 
@@ -225,13 +230,15 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="spawnPos">생성될 위치</param>
 	/// <param name="speed">Enemy 오브젝트의 속도</param>
 	/// <param name="velo">Enemy 오브젝트의 가속도</param>
-	public void SpawnEnemy(Direction spawnDir, int spawnPos, float speed, float velo, bool isHeart = false, bool follow = false) {
+	public void SpawnEnemy(Direction spawnDir, int spawnPos, float speed, float velo, bool isHeart = false, bool follow = false, bool spawnParticle = false, Color particleCol = default(Color)) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 장애물의 EnemyCtrl 스크립트를 받아오기 위해 사용되는 변수
 			EnemyCtrl enemyCtrl;
 			// 하트의 HeartCtrl 스크립트를 받아오기 위해 사용되는 변수
 			HeartCtrl heartCtrl;
+			// 파티클의 ParticleSystem 스크립트를 받아오기 위해 사용되는 변수
+			ParticleSystem particleSystem;
 			switch (spawnDir) {
 				// 오른쪽
 				case Direction.Right:
@@ -259,6 +266,16 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							enemyCtrl.speed = speed;
 							// 가속도 설정
 							enemyCtrl.velo = velo;
+
+							if (spawnParticle) {
+								// 파티클을 지정된 위치에 스폰
+								GameObject particle = Instantiate(
+									particlePrefab,
+									new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+									Quaternion.Euler(0f, 90f, 0f));
+								particleSystem = particle.GetComponent<ParticleSystem>();
+								particleSystem.startColor = particleCol;
+							}
 						}
 						// 하트인 경우
 						else {
@@ -306,6 +323,16 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							enemyCtrl.speed = speed;
 							// 가속도 설정
 							enemyCtrl.velo = velo;
+
+							if (spawnParticle) {
+								// 파티클을 지정된 위치에 스폰
+								GameObject particle = Instantiate(
+									particlePrefab,
+									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0),
+									Quaternion.Euler(90f, 90f, 0f));
+								particleSystem = particle.GetComponent<ParticleSystem>();
+								particleSystem.startColor = particleCol;
+							}
 						}
 						// 하트인 경우
 						else {
@@ -353,6 +380,16 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							enemyCtrl.speed = speed;
 							// 가속도 설정
 							enemyCtrl.velo = velo;
+
+							if (spawnParticle) {
+								// 파티클을 지정된 위치에 스폰
+								GameObject particle = Instantiate(
+									particlePrefab,
+									new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+									Quaternion.Euler(180f, 90f, 0f));
+								particleSystem = particle.GetComponent<ParticleSystem>();
+								particleSystem.startColor = particleCol;
+							}
 						}
 						// 하트인 경우
 						else {
@@ -400,6 +437,16 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							enemyCtrl.speed = speed;
 							// 가속도 설정
 							enemyCtrl.velo = velo;
+
+							if (spawnParticle) {
+								// 파티클을 지정된 위치에 스폰
+								GameObject particle = Instantiate(
+									particlePrefab,
+									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0),
+									Quaternion.Euler(270f, 90f, 0f));
+								particleSystem = particle.GetComponent<ParticleSystem>();
+								particleSystem.startColor = particleCol;
+							}
 						}
 						// 하트인 경우
 						else {

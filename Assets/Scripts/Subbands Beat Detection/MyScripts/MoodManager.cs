@@ -166,12 +166,12 @@ public class MoodManager : MonoBehaviour {
 				if (instantEnergy >= kickConstant) {
 					Debug.LogWarning("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
 					if (!isDebugMode)
-						DoRandom(instantEnergy);
+						DoRandom(instantEnergy, true, Color.black);
 				}
 				else {
 					Debug.Log("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
 					if (!isDebugMode)
-						DoRandom(instantEnergy);
+						DoRandom(instantEnergy, true, Color.gray);
 				}
 				timePassCoroutine = TimePassCoroutine(0.15f);
 				StartCoroutine(timePassCoroutine);
@@ -226,8 +226,8 @@ public class MoodManager : MonoBehaviour {
 
 	//=======================================================================
 
-	public void DoRandom(float energy) {
-		LevelCtrl.Instance.DoRandom(RoundOff(energy, bassConstant), energy, outputAmount / 1000f, beatAmount, maxMoodCount);
+	public void DoRandom(float energy, bool spawnParticle = false, Color particleCol = default(Color)) {
+		LevelCtrl.Instance.DoRandom(RoundOff(energy, bassConstant), energy, outputAmount / 1000f, beatAmount, maxMoodCount, spawnParticle, particleCol);
 	}
 
 	private int RoundOff(float value, float rate) {

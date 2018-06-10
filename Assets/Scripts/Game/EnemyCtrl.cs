@@ -34,13 +34,16 @@ public class EnemyCtrl : MonoBehaviour {
 		if (!LevelCtrl.Instance.isPaused) {
 			ReplaceEnemy();
 			ColorUpdate();
+			KillEnemy();
 		}
 	}
 
+	/*
 	// 게임 화면을 벗어났을 때
 	private void OnBecameInvisible() {
 		Destroy(gameObject);
 	}
+	*/
 
 	// 충돌이 발생했을 때
 	private void OnTriggerEnter2D(Collider2D collision) {
@@ -58,6 +61,21 @@ public class EnemyCtrl : MonoBehaviour {
 			}
 			// 해당 오브젝트 파괴
 			Destroy(gameObject);
+		}
+	}
+
+	private void KillEnemy() {
+		switch (dir) {
+			case Direction.Right:
+			case Direction.Left:
+				if (transform.position.x > 300 || transform.position.x < -300)
+					Destroy(gameObject);
+				return;
+			case Direction.Down:
+			case Direction.Up:
+				if (transform.position.y > 300 || transform.position.y < -300)
+					Destroy(gameObject);
+				return;
 		}
 	}
 
