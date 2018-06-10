@@ -45,6 +45,7 @@ public class CubesManager : MonoBehaviour {
 			newCube.transform.SetParent(transform);
 		}
 
+		moodManager.isDebugMode = isDebugMode;
 		moodManager.GetCubeSounds(moodManager.cubeParent);
 	}
 

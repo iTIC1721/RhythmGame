@@ -41,6 +41,9 @@ public class MoodManager : MonoBehaviour {
 	private float[] historyBuffer = new float[43];
 	private bool isTimePassed = true;
 	private IEnumerator timePassCoroutine;
+
+	[System.NonSerialized]
+	public bool isDebugMode = true;
 	#endregion
 
 	#region CONSTANTS
@@ -48,9 +51,11 @@ public class MoodManager : MonoBehaviour {
 	[System.NonSerialized]
 	public const float maxMoodCount = 12f;
 
-	private const float sensitivityConstant = 1.935f;
+	//private const float sensitivityConstant = 1.935f;
+	private const float sensitivityConstant = 1.6f;
 	private const float bassConstant = 0.236f;
 	private const float kickConstant = 0.866f;
+	private const float beatConstant = 1.55f;
 	#endregion
 
 	/// <summary>
@@ -154,17 +159,23 @@ public class MoodManager : MonoBehaviour {
 	public void DetectBassBeat() {
 		audioSource.GetSpectrumData(spectrumData0, 0, FFTWindow.Rectangular);
 		audioSource.GetSpectrumData(spectrumData1, 1, FFTWindow.Rectangular);
-		GetInstantEnergy(0, 64,spectrumData0, spectrumData1);
+		GetInstantEnergy(0, 64, spectrumData0, spectrumData1);
 
-		if (instantEnergy >= sensitivityConstant * GetAverage(historyBuffer) && instantEnergy >= bassConstant && isTimePassed) {
-			if (instantEnergy >= kickConstant)
-				//Debug.LogWarning("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
-				SpawnRandom(instantEnergy);
-			else
-				//Debug.Log("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
-				SpawnRandom(instantEnergy);
-			timePassCoroutine = TimePassCoroutine(0.03f);
-			StartCoroutine(timePassCoroutine);
+		if (isTimePassed) {
+			if ((instantEnergy >= beatConstant || instantEnergy >= sensitivityConstant * GetAverage(historyBuffer)) && instantEnergy >= bassConstant) {
+				if (instantEnergy >= kickConstant) {
+					Debug.LogWarning("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
+					if (!isDebugMode)
+						DoRandom(instantEnergy);
+				}
+				else {
+					Debug.Log("Bass Detected : " + instantEnergy + " > " + sensitivityConstant * GetAverage(historyBuffer));
+					if (!isDebugMode)
+						DoRandom(instantEnergy);
+				}
+				timePassCoroutine = TimePassCoroutine(0.15f);
+				StartCoroutine(timePassCoroutine);
+			}
 		}
 
 		historyBuffer = ShiftArray(historyBuffer, 1);
@@ -215,7 +226,16 @@ public class MoodManager : MonoBehaviour {
 
 	//=======================================================================
 
-	public void SpawnRandom(float energy) {
-		LevelCtrl.Instance.SpawnRandom(Mathf.CeilToInt(energy), energy, outputAmount / 1000f, beatAmount, maxMoodCount);
+	public void DoRandom(float energy) {
+		LevelCtrl.Instance.DoRandom(RoundOff(energy, bassConstant), energy, outputAmount / 1000f, beatAmount, maxMoodCount);
+	}
+
+	private int RoundOff(float value, float rate) {
+		int floor = Mathf.FloorToInt(value);
+
+		if (value - floor >= rate)
+			return floor + 1;
+		else
+			return floor;
 	}
 }

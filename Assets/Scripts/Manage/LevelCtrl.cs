@@ -189,20 +189,32 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="count"></param>
 	/// <param name="speedRate"></param>
-	public void SpawnRandom(int count, float mainEnergy, float outputEnergy, float beatEnergy, float maxMoodCount) {
-		for (int i = 0; i < count; i++) {
-			Direction dir = Utility.GetRandomInEnum<Direction>();
+	public void DoRandom(int count, float mainEnergy, float outputEnergy, float beatEnergy, float maxMoodCount) {
+		// 같은 시점에 등장하는 장애물은 같은 방향에서 나오도록
+		Direction dir = Utility.GetRandomInEnum<Direction>();
 
+		for (int i = 0; i < count; i++) {
 			int randNum = (dir == Direction.Down || dir == Direction.Up) ? LevelData.Instance.levelWidth : LevelData.Instance.levelHeight;
 			int pos = UnityEngine.Random.Range(-randNum, randNum + 1);
 
-			float speed = UnityEngine.Random.Range(2f, 6f) * mainEnergy * outputEnergy * ((beatEnergy - (maxMoodCount / 2)) / (maxMoodCount / 2) + 1);
-			speed = (speed >= 2) ? speed : speed + 2;
+			float speed = UnityEngine.Random.Range(5f, 7f) * mainEnergy * outputEnergy * ((beatEnergy - (maxMoodCount / 2)) / (maxMoodCount / 2) + 1);
+			speed = ClampRange(speed, 2f, 25f, 0.2f);
 
-			float velo = UnityEngine.Random.Range(-0.05f * mainEnergy / 4, 0.05f * mainEnergy / 4);
+			float velo = UnityEngine.Random.Range(-0.01f * mainEnergy / 4, 0.05f * mainEnergy / 4);
 
-			SpawnEnemy(dir, pos, speed, velo);
+			bool follow = (UnityEngine.Random.Range(0, 50) == 0);
+			
+			SpawnEnemy(dir, pos, speed, velo, false, follow);
 		}
+	}
+
+	private float ClampRange(float value, float min, float max, float range) {
+		if (value > max)
+			return UnityEngine.Random.Range(max - range, max + range);
+		else if (value < min)
+			return UnityEngine.Random.Range(min - range, min + range);
+		else
+			return value;
 	}
 
 	/// <summary>
