@@ -5,7 +5,8 @@ public enum Difficulty {
 	Easy,
 	Normal,
 	Hard,
-	Impossible
+	Impossible,
+	Korean
 }
 
 public static partial class Utility {
@@ -18,17 +19,19 @@ public static partial class Utility {
 	public static float GetBeatSensivityOfDifficulty(Difficulty dif) {
 		switch (dif) {
 			case Difficulty.Boring:
-				return 13f;
+				return 9f;
 			case Difficulty.Easy:
-				return 10f;
+				return 6f;
 			case Difficulty.Normal:
-				return 7f;
-			case Difficulty.Hard:
 				return 4f;
+			case Difficulty.Hard:
+				return 2f;
 			case Difficulty.Impossible:
-				return 1f;
+				return 0.5f;
+			case Difficulty.Korean:
+				return 0.0001f;
 			default:
-				return 7f;
+				return 4f;
 		}
 	}
 }

@@ -8,8 +8,8 @@ public class LevelData : Singleton<LevelData> {
 	public string levelDesigner = "Level Designer";
 
 	// 가운데를 중심으로 양쪽에 너비와 높이 만큼의 칸이 있음
-	public int levelWidth = 5;
-	public int levelHeight = 5;
+	public int levelWidth = 7;
+	public int levelHeight = 7;
 
 	// 플레이어의 최대 생명 수
 	public int playerHeartMax = 10;

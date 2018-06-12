@@ -1775,7 +1775,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d86ac0bd0ec696649a7f8cfca3c62bf3, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 9d02a90c2181f5846bd9c5cdfce7bb4f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1884,7 +1884,7 @@ MonoBehaviour:
   numSamples: 1024
   FFTWindow: 0
   debugMode: 0
-  userDifficulty: 2
+  userDifficulty: 0
 --- !u!114 &1515276238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1917,7 +1917,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeParent: {fileID: 1515276232}
   prefabObject: {fileID: 0}
-  mainCamera: {fileID: 782397775}
+  mainCamera: {fileID: 0}
   audioSource: {fileID: 1515276234}
   uText: {fileID: 0}
 --- !u!1 &1709854361

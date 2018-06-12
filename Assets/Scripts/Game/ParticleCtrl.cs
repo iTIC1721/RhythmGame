@@ -9,7 +9,7 @@ public class ParticleCtrl : MonoBehaviour {
 	}
 
 	private IEnumerator Kill() {
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(1f);
 		Destroy(gameObject);
 	}
 }

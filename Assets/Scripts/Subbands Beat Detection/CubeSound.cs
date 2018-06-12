@@ -23,6 +23,8 @@ public class CubeSound : MonoBehaviour {
 	public bool isDebugMode = true;
 
 	void Start() {
+		transform.position = new Vector3(transform.position.x + 1024, transform.position.y + 1024, transform.position.z);
+
 		for (int i = 0; i < subbandsToEar.Length; i++) {
 			selectedBeatDetection.subBands[subbandsToEar[i]].OnBeat += OnBeat;
 		}
@@ -51,7 +53,7 @@ public class CubeSound : MonoBehaviour {
 		beatedColor = Color.yellow;
 		beatedNum = 1f;
 		if (!isDebugMode && cubesManager.isTimePassed) {
-			moodManager.DoRandom((((moodManager.beatAmount - (MoodManager.maxMoodCount / 2)) / (MoodManager.maxMoodCount / 2)) + 1f) * 0.7f, true, Color.gray);
+			moodManager.DoRandom((((moodManager.beatAmount - (MoodManager.maxMoodCount / 2)) / (MoodManager.maxMoodCount / 2)) + 1f) * 0.7f);
 			cubesManager.timePassCoroutine = cubesManager.TimePassCoroutine(0.2f);
 			StartCoroutine(cubesManager.timePassCoroutine);
 		}

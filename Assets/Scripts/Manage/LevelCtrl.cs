@@ -194,7 +194,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// </summary>
 	/// <param name="count"></param>
 	/// <param name="speedRate"></param>
-	public void DoRandom(int count, float mainEnergy, float outputEnergy, float beatEnergy, float maxMoodCount, bool spawnParticle = false, Color particleCol = default(Color)) {
+	public void DoRandom(int count, float mainEnergy, float outputEnergy, float beatEnergy, float maxMoodCount) {
 		// 같은 시점에 등장하는 장애물은 같은 방향에서 나오도록
 		Direction dir = Utility.GetRandomInEnum<Direction>();
 
@@ -202,14 +202,14 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 			int randNum = (dir == Direction.Down || dir == Direction.Up) ? LevelData.Instance.levelWidth : LevelData.Instance.levelHeight;
 			int pos = UnityEngine.Random.Range(-randNum, randNum + 1);
 
-			float speed = UnityEngine.Random.Range(5f, 7f) * mainEnergy * outputEnergy * ((beatEnergy - (maxMoodCount / 2)) / (maxMoodCount / 2) + 1);
+			float speed = UnityEngine.Random.Range(7f, 10f) * mainEnergy * outputEnergy * ((beatEnergy - (maxMoodCount / 2)) / (maxMoodCount / 2) + 1);
 			speed = ClampRange(speed, 2f, 25f, 0.2f);
 
 			float velo = UnityEngine.Random.Range(-0.01f * mainEnergy / 4, 0.05f * mainEnergy / 4);
 
 			bool follow = (UnityEngine.Random.Range(0, 50) == 0);
 			
-			SpawnEnemy(dir, pos, speed, velo, false, follow, spawnParticle, particleCol);
+			SpawnEnemy(dir, pos, speed, velo, false, follow);
 		}
 	}
 
@@ -230,15 +230,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// <param name="spawnPos">생성될 위치</param>
 	/// <param name="speed">Enemy 오브젝트의 속도</param>
 	/// <param name="velo">Enemy 오브젝트의 가속도</param>
-	public void SpawnEnemy(Direction spawnDir, int spawnPos, float speed, float velo, bool isHeart = false, bool follow = false, bool spawnParticle = false, Color particleCol = default(Color)) {
+	public void SpawnEnemy(Direction spawnDir, int spawnPos, float speed, float velo, bool isHeart = false, bool follow = false) {
 		// 생존 중일때만 작동한다.
 		if (playing) {
 			// 장애물의 EnemyCtrl 스크립트를 받아오기 위해 사용되는 변수
 			EnemyCtrl enemyCtrl;
 			// 하트의 HeartCtrl 스크립트를 받아오기 위해 사용되는 변수
 			HeartCtrl heartCtrl;
-			// 파티클의 ParticleSystem 스크립트를 받아오기 위해 사용되는 변수
-			ParticleSystem particleSystem;
 			switch (spawnDir) {
 				// 오른쪽
 				case Direction.Right:
@@ -267,15 +265,15 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 가속도 설정
 							enemyCtrl.velo = velo;
 
-							if (spawnParticle) {
-								// 파티클을 지정된 위치에 스폰
-								GameObject particle = Instantiate(
-									particlePrefab,
-									new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
-									Quaternion.Euler(0f, 90f, 0f));
-								particleSystem = particle.GetComponent<ParticleSystem>();
-								particleSystem.startColor = particleCol;
-							}
+							// 파티클을 지정된 위치에 스폰
+							GameObject particle = Instantiate(
+								particlePrefab,
+								new Vector3(256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+								Quaternion.Euler(0f, 90f, 0f));
+							var mainModule = particle.GetComponent<ParticleSystem>().main;
+							//mainModule.startColor = new Color(0, 0, 0, Mathf.Clamp(speed, 2, 20) / 20);
+							mainModule.startColor = new Color(0, 0, 0);
+
 						}
 						// 하트인 경우
 						else {
@@ -324,15 +322,14 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 가속도 설정
 							enemyCtrl.velo = velo;
 
-							if (spawnParticle) {
-								// 파티클을 지정된 위치에 스폰
-								GameObject particle = Instantiate(
-									particlePrefab,
-									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0),
-									Quaternion.Euler(90f, 90f, 0f));
-								particleSystem = particle.GetComponent<ParticleSystem>();
-								particleSystem.startColor = particleCol;
-							}
+							// 파티클을 지정된 위치에 스폰
+							GameObject particle = Instantiate(
+								particlePrefab,
+								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), -256, 0),
+								Quaternion.Euler(90f, 90f, 0f));
+							var mainModule = particle.GetComponent<ParticleSystem>().main;
+							//mainModule.startColor = new Color(0, 0, 0, Mathf.Clamp(speed, 2, 20) / 20);
+							mainModule.startColor = new Color(0, 0, 0);
 						}
 						// 하트인 경우
 						else {
@@ -381,15 +378,14 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 가속도 설정
 							enemyCtrl.velo = velo;
 
-							if (spawnParticle) {
-								// 파티클을 지정된 위치에 스폰
-								GameObject particle = Instantiate(
-									particlePrefab,
-									new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
-									Quaternion.Euler(180f, 90f, 0f));
-								particleSystem = particle.GetComponent<ParticleSystem>();
-								particleSystem.startColor = particleCol;
-							}
+							// 파티클을 지정된 위치에 스폰
+							GameObject particle = Instantiate(
+								particlePrefab,
+								new Vector3(-256, spawnPos * (levelSize / ((LevelData.Instance.levelHeight * 2) + 1)), 0),
+								Quaternion.Euler(180f, 90f, 0f));
+							var mainModule = particle.GetComponent<ParticleSystem>().main;
+							//mainModule.startColor = new Color(0, 0, 0, Mathf.Clamp(speed, 2, 20) / 20);
+							mainModule.startColor = new Color(0, 0, 0);
 						}
 						// 하트인 경우
 						else {
@@ -438,15 +434,14 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 							// 가속도 설정
 							enemyCtrl.velo = velo;
 
-							if (spawnParticle) {
-								// 파티클을 지정된 위치에 스폰
-								GameObject particle = Instantiate(
-									particlePrefab,
-									new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, 0),
-									Quaternion.Euler(270f, 90f, 0f));
-								particleSystem = particle.GetComponent<ParticleSystem>();
-								particleSystem.startColor = particleCol;
-							}
+							// 파티클을 지정된 위치에 스폰
+							GameObject particle = Instantiate(
+								particlePrefab,
+								new Vector3(spawnPos * (levelSize / ((LevelData.Instance.levelWidth * 2) + 1)), 256, -2),
+								Quaternion.Euler(270f, 90f, 0f));
+							var mainModule = particle.GetComponent<ParticleSystem>().main;
+							//mainModule.startColor = new Color(0, 0, 0, Mathf.Clamp(speed, 2, 20) / 20);
+							mainModule.startColor = new Color(0, 0, 0);
 						}
 						// 하트인 경우
 						else {
