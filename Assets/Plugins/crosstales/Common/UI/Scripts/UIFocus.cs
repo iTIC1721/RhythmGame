@@ -22,7 +22,7 @@ namespace Crosstales.UI
         {
             manager = GameObject.Find(CanvasName).GetComponent<UIWindowManager>();
 
-            image = transform.FindChild("Panel/Header").GetComponent<Image>();
+            image = transform.Find("Panel/Header").GetComponent<Image>();
         }
 
         #endregion

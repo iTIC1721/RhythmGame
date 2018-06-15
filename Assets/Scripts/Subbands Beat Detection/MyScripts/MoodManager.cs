@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Crosstales.FB;
 
 public class MoodManager : MonoBehaviour {
 
@@ -42,6 +43,8 @@ public class MoodManager : MonoBehaviour {
 	private bool isTimePassed = true;
 	private IEnumerator timePassCoroutine;
 
+	private IEnumerator getAudioCoroutine;
+
 	[System.NonSerialized]
 	public bool isDebugMode = true;
 	#endregion
@@ -68,8 +71,8 @@ public class MoodManager : MonoBehaviour {
 			outputCube.GetComponent<MeshRenderer>().material.color = Color.gray;
 		}
 
-		audioSource.Play();
-		Debug.Log("Audio Play");
+		getAudioCoroutine = GetAudioFileAndStartGame();
+		StartCoroutine(getAudioCoroutine);
 	}
 
 	/// <summary>
@@ -85,6 +88,65 @@ public class MoodManager : MonoBehaviour {
 		DetectOutputSound();
 
 		DetectBassBeat();
+	}
+
+	//=======================================================================
+
+	private IEnumerator GetAudioFileAndStartGame() {
+		while (true) {
+			string path = FileBrowser.OpenSingleFile("Select your Music", "", new ExtensionFilter[] { new ExtensionFilter("Audio Files", "wav", "ogg") });
+			string name;
+			name = path.Split("/".ToCharArray())[path.Split("/".ToCharArray()).Length - 1].Split(".".ToCharArray())[0];
+			WWW www = new WWW("file:///" + path);
+
+			yield return www;
+
+			if (www.error == null) {
+				audioSource.clip = www.GetAudioClip();
+
+				LevelCtrl.Instance.StartGame(name, "Unknown Artist", 7, 7);
+
+				yield return new WaitForSeconds(2f);
+
+				audioSource.Play();
+				Debug.Log("Audio Play");
+
+				yield return StartCoroutine(WaitAudioFinish());
+			}
+			else {
+				Debug.LogError("오디오 파일을 가져오는 중 오류가 발생했습니다...");
+			}
+
+			yield return null;
+		}
+	}
+
+	private IEnumerator WaitAudioFinish() {
+		while (true) {
+			if (!audioSource.isPlaying) {
+				yield return StartCoroutine(WaitAllFallsDown());
+				yield break;
+			}
+			yield return null;
+		}
+	}
+
+	/// <summary>
+	/// I Love Alan Walker!!! He is my FAVORITE ARTIST EVER!!!
+	/// </summary>
+	/// <returns></returns>
+	private IEnumerator WaitAllFallsDown() {
+		// I'll be fine
+		while (true) {
+			if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0 && GameObject.FindGameObjectsWithTag("Laser").Length == 0 && GameObject.FindGameObjectsWithTag("Heart").Length == 0) {
+				yield return new WaitForSeconds(2f);
+
+				LevelCtrl.Instance.Initialize();
+
+				yield break;
+			}
+			yield return null;
+		}
 	}
 
 	//=======================================================================

@@ -36,7 +36,7 @@ namespace Crosstales.UI
 
         public void Start()
         {
-            panel = transform.FindChild("Panel").gameObject;
+            panel = transform.Find("Panel").gameObject;
 
             startPos = transform.position;
 

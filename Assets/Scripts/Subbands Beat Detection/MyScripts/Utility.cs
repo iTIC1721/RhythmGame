@@ -23,11 +23,11 @@ public static partial class Utility {
 			case Difficulty.Easy:
 				return 6f;
 			case Difficulty.Normal:
-				return 4f;
+				return 4.3f;
 			case Difficulty.Hard:
-				return 2f;
+				return 2.5f;
 			case Difficulty.Impossible:
-				return 0.5f;
+				return 1f;
 			case Difficulty.Korean:
 				return 0.0001f;
 			default:

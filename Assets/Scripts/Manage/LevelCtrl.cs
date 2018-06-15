@@ -190,6 +190,16 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	}
 
 	/// <summary>
+	/// 플레이어를 초기화한다.
+	/// </summary>
+	public void Initialize() {
+		LevelData.Instance.invincibleMode = false;
+		LevelData.Instance.playerHeart = LevelData.Instance.playerHeartMax;
+		HeartText.Instance.TextUpdate();
+		playerCtrl.playerPos = new Vector2(0, 0);
+	}
+
+	/// <summary>
 	/// 랜덤으로 적 오브젝트를 생성한다.
 	/// </summary>
 	/// <param name="count"></param>
