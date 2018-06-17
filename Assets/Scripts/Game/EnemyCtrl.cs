@@ -50,7 +50,7 @@ public class EnemyCtrl : MonoBehaviour {
 		// 충돌한 대상이 무적이 아닌 플레이어일 때
 		if (collision.CompareTag("Player") && !LevelData.Instance.isInvincible && !LevelData.Instance.invincibleMode) {
 			// 플레이어의 생명을 1 감소시킴
-			LevelData.Instance.playerHeart -= 1;
+			LevelData.Instance.playerHeart -= 10;
 			HeartText.Instance.TextUpdate();
 			// 무적 상태로 전환
 			LevelData.Instance.isInvincible = true;

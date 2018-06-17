@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelCtrl : Singleton<LevelCtrl> {
 
@@ -25,8 +26,18 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	public GameObject player;
 	// 일시정지 화면
 	public GameObject pauseUI;
+	// 캔버스
+	public Transform canvas;
 	#endregion
-	
+
+	// 프리팹
+	#region Prefabs
+	[Header("Prefabs")]
+	public GameObject levelNamePrefab;
+	public GameObject levelDescPrefab;
+	#endregion
+
+
 	// 상수
 	#region Const
 	// 게임판의 고정 크기
@@ -157,6 +168,11 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		LevelData.Instance.levelName = levelName;
 		// 게임 디자이너를 지정된 값으로 설정한다.
 		LevelData.Instance.levelDesigner = levelDesigner;
+		// UI Text 오브젝트를 생성한다.
+		GameObject nameObj = Instantiate(levelNamePrefab, new Vector3(530, 78, 0), Quaternion.identity, canvas);
+		GameObject descObj = Instantiate(levelDescPrefab, new Vector3(532, 30, 0), Quaternion.identity, canvas);
+		nameObj.GetComponent<UITextCtrl>().type = UITextType.LevelName;
+		descObj.GetComponent<UITextCtrl>().type = UITextType.LevelDescription;
 		// 초기 너비를 지정된 값으로 설정한다.
 		LevelData.Instance.levelWidth = width;
 		// 초기 높이를 지정된 값으로 설정한다.
@@ -193,6 +209,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// 플레이어를 초기화한다.
 	/// </summary>
 	public void Initialize() {
+		// 게임을 초기화
+		LevelData.Instance.gameOver = false;
+		LevelData.Instance.backColor = Color.black;
+		LevelData.Instance.levelColor = Color.white;
+		LevelData.Instance.enemyColor = Color.white;
+		LevelData.Instance.heartColor = Color.red;
+
 		LevelData.Instance.invincibleMode = false;
 		LevelData.Instance.playerHeart = LevelData.Instance.playerHeartMax;
 		HeartText.Instance.TextUpdate();
@@ -1092,15 +1115,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		bChangeEnable = false;
 		lChangeEnable = false;
 		eChangeEnable = false;
-
-		yield return new WaitForSeconds(2.99f);
-
-		// 게임을 초기화한 뒤 레벨 선택창으로 돌아간다.
-		LevelData.Instance.gameOver = false;
-		LevelData.Instance.backColor = Color.black;
-		LevelData.Instance.levelColor = Color.white;
-		LevelData.Instance.enemyColor = Color.white;
-		LevelData.Instance.heartColor = Color.red;
-		SceneManager.LoadScene("LevelSelect");
+		//SceneManager.LoadScene("LevelSelect");
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class PlayerCtrl : MonoBehaviour {
 
@@ -30,6 +31,11 @@ public class PlayerCtrl : MonoBehaviour {
 	private void Awake() {
 		// 스프라이트 렌더러를 가져옴
 		playerSprRen = gameObject.GetComponent<SpriteRenderer>();
+	}
+
+	// 오브젝트가 생성될 때 실행
+	private void Start() {
+		StartCoroutine(IncreaseHP());
 	}
 
 	// 매 프레임마다 실행
@@ -117,6 +123,22 @@ public class PlayerCtrl : MonoBehaviour {
 				LevelData.Instance.invincibleMode = true;
 			else
 				LevelData.Instance.invincibleMode = false;
+		}
+	}
+
+	private IEnumerator IncreaseHP() {
+		while (true) {
+			if (LevelCtrl.Instance.playing) {
+				yield return new WaitForSeconds(1.5f);
+				LevelData.Instance.playerHeart += 1;
+				if (LevelData.Instance.playerHeart > LevelData.Instance.playerHeartMax) {
+					LevelData.Instance.playerHeart = LevelData.Instance.playerHeartMax;
+				}
+				HeartText.Instance.TextUpdate();
+			}
+			else {
+				yield return null;
+			}
 		}
 	}
 }

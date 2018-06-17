@@ -14,6 +14,8 @@ public class MoodManager : MonoBehaviour {
 	public Camera mainCamera;
 	// 오디오 소스
 	public AudioSource audioSource;
+	// SubBandBeatDetection
+	public SubbandBeatDetection subbandBeatDetection;
 	// 텍스트 UI
 	[Header("UI Object")]
 	public Text uText;
@@ -95,8 +97,12 @@ public class MoodManager : MonoBehaviour {
 	private IEnumerator GetAudioFileAndStartGame() {
 		while (true) {
 			string path = FileBrowser.OpenSingleFile("Select your Music", "", new ExtensionFilter[] { new ExtensionFilter("Audio Files", "wav", "ogg") });
-			string name;
-			name = path.Split("/".ToCharArray())[path.Split("/".ToCharArray()).Length - 1].Split(".".ToCharArray())[0];
+			string name = path.Split("/".ToCharArray())[path.Split("/".ToCharArray()).Length - 1];
+			int fileExtPos = name.LastIndexOf(".");
+			if (fileExtPos >= 0) {
+				name = name.Substring(0, fileExtPos);
+			}
+
 			WWW www = new WWW("file:///" + path);
 
 			yield return www;
@@ -104,7 +110,7 @@ public class MoodManager : MonoBehaviour {
 			if (www.error == null) {
 				audioSource.clip = www.GetAudioClip();
 
-				LevelCtrl.Instance.StartGame(name, "Unknown Artist", 7, 7);
+				LevelCtrl.Instance.StartGame(name, subbandBeatDetection.userDifficulty + " Mode", 7, 7);
 
 				yield return new WaitForSeconds(2f);
 

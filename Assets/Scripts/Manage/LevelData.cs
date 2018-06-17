@@ -12,9 +12,9 @@ public class LevelData : Singleton<LevelData> {
 	public int levelHeight = 7;
 
 	// 플레이어의 최대 생명 수
-	public int playerHeartMax = 10;
+	public int playerHeartMax = 100;
 	// 플레이어의 현재 생명
-	public int playerHeart = 10;
+	public int playerHeart = 100;
 	// 플레이어의 무적 상태 여부
 	public bool isInvincible = false;
 

@@ -13,6 +13,6 @@ public class HeartText : Singleton<HeartText> {
 
 	public void TextUpdate() {
 		// 남은 생명 개수를 표기
-		textComp.text = "Heart Left : " + LevelData.Instance.playerHeart;
+		textComp.text = "HP Left : " + LevelData.Instance.playerHeart;
 	}
 }

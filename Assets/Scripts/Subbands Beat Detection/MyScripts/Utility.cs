@@ -9,6 +9,11 @@ public enum Difficulty {
 	Korean
 }
 
+public enum UITextType {
+	LevelName,
+	LevelDescription
+}
+
 public static partial class Utility {
 
 	/// <summary>
