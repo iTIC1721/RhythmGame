@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 using Crosstales.FB;
+using System.IO;
+using NAudio.Wave;
 
 public class MoodManager : MonoBehaviour {
 
@@ -19,6 +21,8 @@ public class MoodManager : MonoBehaviour {
 	// 텍스트 UI
 	[Header("UI Object")]
 	public Text uText;
+
+	public GameObject selectAudioUI;
 	#endregion
 
 	#region PRIVATE / PUBLIC VAR
@@ -45,10 +49,11 @@ public class MoodManager : MonoBehaviour {
 	private bool isTimePassed = true;
 	private IEnumerator timePassCoroutine;
 
-	private IEnumerator getAudioCoroutine;
-
 	[System.NonSerialized]
 	public bool isDebugMode = true;
+
+	[System.NonSerialized]
+	public string audioFileName = string.Empty;
 	#endregion
 
 	#region CONSTANTS
@@ -72,9 +77,6 @@ public class MoodManager : MonoBehaviour {
 			outputCube = Instantiate(prefabObject, new Vector3(-44f, -23f, 0f), Quaternion.identity, cubeParent);
 			outputCube.GetComponent<MeshRenderer>().material.color = Color.gray;
 		}
-
-		getAudioCoroutine = GetAudioFileAndStartGame();
-		StartCoroutine(getAudioCoroutine);
 	}
 
 	/// <summary>
@@ -94,13 +96,26 @@ public class MoodManager : MonoBehaviour {
 
 	//=======================================================================
 
-	private IEnumerator GetAudioFileAndStartGame() {
+	/// <summary>
+	/// 로컬에서 오디오 파일을 가져옴
+	/// </summary>
+	/// <returns></returns>
+	public IEnumerator GetAudioFileAndStartGame(InputField inputField) {
 		while (true) {
-			string path = FileBrowser.OpenSingleFile("Select your Music", "", new ExtensionFilter[] { new ExtensionFilter("Audio Files", "wav", "ogg") });
-			string name = path.Split("/".ToCharArray())[path.Split("/".ToCharArray()).Length - 1];
-			int fileExtPos = name.LastIndexOf(".");
-			if (fileExtPos >= 0) {
-				name = name.Substring(0, fileExtPos);
+			// 파일 브라우저를 통해 오디오 파일의 경로를 가져옴
+			string path = FileBrowser.OpenSingleFile("Select your Music", "", new ExtensionFilter[] { new ExtensionFilter("Audio Files", "wav", "ogg", "mp3") });
+			inputField.text = path;
+			// 오디오 파일의 이름을 가져옴
+			audioFileName = Path.GetFileNameWithoutExtension(path);
+			// mp3파일인 경우에 wav로 변환한 뒤 가져옴
+			if (Path.GetExtension(path).ToLower() == ".mp3") {
+				// wav 파일 경로 생성
+				string newFilePath = Directory.GetCurrentDirectory() + @"\" + audioFileName + ".wav";
+				// mp3 -> wav 변환
+				using (Mp3FileReader reader = new Mp3FileReader(path)) {
+					WaveFileWriter.CreateWaveFile(newFilePath, reader);
+				}
+				path = newFilePath;
 			}
 
 			WWW www = new WWW("file:///" + path);
@@ -110,14 +125,9 @@ public class MoodManager : MonoBehaviour {
 			if (www.error == null) {
 				audioSource.clip = www.GetAudioClip();
 
-				LevelCtrl.Instance.StartGame(name, subbandBeatDetection.userDifficulty + " Mode", 7, 7);
-
-				yield return new WaitForSeconds(2f);
-
-				audioSource.Play();
-				Debug.Log("Audio Play");
-
-				yield return StartCoroutine(WaitAudioFinish());
+				//TODO: 별개의 UI 제작
+				//yield return StartCoroutine(StartGame(name));
+				yield break;
 			}
 			else {
 				Debug.LogError("오디오 파일을 가져오는 중 오류가 발생했습니다...");
@@ -127,6 +137,26 @@ public class MoodManager : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// 게임을 시작
+	/// </summary>
+	/// <param name="name">오디오 파일의 이름</param>
+	/// <returns></returns>
+	public IEnumerator StartGame(string name) {
+		LevelCtrl.Instance.StartGame(name, subbandBeatDetection.userDifficulty + " Mode", 7, 7);
+
+		yield return new WaitForSeconds(2f);
+
+		audioSource.Play();
+		Debug.Log("Audio Play");
+
+		yield return StartCoroutine(WaitAudioFinish());
+	}
+
+	/// <summary>
+	/// 오디오가 끝날 때까지 기다림
+	/// </summary>
+	/// <returns></returns>
 	private IEnumerator WaitAudioFinish() {
 		while (true) {
 			if (!audioSource.isPlaying) {
@@ -138,16 +168,18 @@ public class MoodManager : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// I Love Alan Walker!!! He is my FAVORITE ARTIST EVER!!!
+	/// 오디오가 끝나고 모든 오브젝트들이 사라질 때까지 기다림
 	/// </summary>
 	/// <returns></returns>
 	private IEnumerator WaitAllFallsDown() {
-		// I'll be fine
+		// I'll be fine LOL
 		while (true) {
 			if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0 && GameObject.FindGameObjectsWithTag("Laser").Length == 0 && GameObject.FindGameObjectsWithTag("Heart").Length == 0) {
 				yield return new WaitForSeconds(2f);
 
 				LevelCtrl.Instance.Initialize();
+				
+				selectAudioUI.SetActive(true);
 
 				yield break;
 			}
