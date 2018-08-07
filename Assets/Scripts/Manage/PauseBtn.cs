@@ -21,6 +21,9 @@ public class PauseBtn : MonoBehaviour {
 		LevelData.Instance.levelColor = Color.white;
 		LevelData.Instance.enemyColor = Color.white;
 		LevelData.Instance.heartColor = Color.red;
-		SceneManager.LoadScene("LevelSelect");
+
+		LevelCtrl.Instance.GameEnd();
+
+		//SceneManager.LoadScene("LevelSelect");
 	}
 }

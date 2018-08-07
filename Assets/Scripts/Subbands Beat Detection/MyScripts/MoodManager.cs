@@ -4,6 +4,11 @@ using System.Collections;
 using Crosstales.FB;
 using System.IO;
 using NAudio.Wave;
+using System.Collections.Generic;
+//using MediaToolkit;
+using System.Linq;
+//using VideoLibrary;
+//using MediaToolkit.Model;
 
 public class MoodManager : MonoBehaviour {
 
@@ -18,6 +23,8 @@ public class MoodManager : MonoBehaviour {
 	public AudioSource audioSource;
 	// SubBandBeatDetection
 	public SubbandBeatDetection subbandBeatDetection;
+
+	public LevelCtrl levelCtrl;
 	// 텍스트 UI
 	[Header("UI Object")]
 	public Text uText;
@@ -54,6 +61,11 @@ public class MoodManager : MonoBehaviour {
 
 	[System.NonSerialized]
 	public string audioFileName = string.Empty;
+	// 오디오 파일의 경로
+	[System.NonSerialized]
+	public string audioPath;
+	[System.NonSerialized]
+	public string tempPath;
 	#endregion
 
 	#region CONSTANTS
@@ -96,45 +108,111 @@ public class MoodManager : MonoBehaviour {
 
 	//=======================================================================
 
+	public void BrowseLocalAudioFile(InputField inputField) {
+		// 파일 브라우저를 통해 오디오 파일의 경로를 가져옴
+		audioPath = FileBrowser.OpenSingleFile("Select your Music", "", new ExtensionFilter[] { new ExtensionFilter("Audio Files", "mp3") });
+		inputField.text = audioPath;
+	}
+
 	/// <summary>
 	/// 로컬에서 오디오 파일을 가져옴
 	/// </summary>
 	/// <returns></returns>
-	public IEnumerator GetAudioFileAndStartGame(InputField inputField) {
-		while (true) {
-			// 파일 브라우저를 통해 오디오 파일의 경로를 가져옴
-			string path = FileBrowser.OpenSingleFile("Select your Music", "", new ExtensionFilter[] { new ExtensionFilter("Audio Files", "wav", "ogg", "mp3") });
-			inputField.text = path;
-			// 오디오 파일의 이름을 가져옴
-			audioFileName = Path.GetFileNameWithoutExtension(path);
-			// mp3파일인 경우에 wav로 변환한 뒤 가져옴
-			if (Path.GetExtension(path).ToLower() == ".mp3") {
-				// wav 파일 경로 생성
-				string newFilePath = Directory.GetCurrentDirectory() + @"\" + audioFileName + ".wav";
-				// mp3 -> wav 변환
-				using (Mp3FileReader reader = new Mp3FileReader(path)) {
-					WaveFileWriter.CreateWaveFile(newFilePath, reader);
-				}
-				path = newFilePath;
-			}
+	public IEnumerator GetLocalAudioFile() {
+		string temp = audioPath;
+		// 오디오 파일의 이름을 가져옴
+		audioFileName = Path.GetFileNameWithoutExtension(temp);
+		// wav 파일 경로 생성
+		tempPath = Directory.GetCurrentDirectory() + @"\" + audioFileName + ".wav";
 
-			WWW www = new WWW("file:///" + path);
-
-			yield return www;
-
-			if (www.error == null) {
-				audioSource.clip = www.GetAudioClip();
-
-				//TODO: 별개의 UI 제작
-				//yield return StartCoroutine(StartGame(name));
-				yield break;
-			}
-			else {
-				Debug.LogError("오디오 파일을 가져오는 중 오류가 발생했습니다...");
-			}
-
-			yield return null;
+		// mp3 -> wav 변환
+		using (Mp3FileReader reader = new Mp3FileReader(temp)) {
+			WaveFileWriter.CreateWaveFile(tempPath, reader);
 		}
+		temp = tempPath;
+
+		WWW www = new WWW("file:///" + temp);
+
+		yield return www;
+
+		if (www.error == null) {
+			audioSource.clip = www.GetAudioClip();
+
+			//TODO: 별개의 UI 제작
+			//yield return StartCoroutine(StartGame(name));
+			yield break;
+		}
+		else {
+			Debug.LogError("오디오 파일을 가져오는 중 오류가 발생했습니다...");
+		}
+	}
+
+	public IEnumerator GetYoutubeAudioFile(InputField link) {
+		/*
+		IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(link.text);
+
+		VideoInfo video = videoInfos
+			.Where(info => info.CanExtractAudio)
+			.OrderByDescending(info => info.AudioBitrate)
+			.First();
+		
+		if (video.RequiresDecryption) {
+			DownloadUrlResolver.DecryptDownloadUrl(video);
+		}
+		
+		string path = Directory.GetCurrentDirectory() + @"\" + video.Title + ".mp3";
+		var audioDownloader = new AudioDownloader(video, path);
+
+		// Register the progress events. We treat the download progress as 85% of the progress and the extraction progress only as 15% of the progress,
+		// because the download will take much longer than the audio extraction.
+		audioDownloader.DownloadProgressChanged += (sender, args) => Debug.Log(args.ProgressPercentage * 0.85);
+		audioDownloader.AudioExtractionProgressChanged += (sender, args) => Debug.Log(85 + args.ProgressPercentage * 0.15);
+		
+		audioDownloader.Execute();
+		*/
+
+		/*
+		string source = Directory.GetCurrentDirectory();
+		var youtube = YouTube.Default;
+		var vid = youtube.GetVideo(link.text);
+		File.WriteAllBytes(source + @"\" + vid.FullName, vid.GetBytes());
+
+		string path = source + @"\" + vid.FullName;
+		var inputFile = new MediaFile { Filename = path };
+		var outputFile = new MediaFile { Filename = string.Format("{0}.mp3", path) };
+
+		using (var engine = new Engine()) {
+			engine.GetMetadata(inputFile);
+			engine.Convert(inputFile, outputFile);
+		}
+
+		// mp3파일인 경우에 wav로 변환한 뒤 가져옴
+		if (Path.GetExtension(path).ToLower() == ".mp3") {
+			// wav 파일 경로 생성
+			string newFilePath = Directory.GetCurrentDirectory() + @"\" + audioFileName + ".wav";
+			// mp3 -> wav 변환
+			using (Mp3FileReader reader = new Mp3FileReader(path)) {
+				WaveFileWriter.CreateWaveFile(newFilePath, reader);
+			}
+			path = newFilePath;
+		}
+
+		WWW www = new WWW("file:///" + path);
+
+		yield return www;
+
+		if (www.error == null) {
+			audioSource.clip = www.GetAudioClip();
+
+			//TODO: 별개의 UI 제작
+			//yield return StartCoroutine(StartGame(name));
+			yield break;
+		}
+		else {
+			Debug.LogError("오디오 파일을 가져오는 중 오류가 발생했습니다...");
+		}
+		*/
+		yield break;
 	}
 
 	/// <summary>
@@ -159,7 +237,12 @@ public class MoodManager : MonoBehaviour {
 	/// <returns></returns>
 	private IEnumerator WaitAudioFinish() {
 		while (true) {
+			if (!levelCtrl.playing) {
+				audioSource.Stop();
+				yield break;
+			}
 			if (!audioSource.isPlaying) {
+				LevelCtrl.Instance.GameEnd();
 				yield return StartCoroutine(WaitAllFallsDown());
 				yield break;
 			}
@@ -178,8 +261,6 @@ public class MoodManager : MonoBehaviour {
 				yield return new WaitForSeconds(2f);
 
 				LevelCtrl.Instance.Initialize();
-				
-				selectAudioUI.SetActive(true);
 
 				yield break;
 			}

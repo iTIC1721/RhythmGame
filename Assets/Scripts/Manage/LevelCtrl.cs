@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class LevelCtrl : Singleton<LevelCtrl> {
 
@@ -28,6 +29,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	public GameObject pauseUI;
 	// 캔버스
 	public Transform canvas;
+
+	public GameObject selectAudioUI;
 	#endregion
 
 	// 프리팹
@@ -35,6 +38,18 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	[Header("Prefabs")]
 	public GameObject levelNamePrefab;
 	public GameObject levelDescPrefab;
+	#endregion
+
+	// Public
+	#region
+	[Header("Public")]
+	public MoodManager moodManager;
+	#endregion
+
+	// UI
+	#region
+	[Header("UI")]
+	public Text heartText;
 	#endregion
 
 
@@ -169,8 +184,8 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		// 게임 디자이너를 지정된 값으로 설정한다.
 		LevelData.Instance.levelDesigner = levelDesigner;
 		// UI Text 오브젝트를 생성한다.
-		GameObject nameObj = Instantiate(levelNamePrefab, new Vector3(530, 78, 0), Quaternion.identity, canvas);
-		GameObject descObj = Instantiate(levelDescPrefab, new Vector3(532, 30, 0), Quaternion.identity, canvas);
+		GameObject nameObj = Instantiate(levelNamePrefab, new Vector3(530, -152, 1), Quaternion.identity, canvas);
+		GameObject descObj = Instantiate(levelDescPrefab, new Vector3(532, -200, 1), Quaternion.identity, canvas);
 		nameObj.GetComponent<UITextCtrl>().type = UITextType.LevelName;
 		descObj.GetComponent<UITextCtrl>().type = UITextType.LevelDescription;
 		// 초기 너비를 지정된 값으로 설정한다.
@@ -183,6 +198,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		playing = true;
 		// 하트 초기화
 		HeartText.Instance.TextUpdate();
+		heartText.enabled = true;
 	}
 
 	/// <summary>
@@ -1043,21 +1059,18 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	/// 현재 존재하는 모든 엔티티를 제거한다.
 	/// </summary>
 	public void KillAll() {
-		// 생존 중일때만 작동한다.
-		if (playing) {
-			// 모든 장애물을 제거한다.
-			GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
-			for (int i = 0; i < enemyObjects.Length; i++) {
-				Destroy(enemyObjects[i]);
-			}
-			GameObject[] laserObjects = GameObject.FindGameObjectsWithTag("Laser");
-			for (int i = 0; i < laserObjects.Length; i++) {
-				Destroy(laserObjects[i]);
-			}
-			GameObject[] heartObjects = GameObject.FindGameObjectsWithTag("Heart");
-			for (int i = 0; i < heartObjects.Length; i++) {
-				Destroy(heartObjects[i]);
-			}
+		// 모든 장애물을 제거한다.
+		GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
+		for (int i = 0; i < enemyObjects.Length; i++) {
+			Destroy(enemyObjects[i]);
+		}
+		GameObject[] laserObjects = GameObject.FindGameObjectsWithTag("Laser");
+		for (int i = 0; i < laserObjects.Length; i++) {
+			Destroy(laserObjects[i]);
+		}
+		GameObject[] heartObjects = GameObject.FindGameObjectsWithTag("Heart");
+		for (int i = 0; i < heartObjects.Length; i++) {
+			Destroy(heartObjects[i]);
 		}
 	}
 
@@ -1116,5 +1129,31 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		lChangeEnable = false;
 		eChangeEnable = false;
 		//SceneManager.LoadScene("LevelSelect");
+
+		yield return new WaitForSeconds(3f);
+
+		Initialize();
+		
+		GameEnd();
+	}
+
+	public void GameEnd() {
+		if (File.Exists(moodManager.tempPath)) {
+			try {
+				File.Delete(moodManager.tempPath);
+			}
+			catch {
+
+			}
+		}
+		heartText.enabled = false;
+
+		GameObject[] levelTexts = GameObject.FindGameObjectsWithTag("LevelText");
+		foreach(GameObject text in levelTexts) {
+			Destroy(text);
+		}
+
+		audioSource.Stop();
+		selectAudioUI.SetActive(true);
 	}
 }

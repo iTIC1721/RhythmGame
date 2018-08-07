@@ -5,15 +5,16 @@ using UnityEngine.UI;
 public class GameCtrl : MonoBehaviour {
 
 	public MoodManager moodManager;
-	public InputField inputField;
+	public InputField localInputField;
+	public InputField youtubeInputField;
 	public GameObject selectAudioUI;
 
-	private IEnumerator getAudioCoroutine;
-	private IEnumerator startCoroutine;
-
 	public void BrowseAudioFile() {
-		getAudioCoroutine = moodManager.GetAudioFileAndStartGame(inputField);
-		StartCoroutine(getAudioCoroutine);
+		moodManager.BrowseLocalAudioFile(localInputField);
+	}
+
+	public void GetYoutubeAudio() {
+
 	}
 
 	public void SetDifficulty(int difficulty) {
@@ -21,9 +22,13 @@ public class GameCtrl : MonoBehaviour {
 	}
 
 	public void PressStartButton() {
-		startCoroutine = moodManager.StartGame(moodManager.audioFileName);
-		StartCoroutine(startCoroutine);
+		StartCoroutine(StartButtonCoroutine());
 		selectAudioUI.SetActive(false);
+	}
+
+	private IEnumerator StartButtonCoroutine() {
+		yield return StartCoroutine(moodManager.GetLocalAudioFile());
+		yield return StartCoroutine(moodManager.StartGame(moodManager.audioFileName));
 	}
 
 	private void Update() {

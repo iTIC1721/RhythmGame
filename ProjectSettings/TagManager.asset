@@ -11,6 +11,7 @@ TagManager:
   - CommandSetting
   - EditManager
   - TimeBar
+  - LevelText
   layers:
   - Default
   - TransparentFX
