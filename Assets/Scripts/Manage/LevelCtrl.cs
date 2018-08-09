@@ -1146,6 +1146,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 
 			}
 		}
+		LevelData.Instance.playerHeart = LevelData.Instance.playerHeartMax;
 		heartText.enabled = false;
 
 		GameObject[] levelTexts = GameObject.FindGameObjectsWithTag("LevelText");

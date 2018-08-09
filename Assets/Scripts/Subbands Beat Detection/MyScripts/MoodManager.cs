@@ -241,7 +241,7 @@ public class MoodManager : MonoBehaviour {
 				audioSource.Stop();
 				yield break;
 			}
-			if (!audioSource.isPlaying) {
+			if (!levelCtrl.isPaused && !audioSource.isPlaying) {
 				LevelCtrl.Instance.GameEnd();
 				yield return StartCoroutine(WaitAllFallsDown());
 				yield break;
@@ -354,7 +354,7 @@ public class MoodManager : MonoBehaviour {
 					if (!isDebugMode)
 						DoRandom(instantEnergy);
 				}
-				timePassCoroutine = TimePassCoroutine(0.15f);
+				timePassCoroutine = TimePassCoroutine(0.145f);
 				StartCoroutine(timePassCoroutine);
 			}
 		}
@@ -408,7 +408,31 @@ public class MoodManager : MonoBehaviour {
 	//=======================================================================
 
 	public void DoRandom(float energy) {
-		LevelCtrl.Instance.DoRandom(RoundOff(energy, bassConstant), energy, outputAmount / 1000f, beatAmount, maxMoodCount);
+		float difficultRate = 1000f;
+		switch (subbandBeatDetection.userDifficulty) {
+			case Difficulty.Boring:
+				difficultRate = 2000f;
+				break;
+			case Difficulty.Easy:
+				difficultRate = 1300f;
+				break;
+			case Difficulty.Normal:
+				difficultRate = 1000f;
+				break;
+			case Difficulty.Hard:
+				difficultRate = 800f;
+				break;
+			case Difficulty.Impossible:
+				difficultRate = 600f;
+				break;
+			case Difficulty.Korean:
+				difficultRate = 100f;
+				break;
+			default:
+				difficultRate = 1000f;
+				break;
+		}
+		LevelCtrl.Instance.DoRandom(RoundOff(energy / ((difficultRate + 250f) / 1250f), bassConstant), energy, outputAmount / difficultRate, beatAmount, maxMoodCount);
 	}
 
 	private int RoundOff(float value, float rate) {

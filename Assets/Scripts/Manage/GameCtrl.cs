@@ -37,4 +37,8 @@ public class GameCtrl : MonoBehaviour {
 			//Application.Quit();
 		}
 	}
+
+	private void OnApplicationQuit() {
+		moodManager.levelCtrl.GameEnd();
+	}
 }
