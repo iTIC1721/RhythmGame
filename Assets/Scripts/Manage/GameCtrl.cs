@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class GameCtrl : MonoBehaviour {
 	}
 
 	public void GetYoutubeAudio() {
-
+		moodManager.GetYoutubeAudioFile(youtubeInputField);
 	}
 
 	public void SetDifficulty(int difficulty) {
@@ -39,6 +40,16 @@ public class GameCtrl : MonoBehaviour {
 	}
 
 	private void OnApplicationQuit() {
-		moodManager.levelCtrl.GameEnd();
+		LevelCtrl.Instance.GameEnd();
+		foreach (var path in moodManager.paths) {
+			if (File.Exists(path)) {
+				try {
+					File.Delete(path);
+				}
+				catch {
+
+				}
+			}
+		}
 	}
 }

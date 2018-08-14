@@ -210,12 +210,14 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				isPaused = true;
 				pauseUI.SetActive(true);
 				audioSource.Pause();
+				moodManager.videoPlayer.Pause();
 				Time.timeScale = 0;
 			}
 			else {
 				isPaused = false;
 				pauseUI.SetActive(false);
 				audioSource.UnPause();
+				moodManager.videoPlayer.Play();
 				Time.timeScale = 1f;
 			}
 		}
@@ -1097,6 +1099,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		if (playing) {
 			// 배경음악을 멈춘다.
 			audioSource.Stop();
+			moodManager.videoPlayer.Stop();
 			// 생존 여부를 거짓으로 설정한다.
 			playing = false;
 			// 모든 장애물을 제거한다.
@@ -1138,6 +1141,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	}
 
 	public void GameEnd() {
+		/*
 		if (File.Exists(moodManager.tempPath)) {
 			try {
 				File.Delete(moodManager.tempPath);
@@ -1146,6 +1150,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 
 			}
 		}
+		*/
 		LevelData.Instance.playerHeart = LevelData.Instance.playerHeartMax;
 		heartText.enabled = false;
 
@@ -1155,6 +1160,7 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		}
 
 		audioSource.Stop();
+		moodManager.videoPlayer.Stop();
 		selectAudioUI.SetActive(true);
 	}
 }
