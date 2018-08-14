@@ -12,6 +12,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using UnityEngine.Video;
 using System.Collections.Generic;
+using System;
 
 public class MoodManager : MonoBehaviour {
 
@@ -176,22 +177,29 @@ public class MoodManager : MonoBehaviour {
 			X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
 
 		string source = Directory.GetCurrentDirectory();
-		var youtube = YouTube.Default;
-		var vid = youtube.GetVideo(link.text);
-		string fullNameWithoutPercent = vid.FullName.Replace("%", "");
+		YouTube youtube = YouTube.Default;
 
-		if (File.Exists(source + @"\" + fullNameWithoutPercent)) {
-			try {
-				File.Delete(source + @"\" + fullNameWithoutPercent);
-			}
-			catch {
+		try {
+			YouTubeVideo vid = youtube.GetVideo(link.text);
+			string fullNameWithoutPercent = vid.FullName.Replace(" - YouTube", "").Replace("%", "");
 
+			if (File.Exists(source + @"\" + fullNameWithoutPercent)) {
+				try {
+					File.Delete(source + @"\" + fullNameWithoutPercent);
+				}
+				catch {
+
+				}
 			}
+
+			File.WriteAllBytes(source + @"\" + fullNameWithoutPercent, vid.GetBytes());
+
+			audioPath = source + @"\" + fullNameWithoutPercent;
 		}
-
-		File.WriteAllBytes(source + @"\" + fullNameWithoutPercent, vid.GetBytes());
-
-		audioPath = source + @"\" + fullNameWithoutPercent;
+		catch (Exception ex) {
+			Debug.Log(ex);
+			link.text = "";
+		}
 	}
 
 	/// <summary>
