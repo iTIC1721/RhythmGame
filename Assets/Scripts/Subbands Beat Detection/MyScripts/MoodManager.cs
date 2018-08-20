@@ -4,15 +4,13 @@ using System.Collections;
 using Crosstales.FB;
 using System.IO;
 using NAudio.Wave;
-using MediaToolkit.Model;
-using VideoLibrary;
-using MediaToolkit;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using System.Net.Security;
 using UnityEngine.Video;
 using System.Collections.Generic;
 using System;
+using Frapper;
+using System.Text.RegularExpressions;
+using VideoLibrary;
 
 public class MoodManager : MonoBehaviour {
 
@@ -25,14 +23,18 @@ public class MoodManager : MonoBehaviour {
 	public Camera mainCamera;
 	// 오디오 소스
 	public AudioSource audioSource;
-	public VideoPlayer videoPlayer;
 	// SubBandBeatDetection
 	public SubbandBeatDetection subbandBeatDetection;
 	// 텍스트 UI
 	[Header("UI Object")]
-	public Text uText;
+	public InputField errorText;
 
 	public GameObject selectAudioUI;
+
+	public Text videoTitleText;
+
+	[Header("User Setting")]
+	public Color backColor = Color.black;
 	#endregion
 
 	#region PRIVATE / PUBLIC VAR
@@ -41,7 +43,7 @@ public class MoodManager : MonoBehaviour {
 	// Output Detection에 사용될 큐브 오브젝트
 	private GameObject outputCube;
 
-	[System.NonSerialized]
+	[NonSerialized]
 	public float beatAmount;
 	private float outputAmount;
 
@@ -59,27 +61,26 @@ public class MoodManager : MonoBehaviour {
 	private bool isTimePassed = true;
 	private IEnumerator timePassCoroutine;
 
-	[System.NonSerialized]
+	[NonSerialized]
 	public bool isDebugMode = true;
 
-	[System.NonSerialized]
+	[NonSerialized]
 	public string audioFileName = string.Empty;
 	// 오디오 파일의 경로
-	[System.NonSerialized]
-	public string audioPath;
-	[System.NonSerialized]
+	[NonSerialized]
+	public static string audioPath = "";
+	[NonSerialized]
 	public string tempPath;
 
-	[System.NonSerialized]
-	public bool isMovie = false;
 
-	[System.NonSerialized]
+
+	[NonSerialized]
 	public List<string> paths = new List<string>();
 	#endregion
 
 	#region CONSTANTS
 	// Mood의 한계치
-	[System.NonSerialized]
+	[NonSerialized]
 	public const float maxMoodCount = 12f;
 
 	//private const float sensitivityConstant = 1.935f;
@@ -98,6 +99,8 @@ public class MoodManager : MonoBehaviour {
 			outputCube = Instantiate(prefabObject, new Vector3(-44f, -23f, 0f), Quaternion.identity, cubeParent);
 			outputCube.GetComponent<MeshRenderer>().material.color = Color.gray;
 		}
+		// VideoTitleText 초기화
+		videoTitleText.text = "";
 	}
 
 	/// <summary>
@@ -149,18 +152,7 @@ public class MoodManager : MonoBehaviour {
 		yield return www;
 
 		if (www.error == null) {
-			if (Path.GetExtension(temp).ToLower() == ".mp4") {
-				/*
-				MovieTexture movieTexture = www.GetMovieTexture();
-				audioSource.clip = movieTexture.audioClip;
-				*/
-				isMovie = true;
-				videoPlayer.url = "file:///" + temp;
-			}
-			else {
-				isMovie = false;
-				audioSource.clip = www.GetAudioClip();
-			}
+			audioSource.clip = www.GetAudioClip();
 
 			//TODO: 별개의 UI 제작
 			//yield return StartCoroutine(StartGame(name));
@@ -172,34 +164,56 @@ public class MoodManager : MonoBehaviour {
 	}
 
 	public void GetYoutubeAudioFile(InputField link) {
-		ServicePointManager.ServerCertificateValidationCallback =
-			delegate (object s, X509Certificate certificate,
-			X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+		ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
 		string source = Directory.GetCurrentDirectory();
-		YouTube youtube = YouTube.Default;
 
 		try {
+			YouTube youtube = YouTube.Default;
+
+			FFMPEG ffmpeg = new FFMPEG(Path.Combine(Application.dataPath, @"StreamingAssets\youtube-dl\ffmpeg.exe"));
+
 			YouTubeVideo vid = youtube.GetVideo(link.text);
-			string fullNameWithoutPercent = vid.FullName.Replace(" - YouTube", "").Replace("%", "");
 
-			if (File.Exists(source + @"\" + fullNameWithoutPercent)) {
+			string path = source + @"\" + RemoveIllegalPathCharacters(vid.Title.Replace(" - YouTube", "")) + vid.FileExtension;
+			
+			if (File.Exists(path)) {
 				try {
-					File.Delete(source + @"\" + fullNameWithoutPercent);
+					File.Delete(path);
 				}
-				catch {
-
+				catch (Exception ex) {
+					Debug.LogError(ex);
 				}
 			}
 
-			File.WriteAllBytes(source + @"\" + fullNameWithoutPercent, vid.GetBytes());
+			File.WriteAllBytes(path, vid.GetBytes());
 
-			audioPath = source + @"\" + fullNameWithoutPercent;
+			string wavPath = path.Replace(vid.FileExtension, ".wav");
+			string result = ffmpeg.RunCommand("-i \"" + path + "\" -acodec pcm_u8 -ar 22050 \"" + wavPath + "\"");
+			if (File.Exists(path)) {
+				try {
+					File.Delete(path);
+				}
+				catch (Exception ex) {
+					Debug.LogError(ex);
+				}
+			}
+
+			videoTitleText.text = Path.GetFileNameWithoutExtension(wavPath);
+			audioPath = wavPath;
 		}
 		catch (Exception ex) {
-			Debug.Log(ex);
+			Debug.LogError(ex);
+			videoTitleText.text = "<color=red>" + ex.ToString() + "</color>";
 			link.text = "";
 		}
+
+	}
+
+	private static string RemoveIllegalPathCharacters(string path) {
+		string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+		var r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+		return r.Replace(path, "");
 	}
 
 	/// <summary>
@@ -212,12 +226,7 @@ public class MoodManager : MonoBehaviour {
 
 		yield return new WaitForSeconds(2f);
 
-		if (isMovie) {
-			videoPlayer.Play();
-		}
-		else {
-			audioSource.Play();
-		}
+		audioSource.Play();
 		Debug.Log("Audio Play");
 
 		yield return StartCoroutine(WaitAudioFinish());
@@ -233,7 +242,7 @@ public class MoodManager : MonoBehaviour {
 				audioSource.Stop();
 				yield break;
 			}
-			if (!LevelCtrl.Instance.isPaused && (!audioSource.isPlaying && !videoPlayer.isPlaying)) {
+			if (!LevelCtrl.Instance.isPaused && !audioSource.isPlaying) {
 				LevelCtrl.Instance.GameEnd();
 				yield return StartCoroutine(WaitAllFallsDown());
 				yield break;
@@ -276,9 +285,15 @@ public class MoodManager : MonoBehaviour {
 
 		beatAmount = temp;
 		if (mainCamera != null) {
-			// 배경색을 beatAmount에 따라 변경
-			mainCamera.backgroundColor = new Color((beatAmount >= maxMoodCount) ? 1f : beatAmount / maxMoodCount, 0f, 0f);
-			//Debug.Log("Beat : " + beatAmount);
+			if (LevelCtrl.Instance.playing) {
+				// 배경색을 beatAmount에 따라 변경
+				//mainCamera.backgroundColor = new Color((beatAmount >= maxMoodCount) ? 0.5f : beatAmount / (maxMoodCount * 2), 0f, 0f);
+				mainCamera.backgroundColor = Color.Lerp(Color.black, backColor, Mathf.Lerp(0, 0.5f, SineOut(beatAmount / maxMoodCount)));
+				//Debug.Log("Beat : " + beatAmount);
+			}
+			else {
+				mainCamera.backgroundColor = Color.black;
+			}
 		}
 	}
 	
@@ -290,6 +305,15 @@ public class MoodManager : MonoBehaviour {
 		CubeSound[] cubeSounds = parent.GetComponentsInChildren<CubeSound>();
 		Debug.Log("Get CubeSounds");
 		this.cubeSounds = cubeSounds;
+	}
+
+	/// <summary>
+	/// Sine Out 시그모이드 함수
+	/// </summary>
+	/// <param name="x"></param>
+	/// <returns></returns>
+	private float SineOut(float x) {
+		return (-1 * Mathf.Pow(Mathf.Clamp01(x) - 1, 2)) + 1;
 	}
 
 	//=======================================================================

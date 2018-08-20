@@ -41,13 +41,13 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 	#endregion
 
 	// Public
-	#region
+	#region Public
 	[Header("Public")]
 	public MoodManager moodManager;
 	#endregion
 
 	// UI
-	#region
+	#region UI
 	[Header("UI")]
 	public Text heartText;
 	#endregion
@@ -210,14 +210,12 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 				isPaused = true;
 				pauseUI.SetActive(true);
 				audioSource.Pause();
-				moodManager.videoPlayer.Pause();
 				Time.timeScale = 0;
 			}
 			else {
 				isPaused = false;
 				pauseUI.SetActive(false);
 				audioSource.UnPause();
-				moodManager.videoPlayer.Play();
 				Time.timeScale = 1f;
 			}
 		}
@@ -1099,7 +1097,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		if (playing) {
 			// 배경음악을 멈춘다.
 			audioSource.Stop();
-			moodManager.videoPlayer.Stop();
 			// 생존 여부를 거짓으로 설정한다.
 			playing = false;
 			// 모든 장애물을 제거한다.
@@ -1160,7 +1157,6 @@ public class LevelCtrl : Singleton<LevelCtrl> {
 		}
 
 		audioSource.Stop();
-		moodManager.videoPlayer.Stop();
 		selectAudioUI.SetActive(true);
 	}
 }

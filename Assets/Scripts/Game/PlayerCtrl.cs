@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerCtrl : MonoBehaviour {
 
+	public MoodManager moodManager;
+
 	// 플레이어의 위치를 좌표로 표현
 	[System.NonSerialized]
 	public Vector2 playerPos = new Vector2(0, 0);
@@ -92,10 +94,10 @@ public class PlayerCtrl : MonoBehaviour {
 
 				if (tempInvFlickTime >= invFlickInterval) {
 					if (!isTransparent) {
-						playerSprRen.color = new Color(0.9f, 0f, 0f, 0.5f);
+						playerSprRen.color = new Color(moodManager.backColor.r * 0.9f, moodManager.backColor.g * 0.9f, moodManager.backColor.b * 0.9f, 0.5f);
 					}
 					else {
-						playerSprRen.color = new Color(0.9f, 0f, 0f, 1f);
+						playerSprRen.color = new Color(moodManager.backColor.r * 0.9f, moodManager.backColor.g * 0.9f, moodManager.backColor.b * 0.9f, 1f);
 					}
 					isTransparent = !isTransparent;
 					tempInvFlickTime = 0;
@@ -105,13 +107,13 @@ public class PlayerCtrl : MonoBehaviour {
 				}
 			}
 			else {
-				playerSprRen.color = new Color(1f, 0f, 0f, 1f);
+				playerSprRen.color = moodManager.backColor;
 				tempInvFlickTime = 0f;
 				isTransparent = false;
 			}
 		}
 		else {
-			playerSprRen.color = new Color(1f, 0f, 0f, 1f);
+			playerSprRen.color = moodManager.backColor;
 			tempInvFlickTime = 0f;
 			isTransparent = false;
 		}

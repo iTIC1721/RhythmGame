@@ -23,8 +23,10 @@ public class GameCtrl : MonoBehaviour {
 	}
 
 	public void PressStartButton() {
-		StartCoroutine(StartButtonCoroutine());
-		selectAudioUI.SetActive(false);
+		if (MoodManager.audioPath != "") {
+			StartCoroutine(StartButtonCoroutine());
+			selectAudioUI.SetActive(false);
+		}
 	}
 
 	private IEnumerator StartButtonCoroutine() {
